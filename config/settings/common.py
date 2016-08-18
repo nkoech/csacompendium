@@ -40,9 +40,10 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-# THIRD_PARTY_APPS = [
-#     '',  # Form layouts
-# ]
+THIRD_PARTY_APPS = [
+    'markdown_deux',  # Markdown dependency
+    'rest_framework',  # Django rest framework
+]
 
 # Apps specific for this project go here.
 # LOCAL_APPS = [
@@ -50,7 +51,7 @@ DJANGO_APPS = [
 # ]
 
 # INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
-INSTALLED_APPS = DJANGO_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
