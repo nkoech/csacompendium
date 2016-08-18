@@ -41,7 +41,6 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'markdown_deux',  # Markdown dependency
     'rest_framework',  # Django rest framework
 ]
 
