@@ -4,4 +4,4 @@ from django.apps import AppConfig
 
 
 class CountriesConfig(AppConfig):
-    name = 'csacompendium.countries'
+    name = 'countries'
