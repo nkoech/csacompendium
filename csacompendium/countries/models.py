@@ -36,7 +36,7 @@ def create_slug(instance, new_slug=None):
     :return: Unique slug
     :rtype: string
     """
-    slug = '{0}-{1}'.format(slugify(instance.country_name), slugify(instance.country_code))
+    slug = slugify(instance.country_name)
     if new_slug is not None:
         slug = new_slug
     qs = Country.objects.filter(slug=slug).order_by('-id')
