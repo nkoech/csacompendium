@@ -9,4 +9,5 @@ class CountrySerializer(ModelSerializer):
             'id',
             'country_code',
             'country_name',
+            'slug',
         ]
