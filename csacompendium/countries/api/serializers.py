@@ -10,6 +10,7 @@ class CountryListSerializer(ModelSerializer):
         model = Country
         fields = [
             'id',
+            'user',
             'country_name',
             'slug',
             'country_code',
@@ -33,7 +34,7 @@ class CountryDetailSerializer(ModelSerializer):
 
 class CountryCreateUpdateSerializer(ModelSerializer):
     """
-    Creates a record.
+    Creates or updates a record.
     """
     class Meta:
         model = Country

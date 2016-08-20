@@ -1,10 +1,10 @@
 
 from rest_framework.generics import (
     CreateAPIView,
-    DestroyAPIView,
     ListAPIView,
-    UpdateAPIView,
-    RetrieveAPIView
+    RetrieveAPIView,
+    RetrieveDestroyAPIView,
+    RetrieveUpdateAPIView
 )
 from csacompendium.countries.models import Country
 from .serializers import (
@@ -38,8 +38,17 @@ class CountryCreateAPIView(CreateAPIView):
     queryset = Country.objects.all()
     serializer_class = CountryCreateUpdateSerializer
 
+    def perform_create(self, serializer):
+        """
+        Updates the user field
+        :param serializer: Serializer object
+        :return: None
+        :rtype: None
+        """
+        serializer.save(user=self.request.user)
 
-class CountryUpdateAPIView(UpdateAPIView):
+
+class CountryUpdateAPIView(RetrieveUpdateAPIView):
     """
     Updates a record.
     """
@@ -47,8 +56,11 @@ class CountryUpdateAPIView(UpdateAPIView):
     serializer_class = CountryCreateUpdateSerializer
     lookup_field = 'slug'
 
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
 
-class CountryDeleteAPIView(DestroyAPIView):
+
+class CountryDeleteAPIView(RetrieveDestroyAPIView):
     """
     Destroys/deletes a record.
     """

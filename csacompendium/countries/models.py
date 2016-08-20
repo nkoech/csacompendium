@@ -31,6 +31,7 @@ class Country(models.Model):
 
 def create_slug(instance, new_slug=None):
     """
+    Create a slug from country name.
     :param instance: Object instance
     :param new_slug: Newly created slug
     :return: Unique slug
@@ -50,6 +51,7 @@ def create_slug(instance, new_slug=None):
 @receiver(pre_save, sender=Country)
 def pre_save_country_receiver(sender, instance, *args, **kwargs):
     """
+    Create a slug before save.
     :param sender: Signal sending objec
     :param instance: Object instance
     :param args: Any other argument
