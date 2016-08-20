@@ -3,6 +3,9 @@ from csacompendium.countries.models import Country
 
 
 class CountrySerializer(ModelSerializer):
+    """
+    Country API serializer. Serializes field inputs into an API.
+    """
     class Meta:
         model = Country
         fields = [

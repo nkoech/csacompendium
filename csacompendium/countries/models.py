@@ -9,7 +9,7 @@ from django.utils.text import slugify
 
 class Country(models.Model):
     """
-    Country model
+    Country model.  Creates country entity.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     country_code = models.CharField(max_length=2, unique=True, help_text='Country abbreviated name')
@@ -30,6 +30,12 @@ class Country(models.Model):
 
 
 def create_slug(instance, new_slug=None):
+    """
+    :param instance: Object instance
+    :param new_slug: Newly created slug
+    :return: Unique slug
+    :rtype: string
+    """
     slug = '{0}-{1}'.format(slugify(instance.country_name), slugify(instance.country_code))
     if new_slug is not None:
         slug = new_slug
@@ -43,5 +49,13 @@ def create_slug(instance, new_slug=None):
 
 @receiver(pre_save, sender=Country)
 def pre_save_country_receiver(sender, instance, *args, **kwargs):
+    """
+    :param sender: Signal sending objec
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
     if not instance.slug:
         instance.slug = create_slug(instance)
