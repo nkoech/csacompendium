@@ -29,3 +29,16 @@ class CountryDetailSerializer(ModelSerializer):
             'last_update',
             'time_created',
         ]
+
+
+class CountryCreateUpdateSerializer(ModelSerializer):
+    """
+    Creates a record.
+    """
+    class Meta:
+        model = Country
+        fields = [
+            'country_code',
+            'country_name',
+        ]
+

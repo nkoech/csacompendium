@@ -1,5 +1,6 @@
 
 from rest_framework.generics import (
+    CreateAPIView,
     DestroyAPIView,
     ListAPIView,
     UpdateAPIView,
@@ -7,6 +8,7 @@ from rest_framework.generics import (
 )
 from csacompendium.countries.models import Country
 from .serializers import (
+    CountryCreateUpdateSerializer,
     CountryDetailSerializer,
     CountryListSerializer
 )
@@ -29,12 +31,20 @@ class CountryDetailAPIView(RetrieveAPIView):
     lookup_field = 'slug'
 
 
+class CountryCreateAPIView(CreateAPIView):
+    """
+    Gets information on a single record.
+    """
+    queryset = Country.objects.all()
+    serializer_class = CountryCreateUpdateSerializer
+
+
 class CountryUpdateAPIView(UpdateAPIView):
     """
     Updates a record.
     """
     queryset = Country.objects.all()
-    serializer_class = CountryDetailSerializer
+    serializer_class = CountryCreateUpdateSerializer
     lookup_field = 'slug'
 
 
