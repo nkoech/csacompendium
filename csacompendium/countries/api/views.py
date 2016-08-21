@@ -7,12 +7,10 @@ from rest_framework.generics import (
     RetrieveUpdateAPIView
 )
 from rest_framework.permissions import (
-    AllowAny,
-    IsAdminUser,
     IsAuthenticated,
-    IsAuthenticatedOrReadOnly
 )
 from csacompendium.countries.models import Country
+from .permissions import IsOwnerOrReadOnly
 from .serializers import (
     CountryCreateUpdateSerializer,
     CountryDetailSerializer,
@@ -61,7 +59,7 @@ class CountryUpdateAPIView(RetrieveUpdateAPIView):
     """
     queryset = Country.objects.all()
     serializer_class = CountryCreateUpdateSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     lookup_field = 'slug'
 
     def perform_update(self, serializer):
@@ -74,6 +72,6 @@ class CountryDeleteAPIView(RetrieveDestroyAPIView):
     """
     queryset = Country.objects.all()
     serializer_class = CountryDetailSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     lookup_field = 'slug'
 
