@@ -12,6 +12,7 @@ class Country(models.Model):
     Country model.  Creates country entity.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
+    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='%(app_label)s_%(class)s', default=1)
     country_code = models.CharField(max_length=2, unique=True, help_text='Country abbreviated name')
     country_name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True, blank=True)

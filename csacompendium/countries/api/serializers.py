@@ -27,6 +27,8 @@ class CountryDetailSerializer(ModelSerializer):
             'id',
             'country_code',
             'country_name',
+            'user',
+            'modified_by',
             'last_update',
             'time_created',
         ]
