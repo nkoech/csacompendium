@@ -1,5 +1,5 @@
-from rest_framework.serializers import ModelSerializer
 from csacompendium.countries.models import Country
+from rest_framework.serializers import ModelSerializer
 
 
 class CountryListSerializer(ModelSerializer):
