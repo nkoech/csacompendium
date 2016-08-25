@@ -1,4 +1,8 @@
-
+from django.db.models import Q
+from rest_framework.filters import (
+    SearchFilter,
+    OrderingFilter
+)
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
@@ -22,8 +26,24 @@ class CountryListAPIView(ListAPIView):
     """
     Country API list view. Gets all country records API.
     """
-    queryset = Country.objects.all()
     serializer_class = CountryListSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['country_code', 'country_name']
+
+    def get_queryset(self, *args, **kwargs):
+        """
+        Overwritten method that handles client query.
+        :return: Query results
+        :rtype: List
+        """
+        queryset_list = Country.objects.all()
+        query = self.request.GET.get('q')
+        if query:
+            queryset_list = queryset_list.filter(
+                Q(country_code__icontains=query) |
+                Q(country_name__icontains=query)
+            ).distinct()
+        return queryset_list
 
 
 class CountryDetailAPIView(RetrieveAPIView):
