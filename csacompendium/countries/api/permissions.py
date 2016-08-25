@@ -25,11 +25,13 @@ class IsOwnerOrReadOnly(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         """
-        Check if request method is safe and grant permission
+        Check if request method has permission in raletion to safe
+        methods and grant permission
         :param request: client request
         :param view: application view
         :param obj: application object - current record
-        :return: The owner of the object
+        :return: Grant access to object if true otherwise return permission
+                 denied message to user
         :rtype: object creator
         """
         if request.method in self.safe_methods_2:

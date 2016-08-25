@@ -37,7 +37,7 @@ class CountryDetailAPIView(RetrieveAPIView):
 
 class CountryCreateAPIView(CreateAPIView):
     """
-    Gets information on a single record.
+    Creates a single record.
     """
     queryset = Country.objects.all()
     serializer_class = CountryCreateUpdateSerializer
