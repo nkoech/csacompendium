@@ -15,4 +15,4 @@ class CountryListFilter(FilterSet):
     class Meta:
         model = Country
         fields = ['country_code', 'country_name']
-
+        order_by = ['country_name']
