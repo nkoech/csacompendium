@@ -42,6 +42,8 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',  # Django rest framework
+    'crispy_forms',  # Cripy forms
+    'django_filters',  # Django filter
 ]
 
 # Apps specific for this project go here.
@@ -130,5 +132,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}
 
 STATIC_URL = '/static/'
