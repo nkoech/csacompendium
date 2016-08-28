@@ -1,18 +1,19 @@
 from rest_framework.serializers import ModelSerializer
 from csacompendium.countries.models import Country
+from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 
 
 class CountryListSerializer(ModelSerializer):
     """
     Serialize all records in given fields into an API
     """
+    url = hyperlinked_identity('country_api:detail', 'slug')
+
     class Meta:
         model = Country
         fields = [
-            'id',
-            'user',
+            'url',
             'country_name',
-            'slug',
             'country_code',
         ]
 
