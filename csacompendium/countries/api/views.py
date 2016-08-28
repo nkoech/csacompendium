@@ -1,3 +1,9 @@
+from csacompendium.countries.models import Country
+from csacompendium.utils.pagination import CountryLimitOffsetPagination
+from csacompendium.utils.permissions import IsOwnerOrReadOnly
+from rest_framework.filters import (
+    DjangoFilterBackend,
+)
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
@@ -5,16 +11,11 @@ from rest_framework.generics import (
     RetrieveDestroyAPIView,
     RetrieveUpdateAPIView,
 )
-from rest_framework.filters import (
-    DjangoFilterBackend,
-)
 from rest_framework.permissions import (
     IsAuthenticated,
 )
-from csacompendium.countries.models import Country
-from .pagination import CountryLimitOffsetPagination
+
 from .filters import CountryListFilter
-from .permissions import IsOwnerOrReadOnly
 from .serializers import (
     CountryCreateUpdateSerializer,
     CountryDetailSerializer,
