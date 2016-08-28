@@ -1,4 +1,6 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import (
+    ModelSerializer, SerializerMethodField
+)
 from csacompendium.countries.models import Country
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 
@@ -22,6 +24,9 @@ class CountryDetailSerializer(ModelSerializer):
     """
     Serialize single record into an API. This is dependent on fields given.
     """
+    user = SerializerMethodField()
+    modified_by = SerializerMethodField()
+
     class Meta:
         model = Country
         fields = [
@@ -33,6 +38,22 @@ class CountryDetailSerializer(ModelSerializer):
             'last_update',
             'time_created',
         ]
+
+    def get_user(self, obj):
+        """
+        :param obj: Current record object
+        :return: Name of user who created the record
+        :rtype: String
+        """
+        return str(obj.user.username)
+
+    def get_modified_by(self, obj):
+        """
+        :param obj: Current record object
+        :return: Name of user who edited a record
+        :rtype: String
+        """
+        return str(obj.modified_by.username)
 
 
 class CountryCreateUpdateSerializer(ModelSerializer):
