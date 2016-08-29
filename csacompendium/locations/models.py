@@ -38,7 +38,7 @@ class Location(models.Model):
     location_name = models.CharField(max_length=256, blank=True)
     latitude = models.DecimalField(max_digits=8, decimal_places=6, unique=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, unique=True)
-    elevation = models.FloatField(blank=True)
+    elevation = models.FloatField(blank=True, null=True)
     last_update = models.DateTimeField(auto_now=True, auto_now_add=False)
     time_created = models.DateTimeField(auto_now=False, auto_now_add=True)
 
