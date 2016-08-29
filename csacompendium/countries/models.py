@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+from csacompendium.locations.models import Location
+from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save
@@ -28,6 +30,28 @@ class Country(models.Model):
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Countries'
+
+    @property
+    def locations(self):
+        """
+        Get related location object/record
+        :return: Query result from the location model
+        :rtye: object/record
+        """
+        instance = self
+        qs = Location.objects.filter_by_instance(instance)
+        return qs
+
+    @property
+    def get_content_type(self):
+        """
+        Get country content type
+        :return: Content type
+        :rtye: object/record
+        """
+        instance = self
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        return content_type
 
 
 def create_slug(instance, new_slug=None):
