@@ -1,6 +1,9 @@
 from __future__ import unicode_literals
 
-from django.conf import settings
+from csacompendium.utils.abstractmodel import (
+    AuthUserDetail,
+    CreateUpdateTime,
+)
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -26,12 +29,10 @@ class LocationManager(models.Manager):
         return qs
 
 
-class Location(models.Model):
+class Location(AuthUserDetail, CreateUpdateTime):
     """
     Location model.  Creates location entity.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
-    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='%(app_label)s_%(class)s', default=1)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
@@ -39,8 +40,6 @@ class Location(models.Model):
     latitude = models.DecimalField(max_digits=8, decimal_places=6, unique=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, unique=True)
     elevation = models.FloatField(blank=True, null=True)
-    last_update = models.DateTimeField(auto_now=True, auto_now_add=False)
-    time_created = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     objects = LocationManager()
 
