@@ -17,7 +17,7 @@ from rest_framework.permissions import (
 from .filters import LocationListFilter
 from .serializers import (
     # LocationCreateUpdateSerializer,
-    # LocationDetailSerializer,
+    LocationDetailSerializer,
     LocationListSerializer,
 )
 
@@ -33,15 +33,15 @@ class LocationListAPIView(ListAPIView):
     pagination_class = APILimitOffsetPagination
 
 
-# class CountryDetailAPIView(RetrieveAPIView):
-#     """
-#     Gets information on a single record.
-#     """
-#     queryset = Country.objects.all()
-#     serializer_class = CountryDetailSerializer
-#     lookup_field = 'slug'
-#
-#
+class LocationDetailAPIView(RetrieveAPIView):
+    """
+    Gets information on a single record.
+    """
+    queryset = Location.objects.all()
+    serializer_class = LocationDetailSerializer
+    lookup_field = 'slug'
+
+
 # class CountryCreateAPIView(CreateAPIView):
 #     """
 #     Creates a single record.

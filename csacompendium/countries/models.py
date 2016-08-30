@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from csacompendium.utils.abstractmodel import (
+from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )

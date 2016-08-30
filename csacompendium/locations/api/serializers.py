@@ -14,6 +14,48 @@ class LocationListSerializer(ModelSerializer):
     class Meta:
         model = Location
         fields = [
+            'object_id',
             'location_name',
+            'latitude',
+            'longitude',
             'elevation'
         ]
+
+
+class LocationDetailSerializer(ModelSerializer):
+    """
+    Serialize single record into an API. This is dependent on fields given.
+    """
+    user = SerializerMethodField()
+    modified_by = SerializerMethodField()
+
+    class Meta:
+        model = Location
+        fields = [
+            'id',
+            'object_id',
+            'location_name',
+            'latitude',
+            'longitude',
+            'elevation',
+            'user',
+            'modified_by',
+            'last_update',
+            'time_created',
+        ]
+
+    def get_user(self, obj):
+        """
+        :param obj: Current record object
+        :return: Name of user who created the record
+        :rtype: String
+        """
+        return str(obj.user.username)
+
+    def get_modified_by(self, obj):
+        """
+        :param obj: Current record object
+        :return: Name of user who edited a record
+        :rtype: String
+        """
+        return str(obj.modified_by.username)
