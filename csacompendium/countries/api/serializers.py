@@ -66,7 +66,6 @@ class CountryDetailSerializer(ModelSerializer):
         :rtype: Object/record
         """
         locations = LocationListSerializer(obj.locations, many=True).data
-        print("xxxxxxxxxxxxxxxxxxxxxxxxxxx {}".format(url))
         if not locations:
             return None
         return locations
