@@ -14,11 +14,10 @@ class LocationListSerializer(ModelSerializer):
     class Meta:
         model = Location
         fields = [
-            'object_id',
             'location_name',
             'latitude',
             'longitude',
-            'elevation'
+            'elevation',
         ]
 
 

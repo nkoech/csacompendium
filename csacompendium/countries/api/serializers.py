@@ -1,6 +1,8 @@
 from rest_framework.serializers import (
     ModelSerializer, SerializerMethodField
 )
+from csacompendium.locations.api.serializers import LocationListSerializer
+from csacompendium.locations.models import Location
 from csacompendium.countries.models import Country
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 
@@ -14,9 +16,9 @@ class CountryListSerializer(ModelSerializer):
     class Meta:
         model = Country
         fields = [
-            'url',
             'country_name',
             'country_code',
+            'url',
         ]
 
 
@@ -26,6 +28,7 @@ class CountryDetailSerializer(ModelSerializer):
     """
     user = SerializerMethodField()
     modified_by = SerializerMethodField()
+    locations = SerializerMethodField()
 
     class Meta:
         model = Country
@@ -37,6 +40,7 @@ class CountryDetailSerializer(ModelSerializer):
             'modified_by',
             'last_update',
             'time_created',
+            'locations',
         ]
 
     def get_user(self, obj):
@@ -54,6 +58,16 @@ class CountryDetailSerializer(ModelSerializer):
         :rtype: String
         """
         return str(obj.modified_by.username)
+
+    def get_locations(self, obj):
+        """
+        :param obj: Current record object
+        :return: Locations in a country
+        :rtype: Object/record
+        """
+        locations_qs = Location.objects.filter_by_instance(obj)
+        locations = LocationListSerializer(locations_qs, many=True).data
+        return locations
 
 
 class CountryCreateUpdateSerializer(ModelSerializer):
