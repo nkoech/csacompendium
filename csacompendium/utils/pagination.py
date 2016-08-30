@@ -1,7 +1,7 @@
 from rest_framework.pagination import LimitOffsetPagination
 
 
-class CountryLimitOffsetPagination(LimitOffsetPagination):
+class APILimitOffsetPagination(LimitOffsetPagination):
     """
     Pagination class
     """

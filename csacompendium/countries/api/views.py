@@ -1,5 +1,5 @@
 from csacompendium.countries.models import Country
-from csacompendium.utils.pagination import CountryLimitOffsetPagination
+from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
 from rest_framework.filters import (
     DjangoFilterBackend,
@@ -14,7 +14,6 @@ from rest_framework.generics import (
 from rest_framework.permissions import (
     IsAuthenticated,
 )
-
 from .filters import CountryListFilter
 from .serializers import (
     CountryCreateUpdateSerializer,
@@ -31,7 +30,7 @@ class CountryListAPIView(ListAPIView):
     serializer_class = CountryListSerializer
     filter_backends = (DjangoFilterBackend,)
     filter_class = CountryListFilter
-    pagination_class = CountryLimitOffsetPagination
+    pagination_class = APILimitOffsetPagination
 
 
 class CountryDetailAPIView(RetrieveAPIView):
