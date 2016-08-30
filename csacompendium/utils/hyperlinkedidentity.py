@@ -10,6 +10,7 @@ def hyperlinked_identity(view_name, lookup_field='id'):
     """
 
     url = HyperlinkedIdentityField(
+        many=True,
         view_name=view_name,
         lookup_field=lookup_field
         )

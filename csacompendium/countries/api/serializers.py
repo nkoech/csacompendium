@@ -65,8 +65,9 @@ class CountryDetailSerializer(ModelSerializer):
         :return: Locations in a country
         :rtype: Object/record
         """
-        locations_qs = Location.objects.filter_by_instance(obj)
-        locations = LocationListSerializer(locations_qs, many=True).data
+        locations = LocationListSerializer(obj.locations, many=True).data
+        if not locations:
+            return None
         return locations
 
 
