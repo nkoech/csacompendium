@@ -5,11 +5,11 @@ from csacompendium.utils.abstractmodels import (
     CreateUpdateTime,
 )
 from csacompendium.locations.models import Location
+from csacompendium.utils.createslug import create_slug
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from django.utils.text import slugify
 
 
 class Country(AuthUserDetail, CreateUpdateTime):
@@ -53,25 +53,6 @@ class Country(AuthUserDetail, CreateUpdateTime):
         return content_type
 
 
-def create_slug(instance, new_slug=None):
-    """
-    Create a slug from country name.
-    :param instance: Object instance
-    :param new_slug: Newly created slug
-    :return: Unique slug
-    :rtype: string
-    """
-    slug = slugify(instance.country_name)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Country.objects.filter(slug=slug).order_by('-id')
-    exists = qs.exists()
-    if exists:
-        new_slug = '{0}-{1}'.format(slug, qs.first().id)
-        return create_slug(instance, new_slug=new_slug)
-    return slug
-
-
 @receiver(pre_save, sender=Country)
 def pre_save_country_receiver(sender, instance, *args, **kwargs):
     """
@@ -84,4 +65,4 @@ def pre_save_country_receiver(sender, instance, *args, **kwargs):
     :rtype: None
     """
     if not instance.slug:
-        instance.slug = create_slug(instance)
+        instance.slug = create_slug(instance, Country, instance.country_name)
