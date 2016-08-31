@@ -1,8 +1,11 @@
-from rest_framework.serializers import (
-    ModelSerializer, SerializerMethodField
-)
 from csacompendium.locations.models import Location
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
+from django.contrib.contenttypes.models import ContentType
+from rest_framework.serializers import (
+    ModelSerializer,
+    SerializerMethodField,
+    ValidationError,
+)
 
 
 class LocationListSerializer(ModelSerializer):
@@ -58,3 +61,39 @@ class LocationDetailSerializer(ModelSerializer):
         :rtype: String
         """
         return str(obj.modified_by.username)
+
+
+def create_location_serializer(model_type='Country', slug=None):
+    class CountryCreateSerializer(ModelSerializer):
+
+        class Meta:
+            model = Location
+            fields = [
+                'id',
+                'location_name',
+                'latitude',
+                'longitude',
+                'elevation',
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+            ]
+
+        def __init__(self, *args, **kwargs):
+            self.model_type = model_type
+            self.slug = slug
+            return super(CountryCreateSerializer, self).__init__(*args, **kwargs)
+
+        def validate(self, data):
+            model_type = self.model_type
+            model_qs = ContentType.objects.filter(model=model_type)
+            if not model_qs.exists() or model_qs.count() != 1:
+                raise ValidationError('This is not a valid content type')
+            any_model = model_qs.first().model_class()
+            obj_qs = any_model.objects.filter(slug=self.slug)
+            if not obj_qs.exists() or obj_qs.count() != 1:
+                raise ValidationError('This is not a slug for this content type')
+            return data
+
+    return CountryCreateSerializer
