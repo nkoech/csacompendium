@@ -1,5 +1,6 @@
 from csacompendium.locations.models import Location
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.serializers import (
     ModelSerializer,
@@ -63,8 +64,9 @@ class LocationDetailSerializer(ModelSerializer):
         return str(obj.modified_by.username)
 
 
-def create_location_serializer(model_type='Country', slug=None):
-    class CountryCreateSerializer(ModelSerializer):
+def create_location_serializer(model_type='country', slug=None, user=None):
+
+    class LocationCreateSerializer(ModelSerializer):
 
         class Meta:
             model = Location
@@ -74,8 +76,6 @@ def create_location_serializer(model_type='Country', slug=None):
                 'latitude',
                 'longitude',
                 'elevation',
-                'user',
-                'modified_by',
                 'last_update',
                 'time_created',
             ]
@@ -83,7 +83,16 @@ def create_location_serializer(model_type='Country', slug=None):
         def __init__(self, *args, **kwargs):
             self.model_type = model_type
             self.slug = slug
-            return super(CountryCreateSerializer, self).__init__(*args, **kwargs)
+            self.user = self.get_authenticated_user()
+            return super(LocationCreateSerializer, self).__init__(*args, **kwargs)
+
+        def get_authenticated_user(self):
+            if user:
+                auth_user = user
+            else:
+                User_model = get_user_model()
+                auth_user = User_model.objects.all().first()
+            return auth_user
 
         def validate(self, data):
             model_type = self.model_type
@@ -96,4 +105,18 @@ def create_location_serializer(model_type='Country', slug=None):
                 raise ValidationError('This is not a slug for this content type')
             return data
 
-    return CountryCreateSerializer
+        def create(self, validated_data):
+            model_type = self.model_type
+            slug = self.slug
+            location_name = validated_data.get('location_name')
+            latitude = validated_data.get('latitude')
+            longitude = validated_data.get('longitude')
+            elevation = validated_data.get('elevation')
+            user = self.user
+            modified_by = self.user
+            location = Location.objects.create_by_model_type(
+                        model_type, slug, location_name, latitude, longitude, elevation, user, modified_by,
+                        )
+            return location
+
+    return LocationCreateSerializer

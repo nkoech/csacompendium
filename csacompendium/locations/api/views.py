@@ -19,6 +19,7 @@ from .serializers import (
     # LocationCreateUpdateSerializer,
     LocationDetailSerializer,
     LocationListSerializer,
+    create_location_serializer,
 )
 
 
@@ -42,24 +43,30 @@ class LocationDetailAPIView(RetrieveAPIView):
     lookup_field = 'slug'
 
 
-# class CountryCreateAPIView(CreateAPIView):
-#     """
-#     Creates a single record.
-#     """
-#     queryset = Country.objects.all()
-#     serializer_class = CountryCreateUpdateSerializer
-#     permission_classes = [IsAuthenticated]
-#
-#     def perform_create(self, serializer):
-#         """
-#         Updates the user field
-#         :param serializer: Serializer object
-#         :return: None
-#         :rtype: None
-#         """
-#         serializer.save(user=self.request.user)
-#
-#
+class LocationCreateAPIView(CreateAPIView):
+    """
+    Creates a single record.
+    """
+    queryset = Location.objects.all()
+    # serializer_class = CountryCreateUpdateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        model_type = self.request.GET.get('type')
+        slug = self.request.GET.get('slug')
+        user = self.request.user
+        return create_location_serializer(model_type, slug, user)
+
+    # def perform_create(self, serializer):
+    #     """
+    #     Updates the user field
+    #     :param serializer: Serializer object
+    #     :return: None
+    #     :rtype: None
+    #     """
+    #     serializer.save(user=self.request.user)
+
+
 # class CountryUpdateAPIView(RetrieveUpdateAPIView):
 #     """
 #     Updates a record.

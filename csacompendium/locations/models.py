@@ -28,6 +28,25 @@ class LocationManager(models.Manager):
         qs = super(LocationManager, self).filter(content_type=content_type, object_id=obj_id)
         return qs
 
+    def create_by_model_type(self, model_type, slug, location_name, latitude, longitude, elevation, user, modified_by):
+        model_qs = ContentType.objects.filter(model=model_type)
+        if model_qs.exists():
+            any_model = model_qs.first().model_class()
+            obj_qs = any_model.objects.filter(slug=slug)
+            if obj_qs.exists() and obj_qs.count() == 1:
+                instance = self.model()
+                instance.content_type = model_qs.first()
+                instance.object_id = obj_qs.first().id
+                instance.location_name = location_name
+                instance.latitude = latitude
+                instance.longitude = longitude
+                instance.elevation = elevation
+                instance.user = user
+                instance.modified_by = modified_by
+                instance.save()
+                return instance
+            return None
+
 
 class Location(AuthUserDetail, CreateUpdateTime):
     """
