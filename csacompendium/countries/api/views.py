@@ -21,17 +21,6 @@ from .serializers import (
 )
 
 
-class CountryListAPIView(ListAPIView):
-    """
-    API list view. Gets all records API.
-    """
-    queryset = Country.objects.all()
-    serializer_class = CountryListSerializer
-    filter_backends = (DjangoFilterBackend,)
-    filter_class = CountryListFilter
-    pagination_class = APILimitOffsetPagination
-
-
 class CountryCreateAPIView(CreateAPIView):
     """
     Creates a single record.
@@ -48,6 +37,17 @@ class CountryCreateAPIView(CreateAPIView):
         :rtype: None
         """
         serializer.save(user=self.request.user)
+
+
+class CountryListAPIView(ListAPIView):
+    """
+    API list view. Gets all records API.
+    """
+    queryset = Country.objects.all()
+    serializer_class = CountryListSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = CountryListFilter
+    pagination_class = APILimitOffsetPagination
 
 
 class CountryDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
