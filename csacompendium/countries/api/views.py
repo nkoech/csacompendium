@@ -8,8 +8,6 @@ from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
     RetrieveAPIView,
-    RetrieveDestroyAPIView,
-    RetrieveUpdateAPIView,
 )
 from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
 from rest_framework.permissions import (
@@ -34,15 +32,6 @@ class CountryListAPIView(ListAPIView):
     pagination_class = APILimitOffsetPagination
 
 
-class CountryDetailAPIView(RetrieveAPIView):
-    """
-    Gets information on a single record.
-    """
-    queryset = Country.objects.all()
-    serializer_class = CountryDetailSerializer
-    lookup_field = 'slug'
-
-
 class CountryCreateAPIView(CreateAPIView):
     """
     Creates a single record.
@@ -61,7 +50,7 @@ class CountryCreateAPIView(CreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class CountryUpdateAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
+class CountryDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
     """
     Updates a record.
     """
@@ -99,14 +88,4 @@ class CountryUpdateAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView)
         :return:
         """
         serializer.save(modified_by=self.request.user)
-
-
-class CountryDeleteAPIView(RetrieveDestroyAPIView):
-    """
-    Destroys/deletes a record.
-    """
-    queryset = Country.objects.all()
-    serializer_class = CountryDetailSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
-    lookup_field = 'slug'
 

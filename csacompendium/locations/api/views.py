@@ -9,7 +9,6 @@ from rest_framework.generics import (
     ListAPIView,
     RetrieveAPIView,
     RetrieveDestroyAPIView,
-    RetrieveUpdateAPIView,
 )
 from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
 from rest_framework.permissions import (
@@ -35,15 +34,6 @@ class LocationListAPIView(ListAPIView):
     pagination_class = APILimitOffsetPagination
 
 
-class LocationDetailAPIView(RetrieveAPIView):
-    """
-    Gets information on a single record.
-    """
-    queryset = Location.objects.all()
-    serializer_class = LocationDetailSerializer
-    lookup_field = 'slug'
-
-
 class LocationCreateAPIView(CreateAPIView):
     """
     Creates a single record.
@@ -63,7 +53,7 @@ class LocationCreateAPIView(CreateAPIView):
         return create_location_serializer(model_type, slug, user)
 
 
-class LocationUpdateAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
+class LocationDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
     """
     Updates a record.
     """
