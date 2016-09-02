@@ -65,8 +65,19 @@ class LocationDetailSerializer(ModelSerializer):
 
 
 def create_location_serializer(model_type='country', slug=None, user=None):
+    """
+    Creates a model serializer
+    :param model_type: Model
+    :param slug: Hyphened slug
+    :param user: Record owner
+    :return: Serializer class
+    :rtype: Object
+    """
 
     class LocationCreateSerializer(ModelSerializer):
+        """
+        Create a record
+        """
 
         class Meta:
             model = Location
@@ -87,6 +98,11 @@ def create_location_serializer(model_type='country', slug=None, user=None):
             return super(LocationCreateSerializer, self).__init__(*args, **kwargs)
 
         def get_authenticated_user(self):
+            """
+            Get an authenticated user
+            :return: Authenticated user
+            :rtype: User object
+            """
             if user:
                 auth_user = user
             else:
@@ -95,6 +111,12 @@ def create_location_serializer(model_type='country', slug=None, user=None):
             return auth_user
 
         def validate(self, data):
+            """
+            Validates data
+            :param data: Input data
+            :return: Validated data
+            :rtype: Object
+            """
             model_type = self.model_type
             model_qs = ContentType.objects.filter(model=model_type)
             if not model_qs.exists() or model_qs.count() != 1:
@@ -106,6 +128,12 @@ def create_location_serializer(model_type='country', slug=None, user=None):
             return data
 
         def create(self, validated_data):
+            """
+            Created record from validated data
+            :param validated_data: Validated data
+            :return: Location object
+            :rtype: Object
+            """
             model_type = self.model_type
             slug = self.slug
             location_name = validated_data.get('location_name')
@@ -120,3 +148,18 @@ def create_location_serializer(model_type='country', slug=None, user=None):
             return location
 
     return LocationCreateSerializer
+
+
+class LocationUpdateSerializer(ModelSerializer):
+    """
+    Serialize single record into an API. This is dependent on fields given.
+    """
+
+    class Meta:
+        model = Location
+        fields = [
+            'location_name',
+            'latitude',
+            'longitude',
+            'elevation',
+        ]

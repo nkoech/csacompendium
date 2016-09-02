@@ -11,8 +11,10 @@ from rest_framework.generics import (
     RetrieveDestroyAPIView,
     RetrieveUpdateAPIView,
 )
+from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
 from rest_framework.permissions import (
     IsAuthenticated,
+    IsAdminUser,
 )
 from .filters import CountryListFilter
 from .serializers import (
@@ -24,7 +26,7 @@ from .serializers import (
 
 class CountryListAPIView(ListAPIView):
     """
-    Country API list view. Gets all country records API.
+    API list view. Gets all records API.
     """
     queryset = Country.objects.all()
     serializer_class = CountryListSerializer
@@ -52,7 +54,7 @@ class CountryCreateAPIView(CreateAPIView):
 
     def perform_create(self, serializer):
         """
-        Updates the user field
+        Creates a new value on the user field
         :param serializer: Serializer object
         :return: None
         :rtype: None
@@ -60,16 +62,43 @@ class CountryCreateAPIView(CreateAPIView):
         serializer.save(user=self.request.user)
 
 
-class CountryUpdateAPIView(RetrieveUpdateAPIView):
+class CountryUpdateAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
     """
     Updates a record.
     """
     queryset = Country.objects.all()
     serializer_class = CountryCreateUpdateSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated, IsAdminUser]
     lookup_field = 'slug'
 
+    def put(self, request, *args, **kwargs):
+        """
+        Update record
+        :param request: Client request
+        :param args: List arguments
+        :param kwargs: Keyworded arguments
+        :return: Updated record
+        :rtype: Object
+        """
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Delete record
+        :param request: Client request
+        :param args: List arguments
+        :param kwargs: Keyworded arguments
+        :return: Updated record
+        :rtype: Object
+        """
+        return self.destroy(request, *args, **kwargs)
+
     def perform_update(self, serializer):
+        """
+        Update a field
+        :param serializer: Serializer object
+        :return:
+        """
         serializer.save(modified_by=self.request.user)
 
 
