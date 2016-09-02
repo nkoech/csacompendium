@@ -21,7 +21,6 @@ from .serializers import (
     LocationDetailSerializer,
     LocationListSerializer,
     create_location_serializer,
-    LocationUpdateSerializer,
 )
 
 
@@ -69,7 +68,7 @@ class LocationUpdateAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView
     Updates a record.
     """
     queryset = Location.objects.all()
-    serializer_class = LocationUpdateSerializer
+    serializer_class = LocationDetailSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
     lookup_field = 'slug'
 

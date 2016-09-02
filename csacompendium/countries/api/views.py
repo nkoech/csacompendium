@@ -18,7 +18,6 @@ from rest_framework.permissions import (
 )
 from .filters import CountryListFilter
 from .serializers import (
-    CountryCreateUpdateSerializer,
     CountryDetailSerializer,
     CountryListSerializer,
 )
@@ -49,7 +48,7 @@ class CountryCreateAPIView(CreateAPIView):
     Creates a single record.
     """
     queryset = Country.objects.all()
-    serializer_class = CountryCreateUpdateSerializer
+    serializer_class = CountryDetailSerializer
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -67,7 +66,7 @@ class CountryUpdateAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView)
     Updates a record.
     """
     queryset = Country.objects.all()
-    serializer_class = CountryCreateUpdateSerializer
+    serializer_class = CountryDetailSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
     lookup_field = 'slug'
 

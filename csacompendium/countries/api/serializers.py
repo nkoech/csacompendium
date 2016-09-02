@@ -42,6 +42,14 @@ class CountryDetailSerializer(ModelSerializer):
             'time_created',
             'locations',
         ]
+        read_only_fields = [
+            'id',
+            'user',
+            'modified_by',
+            'last_update',
+            'time_created',
+            'locations',
+        ]
 
     def get_user(self, obj):
         """
@@ -69,16 +77,3 @@ class CountryDetailSerializer(ModelSerializer):
         if not locations:
             return None
         return locations
-
-
-class CountryCreateUpdateSerializer(ModelSerializer):
-    """
-    Creates or updates a record.
-    """
-    class Meta:
-        model = Country
-        fields = [
-            'country_code',
-            'country_name',
-        ]
-

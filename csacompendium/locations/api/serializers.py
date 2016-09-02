@@ -46,6 +46,14 @@ class LocationDetailSerializer(ModelSerializer):
             'last_update',
             'time_created',
         ]
+        read_only_fields = [
+            'id',
+            'object_id',
+            'user',
+            'modified_by',
+            'last_update',
+            'time_created',
+        ]
 
     def get_user(self, obj):
         """
@@ -148,18 +156,3 @@ def create_location_serializer(model_type='country', slug=None, user=None):
             return location
 
     return LocationCreateSerializer
-
-
-class LocationUpdateSerializer(ModelSerializer):
-    """
-    Serialize single record into an API. This is dependent on fields given.
-    """
-
-    class Meta:
-        model = Location
-        fields = [
-            'location_name',
-            'latitude',
-            'longitude',
-            'elevation',
-        ]
