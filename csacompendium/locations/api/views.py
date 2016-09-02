@@ -8,7 +8,6 @@ from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
     RetrieveAPIView,
-    RetrieveDestroyAPIView,
 )
 from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
 from rest_framework.permissions import (
@@ -91,14 +90,3 @@ class LocationDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView
         :return:
         """
         serializer.save(modified_by=self.request.user)
-
-
-class LocationDeleteAPIView(RetrieveDestroyAPIView):
-    """
-    Destroys/deletes a record.
-    """
-    queryset = Location.objects.all()
-    serializer_class = LocationDetailSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
-    lookup_field = 'slug'
-
