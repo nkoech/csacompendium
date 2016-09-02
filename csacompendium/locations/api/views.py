@@ -22,17 +22,6 @@ from .serializers import (
 )
 
 
-class LocationListAPIView(ListAPIView):
-    """
-    API list view. Gets all records API.
-    """
-    queryset = Location.objects.all()
-    serializer_class = LocationListSerializer
-    filter_backends = (DjangoFilterBackend,)
-    filter_class = LocationListFilter
-    pagination_class = APILimitOffsetPagination
-
-
 class LocationCreateAPIView(CreateAPIView):
     """
     Creates a single record.
@@ -50,6 +39,17 @@ class LocationCreateAPIView(CreateAPIView):
         slug = self.request.GET.get('slug')
         user = self.request.user
         return create_location_serializer(model_type, slug, user)
+
+
+class LocationListAPIView(ListAPIView):
+    """
+    API list view. Gets all records API.
+    """
+    queryset = Location.objects.all()
+    serializer_class = LocationListSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = LocationListFilter
+    pagination_class = APILimitOffsetPagination
 
 
 class LocationDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
