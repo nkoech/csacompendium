@@ -9,10 +9,9 @@ class CountryListFilter(FilterSet):
     """
     Filter query list from country database
     """
-    country_code = CharFilter(name='country_code', lookup_expr='iexact')
-    country_name = CharFilter(name='country_name', lookup_expr='iexact')
-
     class Meta:
         model = Country
-        fields = ['country_code', 'country_name']
+        fields = {'country_code': ['iexact', 'icontains'],
+                  'country_name': ['iexact', 'icontains'],
+                  }
         order_by = ['country_name']

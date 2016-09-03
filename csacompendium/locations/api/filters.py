@@ -1,4 +1,4 @@
-from django_filters import CharFilter
+from django_filters import CharFilter, NumberFilter
 from rest_framework.filters import (
     FilterSet
 )
@@ -9,9 +9,9 @@ class LocationListFilter(FilterSet):
     """
     Filter query list from country database
     """
-    country_name = CharFilter(name='location_name', lookup_expr='iexact')
-
     class Meta:
         model = Location
-        fields = ['country_name']
-        order_by = ['country_name']
+        fields = {'location_name': ['iexact', 'icontains'],
+                  'elevation': ['exact', 'gte', 'lte'],
+                  }
+        order_by = ['location_name']
