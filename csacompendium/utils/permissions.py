@@ -1,4 +1,4 @@
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
 class IsOwnerOrReadOnly(BasePermission):
@@ -7,21 +7,6 @@ class IsOwnerOrReadOnly(BasePermission):
     """
 
     message = 'You must be the owner of this object'
-    safe_methods_1 = ['GET', 'PUT', 'DELETE']
-    safe_methods_2 = ['GET', 'OPTIONS', 'HEAD', 'DELETE']
-
-    def has_permission(self, request, view):
-        """
-        Check if request method is permitted
-        :param request: Client request
-        :param view: Application view
-        :return: True if the user request method is safe
-                otherwise do not grant permission
-        :rtype: Boolean
-        """
-        if request.method in self.safe_methods_1:
-            return True
-        return False
 
     def has_object_permission(self, request, view, obj):
         """
@@ -34,6 +19,6 @@ class IsOwnerOrReadOnly(BasePermission):
                  not grant permission
         :rtype: object creator
         """
-        if request.method in self.safe_methods_2:
+        if request.method in SAFE_METHODS:
             return True
         return obj.user == request.user
