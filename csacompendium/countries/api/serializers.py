@@ -1,5 +1,6 @@
 from rest_framework.serializers import (
-    ModelSerializer, SerializerMethodField
+    ModelSerializer,
+    SerializerMethodField
 )
 from csacompendium.locations.api.serializers import LocationListSerializer
 from csacompendium.locations.models import Location
@@ -73,7 +74,8 @@ class CountryDetailSerializer(ModelSerializer):
         :return: Locations in a country
         :rtype: Object/record
         """
-        locations = LocationListSerializer(obj.locations, many=True).data
+        request = self.context['request']
+        locations = LocationListSerializer(obj.locations, context={'request': request}, many=True).data
         if not locations:
             return None
         return locations
