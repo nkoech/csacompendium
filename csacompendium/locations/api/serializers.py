@@ -79,17 +79,15 @@ def create_location_serializer(model_type='country', slug=None, user=None):
             :return: Location object
             :rtype: Object
             """
-            model_type = self.model_type
-            slug = self.slug
+
             location_name = validated_data.get('location_name')
             latitude = validated_data.get('latitude')
             longitude = validated_data.get('longitude')
             elevation = validated_data.get('elevation')
-            user = self.user
-            modified_by = self.user
+
             location = Location.objects.create_by_model_type(
-                        model_type, slug, location_name, latitude, longitude, elevation, user, modified_by,
-                        )
+                self.model_type, self.slug, location_name, latitude, longitude, elevation, self.user
+            )
             return location
 
     return LocationCreateSerializer

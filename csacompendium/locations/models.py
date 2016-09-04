@@ -28,7 +28,7 @@ class LocationManager(models.Manager):
         qs = super(LocationManager, self).filter(content_type=content_type, object_id=obj_id)
         return qs
 
-    def create_by_model_type(self, model_type, slug, location_name, latitude, longitude, elevation, user, modified_by):
+    def create_by_model_type(self, model_type, slug, location_name, latitude, longitude, elevation, user):
         model_qs = ContentType.objects.filter(model=model_type)
         if model_qs.exists():
             any_model = model_qs.first().model_class()
@@ -42,7 +42,7 @@ class LocationManager(models.Manager):
                 instance.longitude = longitude
                 instance.elevation = elevation
                 instance.user = user
-                instance.modified_by = modified_by
+                instance.modified_by = user
                 instance.save()
                 return instance
             return None
