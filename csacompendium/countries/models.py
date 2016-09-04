@@ -10,6 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.core.urlresolvers import reverse
 
 
 class Country(AuthUserDetail, CreateUpdateTime):
@@ -25,6 +26,14 @@ class Country(AuthUserDetail, CreateUpdateTime):
 
     def __str__(self):
         return self.country_name
+
+    def get_api_url(self):
+        """
+        Get country URL as a reverse from another app
+        :return: URL
+        :rtype: String
+        """
+        return reverse('country_api:detail', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['-time_created', '-last_update']

@@ -99,7 +99,7 @@ class LocationListSerializer(ModelSerializer):
     """
     Serialize all records in given fields into an API
     """
-    # url = hyperlinked_identity('location_api:detail', 'slug')
+    url = hyperlinked_identity('location_api:detail', 'slug')
 
     class Meta:
         model = Location
@@ -108,6 +108,7 @@ class LocationListSerializer(ModelSerializer):
             'latitude',
             'longitude',
             'elevation',
+            'url',
         ]
 
 
@@ -117,12 +118,12 @@ class LocationDetailSerializer(ModelSerializer):
     """
     user = SerializerMethodField()
     modified_by = SerializerMethodField()
+    content_type_url = SerializerMethodField()
 
     class Meta:
         model = Location
         fields = [
             'id',
-            'object_id',
             'location_name',
             'latitude',
             'longitude',
@@ -131,14 +132,15 @@ class LocationDetailSerializer(ModelSerializer):
             'modified_by',
             'last_update',
             'time_created',
+            'content_type_url',
         ]
         read_only_fields = [
             'id',
-            'object_id',
             'user',
             'modified_by',
             'last_update',
             'time_created',
+            'content_type_url',
         ]
 
     def get_user(self, obj):
@@ -156,3 +158,15 @@ class LocationDetailSerializer(ModelSerializer):
         :rtype: String
         """
         return str(obj.modified_by.username)
+
+    def get_content_type_url(self, obj):
+        """
+        Get related content type/object url
+        :param obj: Current record object
+        :return: URL to related object
+        :rtype: String
+        """
+        try:
+            return obj.content_object.get_api_url()
+        except:
+            return None
