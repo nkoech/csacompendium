@@ -10,6 +10,11 @@ from rest_framework.serializers import (
 
 
 def location_serializers():
+    """
+    Location serializers
+    :return: All location serializers
+    :rtype: Object
+    """
 
     def create_location_serializer(model_type='country', slug=None, user=None):
         """
