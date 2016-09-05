@@ -52,8 +52,9 @@ class Location(AuthUserDetail, CreateUpdateTime):
     """
     Location model.  Creates location entity.
     """
+    limit = models.Q(app_label='countries', model='country')  # | models.Q(app_label='app', model='b') | models.Q(app_label='app2', model='c')
     slug = models.SlugField(unique=True, blank=True)
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     location_name = models.CharField(max_length=256, blank=True)
