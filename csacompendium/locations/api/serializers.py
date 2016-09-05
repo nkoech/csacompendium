@@ -2,4 +2,4 @@ from .location.locationserializers import location_serializers
 from .temperature.temperatureserializers import temperature_serializers
 
 create_location_serializer, LocationListSerializer, LocationDetailSerializer = location_serializers()
-TemperatureListSerializer = temperature_serializers()
+TemperatureListSerializer, TemperatureDetailSerializer = temperature_serializers()

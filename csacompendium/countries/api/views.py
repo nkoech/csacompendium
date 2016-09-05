@@ -1,9 +1,7 @@
 from csacompendium.countries.models import Country
 from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
-from rest_framework.filters import (
-    DjangoFilterBackend,
-)
+from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,

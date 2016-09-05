@@ -111,10 +111,10 @@ class Temperature(AuthUserDetail, CreateUpdateTime):
     temperature_uom = models.CharField(max_length=5, default='°C')
 
     def __unicode__(self):
-        return self.temperature
+        return str(self.temperature)
 
     def __str__(self):
-        return self.temperature
+        return str(self.temperature)
 
     class Meta:
         ordering = ['-time_created', '-last_update']

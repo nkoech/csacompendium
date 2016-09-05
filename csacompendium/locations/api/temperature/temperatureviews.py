@@ -1,9 +1,7 @@
 from csacompendium.locations.models import Temperature
 from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
-from rest_framework.filters import (
-    DjangoFilterBackend,
-)
+from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import (
     CreateAPIView,
     ListAPIView,
@@ -16,9 +14,8 @@ from rest_framework.permissions import (
 )
 # from .filters import TemperatureListFilter
 from csacompendium.locations.api.serializers import (
-    # TemperatureDetailSerializer,
+    TemperatureDetailSerializer,
     TemperatureListSerializer,
-    # create_temperature_serializer,
 )
 
 
@@ -39,4 +36,44 @@ def temperature_views():
         # filter_class = LocationListFilter
         # pagination_class = APILimitOffsetPagination
 
-    return TemperatureListAPIView
+    class TemperatureDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
+        """
+        Updates a record.
+        """
+        queryset = Temperature.objects.all()
+        serializer_class = TemperatureDetailSerializer
+        permission_classes = [IsAuthenticated, IsAdminUser]
+        lookup_field = 'pk'
+
+        def put(self, request, *args, **kwargs):
+            """
+            Update record
+            :param request: Client request
+            :param args: List arguments
+            :param kwargs: Keyworded arguments
+            :return: Updated record
+            :rtype: Object
+            """
+            return self.update(request, *args, **kwargs)
+
+        def delete(self, request, *args, **kwargs):
+            """
+            Delete record
+            :param request: Client request
+            :param args: List arguments
+            :param kwargs: Keyworded arguments
+            :return: Updated record
+            :rtype: Object
+            """
+            return self.destroy(request, *args, **kwargs)
+
+        def perform_update(self, serializer):
+            """
+            Update a field
+            :param serializer: Serializer object
+            :return:
+            """
+            serializer.save(modified_by=self.request.user)
+
+    return TemperatureListAPIView, TemperatureDetailAPIView
+
