@@ -2,6 +2,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField
 )
+# from csacompendium.locations.api.serializers import LocationListSerializer
 from csacompendium.locations.api.serializers import LocationListSerializer
 from csacompendium.locations.models import Location
 from csacompendium.countries.models import Country
