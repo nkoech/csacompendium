@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from csacompendium.utils.abstractmodels import (
@@ -61,7 +62,6 @@ class Location(AuthUserDetail, CreateUpdateTime):
     latitude = models.DecimalField(max_digits=8, decimal_places=6, unique=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, unique=True)
     elevation = models.FloatField(blank=True, null=True)
-
     objects = LocationManager()
 
     def __unicode__(self):
@@ -89,3 +89,34 @@ def pre_save_country_receiver(sender, instance, *args, **kwargs):
     """
     if not instance.slug:
         instance.slug = create_slug(instance, Location, instance.location_name)
+
+
+class LocationRelation(AuthUserDetail, CreateUpdateTime):
+    """
+    Location entry relationship model. A many to many bridge table between location  model
+    and other models
+    """
+    limit = models.Q(app_label='locations', model='temperature') | models.Q(app_label='locations', model='location')
+    location = models.ForeignKey(Location, on_delete=models.PROTECT)
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+
+class Temperature(AuthUserDetail, CreateUpdateTime):
+    """
+    Temperature model. Creates temperature entity
+    """
+    temperature = models.DecimalField(max_digits=5, decimal_places=2)
+    temperature_uom = models.CharField(max_length=5, default='°C')
+
+    def __unicode__(self):
+        return self.temperature
+
+    def __str__(self):
+        return self.temperature
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Temperatures'
+
