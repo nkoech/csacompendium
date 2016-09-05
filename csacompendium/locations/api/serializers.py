@@ -1,2 +1,2 @@
-from .modelserializers.locationserializer import location_serializers
+from .location.locationserializers import location_serializers
 create_location_serializer, LocationListSerializer, LocationDetailSerializer = location_serializers()
