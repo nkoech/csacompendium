@@ -48,7 +48,6 @@ def temperature_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                # 'locations',
             ]
             read_only_fields = [
                 'id',
@@ -56,7 +55,6 @@ def temperature_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                # 'locations',
             ]
 
         def get_user(self, obj):

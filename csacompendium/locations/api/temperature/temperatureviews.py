@@ -13,10 +13,13 @@ from rest_framework.permissions import (
     IsAdminUser,
 )
 from .filters import TemperatureListFilter
-from csacompendium.locations.api.serializers import (
-    TemperatureDetailSerializer,
-    TemperatureListSerializer,
-)
+# from csacompendium.locations.api.serializers import (
+#     TemperatureDetailSerializer,
+#     TemperatureListSerializer,
+# )
+
+from csacompendium.locations.api.temperature.temperatureserializers import temperature_serializers
+TemperatureListSerializer, TemperatureDetailSerializer = temperature_serializers()
 
 
 def temperature_views():
@@ -25,6 +28,23 @@ def temperature_views():
     :return: All temperature views
     :rtype: Object
     """
+
+    class TemperatureCreateAPIView(CreateAPIView):
+        """
+        Creates a single record.
+        """
+        queryset = Temperature.objects.all()
+        serializer_class = TemperatureDetailSerializer
+        permission_classes = [IsAuthenticated]
+
+        def perform_create(self, serializer):
+            """
+            Creates a new value on the user field
+            :param serializer: Serializer object
+            :return: None
+            :rtype: None
+            """
+            serializer.save(user=self.request.user)
 
     class TemperatureListAPIView(ListAPIView):
         """
@@ -75,5 +95,5 @@ def temperature_views():
             """
             serializer.save(modified_by=self.request.user)
 
-    return TemperatureListAPIView, TemperatureDetailAPIView
+    return TemperatureListAPIView, TemperatureDetailAPIView, TemperatureCreateAPIView
 
