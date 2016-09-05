@@ -101,7 +101,7 @@ def location_serializers():
         """
         Serialize all records in given fields into an API
         """
-        url = hyperlinked_identity('location_api:detail', 'slug')
+        url = hyperlinked_identity('location_api:location_detail', 'slug')
 
         class Meta:
             model = Location
