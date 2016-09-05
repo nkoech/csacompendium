@@ -1,4 +1,3 @@
-from django_filters import CharFilter, NumberFilter
 from rest_framework.filters import (
     FilterSet
 )

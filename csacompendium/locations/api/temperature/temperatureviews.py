@@ -12,7 +12,7 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser,
 )
-# from .filters import TemperatureListFilter
+from .filters import TemperatureListFilter
 from csacompendium.locations.api.serializers import (
     TemperatureDetailSerializer,
     TemperatureListSerializer,
@@ -32,9 +32,9 @@ def temperature_views():
         """
         queryset = Temperature.objects.all()
         serializer_class = TemperatureListSerializer
-        # filter_backends = (DjangoFilterBackend,)
-        # filter_class = LocationListFilter
-        # pagination_class = APILimitOffsetPagination
+        filter_backends = (DjangoFilterBackend,)
+        filter_class = TemperatureListFilter
+        pagination_class = APILimitOffsetPagination
 
     class TemperatureDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
         """
