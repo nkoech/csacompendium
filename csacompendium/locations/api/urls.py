@@ -3,13 +3,16 @@ from .views import (
     LocationCreateAPIView,
     LocationDetailAPIView,
     LocationListAPIView,
+    LocationRelationListAPIView,
     TemperatureListAPIView,
     TemperatureDetailAPIView,
     TemperatureCreateAPIView,
+
 )
 
 #  Temperature URLs
 urlpatterns = [
+    url(r'^locationrelation/$', LocationRelationListAPIView.as_view(), name='location_relation_list'),
     url(r'^temperature/$', TemperatureListAPIView.as_view(), name='temperature_list'),
     url(r'^temperature/create/$', TemperatureCreateAPIView.as_view(), name='temperature_create'),
     url(r'^temperature/(?P<pk>[\w-]+)/$', TemperatureDetailAPIView.as_view(), name='temperature_detail'),

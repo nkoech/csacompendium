@@ -1,5 +1,8 @@
 from .location.locationserializers import location_serializers
+from .locationrelation.locationrelationserializer import location_relation_serializers
 from .temperature.temperatureserializers import temperature_serializers
 
+
 create_location_serializer, LocationListSerializer, LocationDetailSerializer = location_serializers()
+LocationRelationListSerializer = location_relation_serializers()
 TemperatureListSerializer, TemperatureDetailSerializer = temperature_serializers()

@@ -2,7 +2,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField
 )
-from csacompendium.locations.api.location.locationserializers import location_serializers
+from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
 from csacompendium.locations.models import Temperature
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 
@@ -33,10 +33,10 @@ def temperature_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
+        LocationRelationListSerializer = location_relation_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        # create_location_serializer, LocationListSerializer, LocationDetailSerializer = location_serializers()
-        # locations = SerializerMethodField()
+        location_relations = SerializerMethodField()
 
         class Meta:
             model = Temperature
@@ -48,6 +48,7 @@ def temperature_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
+                'location_relations',
             ]
             read_only_fields = [
                 'id',
@@ -55,6 +56,7 @@ def temperature_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
+                'location_relations',
             ]
 
         def get_user(self, obj):
@@ -73,16 +75,20 @@ def temperature_serializers():
             """
             return str(obj.modified_by.username)
 
-        # def get_locations(self, obj):
-        #     """
-        #     :param obj: Current record object
-        #     :return: Locations in a country
-        #     :rtype: Object/record
-        #     """
-        #     request = self.context['request']
-        #     locations = LocationListSerializer(obj.locations, context={'request': request}, many=True).data
-        #     if not locations:
-        #         return None
-        #     return locations
+        def get_location_relations(self, obj):
+            """
+            :param obj: Current record object
+            :return: Locations in a country
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            location_relations = self.LocationRelationListSerializer(
+                obj.location_relations,
+                context={'request': request},
+                many=True
+            ).data
+            if not location_relations:
+                return None
+            return location_relations
 
     return TemperatureListSerializer, TemperatureDetailSerializer

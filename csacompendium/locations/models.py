@@ -19,7 +19,7 @@ class LocationManager(models.Manager):
     """
     def filter_by_instance(self, instance):
         """
-        Query a related location object/record from another model's object
+        Query a related Location object/record from another model's object
         :param instance: Object instance
         :return: Query result from content type/model
         :rtye: object/record
@@ -91,6 +91,23 @@ def pre_save_country_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance, Location, instance.location_name)
 
 
+class LocationRelationManager(models.Manager):
+    """
+    Location model manager
+    """
+    def filter_by_instance(self, instance):
+        """
+        Query a related LocationRelation object/record from another model's object
+        :param instance: Object instance
+        :return: Query result from content type/model
+        :rtye: object/record
+        """
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        obj_id = instance.id
+        qs = super(LocationRelationManager, self).filter(content_type=content_type, object_id=obj_id)
+        return qs
+
+
 class LocationRelation(AuthUserDetail, CreateUpdateTime):
     """
     Location entry relationship model. A many to many bridge table between location  model
@@ -101,6 +118,7 @@ class LocationRelation(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+    objects = LocationRelationManager()
 
 
 class Temperature(AuthUserDetail, CreateUpdateTime):
@@ -119,4 +137,15 @@ class Temperature(AuthUserDetail, CreateUpdateTime):
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Temperatures'
+
+    @property
+    def location_relations(self):
+        """
+        Get related LocationRelation object/record
+        :return: Query result from the LocationRelation model
+        :rtye: object/record
+        """
+        instance = self
+        qs = LocationRelation.objects.filter_by_instance(instance)
+        return qs
 
