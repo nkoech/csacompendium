@@ -108,7 +108,7 @@ def location_relation_serializers():
         relation_detail_url = hyperlinked_identity('location_api:locationrelation_detail', 'pk')
         location_name = SerializerMethodField()
         location_url = SerializerMethodField()
-        temperature_url = SerializerMethodField()
+        content_type_url = SerializerMethodField()
         relation_id = SerializerMethodField()
 
         class Meta:
@@ -118,7 +118,7 @@ def location_relation_serializers():
                 'location_id',
                 'location_name',
                 'location_url',
-                'temperature_url',
+                'content_type_url',
                 'relation_detail_url',
             ]
 
@@ -143,7 +143,7 @@ def location_relation_serializers():
             except:
                 return None
 
-        def get_temperature_url(self, obj):
+        def get_content_type_url(self, obj):
                 """
                 Get related content type/object url
                 :param obj: Current record object
@@ -167,6 +167,8 @@ def location_relation_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
+        # location_name = SerializerMethodField()
+        location_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
@@ -175,21 +177,46 @@ def location_relation_serializers():
             model = LocationRelation
             fields = [
                 'id',
+                'location_id',
                 'location',
                 'user',
                 'modified_by',
                 'last_update',
                 'time_created',
+                'location_url',
                 'content_type_url',
             ]
             read_only_fields = [
                 'id',
+                'location_id',
                 'user',
                 'modified_by',
                 'last_update',
                 'time_created',
+                'location_url',
                 'content_type_url',
             ]
+
+        # def get_location_name(self, obj):
+        #     """
+        #     :param obj: Current record object
+        #     :return: Name of the location
+        #     :rtype: String
+        #     """
+        #     return str(obj.location)
+
+        def get_location_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            try:
+                location_obj = Location.objects.get(id=obj.location.id)
+                return location_obj.get_api_url()
+            except:
+                return None
 
         def get_user(self, obj):
             """
