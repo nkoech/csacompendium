@@ -12,7 +12,7 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser,
 )
-# from .filters import LocationRelationListFilter
+from .filters import LocationRelationListFilter
 from csacompendium.locations.api.serializers import (
     LocationRelationDetailSerializer,
     LocationRelationListSerializer,
@@ -50,8 +50,8 @@ def location_relation_views():
         """
         queryset = LocationRelation.objects.all()
         serializer_class = LocationRelationListSerializer
-        # filter_backends = (DjangoFilterBackend,)
-        # filter_class = LocationRelationListFilter
+        filter_backends = (DjangoFilterBackend,)
+        filter_class = LocationRelationListFilter
         pagination_class = APILimitOffsetPagination
 
     class LocationRelationDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):

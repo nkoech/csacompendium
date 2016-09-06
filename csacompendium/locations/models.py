@@ -166,6 +166,9 @@ class LocationRelation(AuthUserDetail, CreateUpdateTime):
     content_object = GenericForeignKey('content_type', 'object_id')
     objects = LocationRelationManager()
 
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+
 
 class Temperature(AuthUserDetail, CreateUpdateTime):
     """
