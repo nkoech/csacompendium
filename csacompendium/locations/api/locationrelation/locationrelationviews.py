@@ -14,7 +14,7 @@ from rest_framework.permissions import (
 )
 # from .filters import LocationRelationListFilter
 from csacompendium.locations.api.serializers import (
-    # LocationRelationDetailSerializer,
+    LocationRelationDetailSerializer,
     LocationRelationListSerializer,
     # create_location_relation_serializer,
 )
@@ -54,42 +54,42 @@ def location_relation_views():
         # filter_class = LocationRelationListFilter
         pagination_class = APILimitOffsetPagination
 
-    # class LocationDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
-    #     """
-    #     Updates a record.
-    #     """
-    #     queryset = Location.objects.all()
-    #     serializer_class = LocationDetailSerializer
-    #     permission_classes = [IsAuthenticated, IsAdminUser]
-    #     lookup_field = 'slug'
-    #
-    #     def put(self, request, *args, **kwargs):
-    #         """
-    #         Update record
-    #         :param request: Client request
-    #         :param args: List arguments
-    #         :param kwargs: Keyworded arguments
-    #         :return: Updated record
-    #         :rtype: Object
-    #         """
-    #         return self.update(request, *args, **kwargs)
-    #
-    #     def delete(self, request, *args, **kwargs):
-    #         """
-    #         Delete record
-    #         :param request: Client request
-    #         :param args: List arguments
-    #         :param kwargs: Keyworded arguments
-    #         :return: Updated record
-    #         :rtype: Object
-    #         """
-    #         return self.destroy(request, *args, **kwargs)
-    #
-    #     def perform_update(self, serializer):
-    #         """
-    #         Update individual value
-    #         :param serializer: Serializer object
-    #         :return:
-    #         """
-    #         serializer.save(modified_by=self.request.user)
-    return LocationRelationListAPIView
+    class LocationRelationDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
+        """
+        Creates, deletes and updates a record.
+        """
+        queryset = LocationRelation.objects.all()
+        serializer_class = LocationRelationDetailSerializer
+        permission_classes = [IsAuthenticated, IsAdminUser]
+        lookup_field = 'pk'
+
+        def put(self, request, *args, **kwargs):
+            """
+            Update record
+            :param request: Client request
+            :param args: List arguments
+            :param kwargs: Keyworded arguments
+            :return: Updated record
+            :rtype: Object
+            """
+            return self.update(request, *args, **kwargs)
+
+        def delete(self, request, *args, **kwargs):
+            """
+            Delete record
+            :param request: Client request
+            :param args: List arguments
+            :param kwargs: Keyworded arguments
+            :return: Updated record
+            :rtype: Object
+            """
+            return self.destroy(request, *args, **kwargs)
+
+        def perform_update(self, serializer):
+            """
+            Update individual value
+            :param serializer: Serializer object
+            :return:
+            """
+            serializer.save(modified_by=self.request.user)
+    return LocationRelationListAPIView, LocationRelationDetailAPIView

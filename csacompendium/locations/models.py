@@ -11,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.core.urlresolvers import reverse
 
 
 class LocationManager(models.Manager):
@@ -69,6 +70,14 @@ class Location(AuthUserDetail, CreateUpdateTime):
 
     def __str__(self):
         return self.location_name
+
+    def get_api_url(self):
+        """
+        Get location URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('location_api:location_detail', kwargs={'slug': self.slug})
 
     class Meta:
         unique_together = ['latitude', 'longitude']
@@ -133,6 +142,14 @@ class Temperature(AuthUserDetail, CreateUpdateTime):
 
     def __str__(self):
         return str(self.temperature)
+
+    def get_api_url(self):
+        """
+        Get temperature URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('location_api:temperature_detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['-time_created', '-last_update']

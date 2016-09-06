@@ -1,4 +1,8 @@
-from csacompendium.locations.models import LocationRelation
+from csacompendium.locations.models import (
+    Location,
+    LocationRelation,
+    Temperature,
+)
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
@@ -101,72 +105,118 @@ def location_relation_serializers():
         """
         Serialize all records in given fields into an API
         """
-        # url = hyperlinked_identity('location_api:location_detail', 'slug')
+        relation_detail_url = hyperlinked_identity('location_api:locationrelation_detail', 'pk')
+        location_name = SerializerMethodField()
+        location_url = SerializerMethodField()
+        temperature_url = SerializerMethodField()
+        relation_id = SerializerMethodField()
 
         class Meta:
             model = LocationRelation
             fields = [
-                'location',
-                # 'url',
+                'relation_id',
+                'location_id',
+                'location_name',
+                'location_url',
+                'temperature_url',
+                'relation_detail_url',
             ]
 
-    # class LocationDetailSerializer(ModelSerializer):
-    #     """
-    #     Serialize single record into an API. This is dependent on fields given.
-    #     """
-    #     user = SerializerMethodField()
-    #     modified_by = SerializerMethodField()
-    #     content_type_url = SerializerMethodField()
-    #
-    #     class Meta:
-    #         model = Location
-    #         fields = [
-    #             'id',
-    #             'location_name',
-    #             'latitude',
-    #             'longitude',
-    #             'elevation',
-    #             'user',
-    #             'modified_by',
-    #             'last_update',
-    #             'time_created',
-    #             'content_type_url',
-    #         ]
-    #         read_only_fields = [
-    #             'id',
-    #             'user',
-    #             'modified_by',
-    #             'last_update',
-    #             'time_created',
-    #             'content_type_url',
-    #         ]
-    #
-    #     def get_user(self, obj):
-    #         """
-    #         :param obj: Current record object
-    #         :return: Name of user who created the record
-    #         :rtype: String
-    #         """
-    #         return str(obj.user.username)
-    #
-    #     def get_modified_by(self, obj):
-    #         """
-    #         :param obj: Current record object
-    #         :return: Name of user who edited a record
-    #         :rtype: String
-    #         """
-    #         return str(obj.modified_by.username)
-    #
-    #     def get_content_type_url(self, obj):
-    #         """
-    #         Get related content type/object url
-    #         :param obj: Current record object
-    #         :return: URL to related object
-    #         :rtype: String
-    #         """
-    #         try:
-    #             return obj.content_object.get_api_url()
-    #         except:
-    #             return None
+        def get_location_name(self, obj):
+            """
+            :param obj: Current record object
+            :return: Name of the location
+            :rtype: String
+            """
+            return str(obj.location)
 
-    return LocationRelationListSerializer
+        def get_location_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            try:
+                location_obj = Location.objects.get(id=obj.location.id)
+                return location_obj.get_api_url()
+            except:
+                return None
+
+        def get_temperature_url(self, obj):
+                """
+                Get related content type/object url
+                :param obj: Current record object
+                :return: URL to related object
+                :rtype: String
+                """
+                try:
+                    return obj.content_object.get_api_url()
+                except:
+                    return None
+
+        def get_relation_id (self, obj):
+            """
+            :param obj: Current record object
+            :return: Name of the location
+            :rtype: String
+            """
+            return obj.id
+
+    class LocationRelationDetailSerializer(ModelSerializer):
+        """
+        Serialize single record into an API. This is dependent on fields given.
+        """
+        user = SerializerMethodField()
+        modified_by = SerializerMethodField()
+        content_type_url = SerializerMethodField()
+
+        class Meta:
+            model = LocationRelation
+            fields = [
+                'id',
+                'location',
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+                'content_type_url',
+            ]
+            read_only_fields = [
+                'id',
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+                'content_type_url',
+            ]
+
+        def get_user(self, obj):
+            """
+            :param obj: Current record object
+            :return: Name of user who created the record
+            :rtype: String
+            """
+            return str(obj.user.username)
+
+        def get_modified_by(self, obj):
+            """
+            :param obj: Current record object
+            :return: Name of user who edited a record
+            :rtype: String
+            """
+            return str(obj.modified_by.username)
+
+        def get_content_type_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            try:
+                return obj.content_object.get_api_url()
+            except:
+                return None
+
+    return LocationRelationListSerializer, LocationRelationDetailSerializer

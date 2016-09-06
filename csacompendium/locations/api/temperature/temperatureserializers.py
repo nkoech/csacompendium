@@ -33,10 +33,10 @@ def temperature_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        LocationRelationListSerializer = location_relation_serializers()
+        LocationRelationListSerializer, LocationRelationDetailSerializer = location_relation_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        location_relations = SerializerMethodField()
+        locations = SerializerMethodField()
 
         class Meta:
             model = Temperature
@@ -48,7 +48,7 @@ def temperature_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'location_relations',
+                'locations',
             ]
             read_only_fields = [
                 'id',
@@ -56,7 +56,7 @@ def temperature_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'location_relations',
+                'locations',
             ]
 
         def get_user(self, obj):
@@ -75,20 +75,20 @@ def temperature_serializers():
             """
             return str(obj.modified_by.username)
 
-        def get_location_relations(self, obj):
+        def get_locations(self, obj):
             """
             :param obj: Current record object
             :return: Locations in a country
             :rtype: Object/record
             """
             request = self.context['request']
-            location_relations = self.LocationRelationListSerializer(
+            locations = self.LocationRelationListSerializer(
                 obj.location_relations,
                 context={'request': request},
                 many=True
             ).data
-            if not location_relations:
+            if not locations:
                 return None
-            return location_relations
+            return locations
 
     return TemperatureListSerializer, TemperatureDetailSerializer
