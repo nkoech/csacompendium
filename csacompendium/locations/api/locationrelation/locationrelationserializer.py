@@ -105,7 +105,6 @@ def location_relation_serializers():
         """
         Serialize all records in given fields into an API
         """
-        location_name = SerializerMethodField()
         location_url = SerializerMethodField()
         content_type_url = SerializerMethodField()
         location_relation_url = hyperlinked_identity('location_api:locationrelation_detail', 'pk')
@@ -115,19 +114,10 @@ def location_relation_serializers():
             fields = [
                 'id',
                 'location',
-                'location_name',
                 'location_url',
                 'content_type_url',
                 'location_relation_url',
             ]
-
-        def get_location_name(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of the location
-            :rtype: String
-            """
-            return str(obj.location)
 
         def get_location_url(self, obj):
             """
@@ -158,7 +148,6 @@ def location_relation_serializers():
         """
         Serialize all records in given fields into an API
         """
-        location_name = SerializerMethodField()
         location_url = SerializerMethodField()
         relation_id = SerializerMethodField()
         location_relation_url = hyperlinked_identity('location_api:locationrelation_detail', 'pk')
@@ -168,18 +157,9 @@ def location_relation_serializers():
             fields = [
                 'relation_id',
                 'location_id',
-                'location_name',
                 'location_url',
                 'location_relation_url',
             ]
-
-        def get_location_name(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of the location
-            :rtype: String
-            """
-            return str(obj.location)
 
         def get_location_url(self, obj):
             """
@@ -206,7 +186,6 @@ def location_relation_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        location_name = SerializerMethodField()
         location_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
@@ -217,17 +196,15 @@ def location_relation_serializers():
             fields = [
                 'id',
                 'location',
-                'location_name',
+                'location_url',
                 'user',
                 'modified_by',
                 'last_update',
                 'time_created',
-                'location_url',
                 'content_type_url',
             ]
             read_only_fields = [
                 'id',
-                'location_name',
                 'user',
                 'modified_by',
                 'last_update',
@@ -235,14 +212,6 @@ def location_relation_serializers():
                 'location_url',
                 'content_type_url',
             ]
-
-        def get_location_name(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of the location
-            :rtype: String
-            """
-            return str(obj.location)
 
         def get_location_url(self, obj):
             """
