@@ -31,6 +31,18 @@ class LocationManager(models.Manager):
         return qs
 
     def create_by_model_type(self, model_type, slug, location_name, latitude, longitude, elevation, user):
+        """
+        Create object by model type
+        :param model_type: Content/model type
+        :param slug: Slug
+        :param location_name: Name of the location
+        :param latitude: Latitude
+        :param longitude: Longitude
+        :param elevation: Elevation
+        :param user: Record creator
+        :return: Data object
+        :rtype: Object
+        """
         model_qs = ContentType.objects.filter(model=model_type)
         if model_qs.exists():
             any_model = model_qs.first().model_class()
@@ -102,7 +114,7 @@ def pre_save_country_receiver(sender, instance, *args, **kwargs):
 
 class LocationRelationManager(models.Manager):
     """
-    Location model manager
+    Location relation model manager
     """
     def filter_by_instance(self, instance):
         """
@@ -115,6 +127,31 @@ class LocationRelationManager(models.Manager):
         obj_id = instance.id
         qs = super(LocationRelationManager, self).filter(content_type=content_type, object_id=obj_id)
         return qs
+
+    def create_by_model_type(self, model_type, pk, location, user):
+        """
+        Create object by model type
+        :param model_type: Content/model type
+        :param pk: Primary key
+        :param location: Location object
+        :param user: Record owner
+        :return: Data object
+        :rtype: Object
+        """
+        model_qs = ContentType.objects.filter(model=model_type)
+        if model_qs.exists():
+            any_model = model_qs.first().model_class()
+            obj_qs = any_model.objects.filter(pk=pk)
+            if obj_qs.exists() and obj_qs.count() == 1:
+                instance = self.model()
+                instance.content_type = model_qs.first()
+                instance.object_id = obj_qs.first().id
+                instance.location = location
+                instance.user = user
+                instance.modified_by = user
+                instance.save()
+                return instance
+            return None
 
 
 class LocationRelation(AuthUserDetail, CreateUpdateTime):
