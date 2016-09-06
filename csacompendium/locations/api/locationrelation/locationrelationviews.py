@@ -16,7 +16,7 @@ from rest_framework.permissions import (
 from csacompendium.locations.api.serializers import (
     LocationRelationDetailSerializer,
     LocationRelationListSerializer,
-    # create_location_relation_serializer,
+    create_location_relation_serializer,
 )
 
 
@@ -26,23 +26,23 @@ def location_relation_views():
     :return: All location views
     :rtype: Object
     """
-    # class LocationCreateAPIView(CreateAPIView):
-    #     """
-    #     Creates a single record.
-    #     """
-    #     queryset = Location.objects.all()
-    #     permission_classes = [IsAuthenticated]
-    #
-    #     def get_serializer_class(self):
-    #         """
-    #         Gets serializer class
-    #         :return: Location object
-    #         :rtype: Object
-    #         """
-    #         model_type = self.request.GET.get('type')
-    #         slug = self.request.GET.get('slug')
-    #         user = self.request.user
-    #         return create_location_serializer(model_type, slug, user)
+    class LocationRelationCreateAPIView(CreateAPIView):
+        """
+        Creates a single record.
+        """
+        queryset = LocationRelation.objects.all()
+        permission_classes = [IsAuthenticated]
+
+        def get_serializer_class(self):
+            """
+            Gets serializer class
+            :return: LocationRelation object
+            :rtype: Object
+            """
+            model_type = self.request.GET.get('type')
+            pk = self.request.GET.get('pk')
+            user = self.request.user
+            return create_location_relation_serializer(model_type, pk, user)
 
     class LocationRelationListAPIView(ListAPIView):
         """
@@ -92,4 +92,4 @@ def location_relation_views():
             :return:
             """
             serializer.save(modified_by=self.request.user)
-    return LocationRelationListAPIView, LocationRelationDetailAPIView
+    return LocationRelationCreateAPIView, LocationRelationListAPIView, LocationRelationDetailAPIView
