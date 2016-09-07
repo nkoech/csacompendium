@@ -149,6 +149,7 @@ def location_serializers():
                 'last_update',
                 'time_created',
                 'content_type_url',
+                'relation_details',
             ]
 
         def get_user(self, obj):
@@ -181,28 +182,20 @@ def location_serializers():
 
         def get_relation_details(self, obj):
             """
+            Get related object type data
             :param obj: Current record object
             :return: Locations in a country
             :rtype: Object/record
             """
-##################     Place inside the LocationRelation manager     #################################
-            obj_qs = LocationRelation.objects.filter(location=obj.id)
-            if obj_qs.exists():
-                model_type = obj_qs.first().content_type
-                model_qs = ContentType.objects.filter(model=model_type)
-                if model_qs.exists():
-                    any_model = model_qs.first().model_class()
-                    qs = any_model.objects.get(pk=obj_qs.first().object_id)
-#####################################################################################################
-
-                    request = self.context['request']
-                    conten_type = self.LocationRelationContentTypeSerializer(
-                        qs.location_relations,
-                        context={'request': request},
-                        many=True
-                    ).data
-                    if not conten_type:
-                        return None
-                    return conten_type
+            request = self.context['request']
+            try:
+                content_type = self.LocationRelationContentTypeSerializer(
+                    obj.model_type.location_relations,
+                    context={'request': request},
+                    many=True
+                ).data
+                return content_type
+            except:
+                return None
 
     return create_location_serializer, LocationListSerializer, LocationDetailSerializer

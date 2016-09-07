@@ -97,6 +97,18 @@ class Location(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Locations'
 
 
+    @property
+    def model_type(self):
+        """
+        Get related LocationRelation object/record
+        :return: Query result from the LocationRelation model
+        :rtye: object/record
+        """
+        instance = self
+        qs = LocationRelation.objects.get_model_type(instance)
+        return qs
+
+
 @receiver(pre_save, sender=Location)
 def pre_save_country_receiver(sender, instance, *args, **kwargs):
     """
@@ -128,6 +140,23 @@ class LocationRelationManager(models.Manager):
         qs = super(LocationRelationManager, self).filter(content_type=content_type, object_id=obj_id)
         return qs
 
+    def get_model_type(self, instance):
+        """
+        Get model type as an object
+        :param instance:
+        :return:
+        """
+        obj_qs = super(LocationRelationManager, self).filter(location=instance.id)
+        if obj_qs.exists():
+            model_type = obj_qs.first().content_type
+            model_qs = ContentType.objects.filter(model=model_type)
+            if model_qs.exists():
+                any_model = model_qs.first().model_class()
+                any_model_id = obj_qs.first().object_id
+                qs = any_model.objects.get(pk=any_model_id)
+                return qs
+            return None
+
     def create_by_model_type(self, model_type, pk, location, user):
         """
         Create object by model type
@@ -135,7 +164,7 @@ class LocationRelationManager(models.Manager):
         :param pk: Primary key
         :param location: Location object
         :param user: Record owner
-        :return: Data object
+        :return: Data object otherwise return None
         :rtype: Object
         """
         model_qs = ContentType.objects.filter(model=model_type)
