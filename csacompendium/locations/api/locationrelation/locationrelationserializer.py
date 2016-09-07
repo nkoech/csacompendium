@@ -31,6 +31,7 @@ def location_relation_serializers():
             Create a record
             """
             user = SerializerMethodField()
+            modified_by = SerializerMethodField()
 
             class Meta:
                 model = LocationRelation
@@ -42,6 +43,10 @@ def location_relation_serializers():
                     'last_update',
                     'time_created',
                 ]
+                read_only_fields = [
+                    'user',
+                    'modified_by',
+                ]
 
             def get_user(self, obj):
                 """
@@ -50,6 +55,14 @@ def location_relation_serializers():
                 :rtype: String
                 """
                 return str(obj.user.username)
+
+            def get_modified_by(self, obj):
+                """
+                :param obj: Current record object
+                :return: Name of user who edited a record
+                :rtype: String
+                """
+                return str(obj.modified_by.username)
 
             def __init__(self, *args, **kwargs):
                 self.model_type = model_type
@@ -145,7 +158,7 @@ def location_relation_serializers():
                 except:
                     return None
 
-    class LocationRelationContentTypeSerializer(ModelSerializer):
+    class LocationRelationSerializer(ModelSerializer):
         """
         Serialize all records in given fields into an API
         """
@@ -182,6 +195,43 @@ def location_relation_serializers():
             :rtype: String
             """
             return obj.id
+
+    class LocationRelationContentTypeSerializer(ModelSerializer):
+        """
+        Serialize all records in given fields into an API
+        """
+        relation_id = SerializerMethodField()
+        content_type_url = SerializerMethodField()
+        location_relation_url = hyperlinked_identity('location_api:locationrelation_detail', 'pk')
+
+        class Meta:
+            model = LocationRelation
+            fields = [
+                'relation_id',
+                'object_id',
+                'content_type_url',
+                'location_relation_url',
+            ]
+
+        def get_relation_id (self, obj):
+            """
+            :param obj: Current record object
+            :return: Name of the location
+            :rtype: String
+            """
+            return obj.id
+
+        def get_content_type_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            try:
+                return obj.content_object.get_api_url()
+            except:
+                return None
 
     class LocationRelationDetailSerializer(ModelSerializer):
         """
@@ -256,4 +306,4 @@ def location_relation_serializers():
                 return None
 
     return create_location_relation_serializer, LocationRelationListSerializer, \
-           LocationRelationContentTypeSerializer, LocationRelationDetailSerializer
+           LocationRelationSerializer, LocationRelationContentTypeSerializer, LocationRelationDetailSerializer

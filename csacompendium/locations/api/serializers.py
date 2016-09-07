@@ -7,8 +7,9 @@ from .temperature.temperatureserializers import temperature_serializers
 create_location_serializer, LocationListSerializer, LocationDetailSerializer = location_serializers()
 
 # Location relation serializers
-create_location_relation_serializer, LocationRelationListSerializer,\
-LocationRelationContentTypeSerializer, LocationRelationDetailSerializer = location_relation_serializers()
+create_location_relation_serializer, LocationRelationListSerializer, \
+LocationRelationSerializer, LocationRelationContentTypeSerializer, \
+LocationRelationDetailSerializer = location_relation_serializers()
 
 # Temperature serializers
 TemperatureListSerializer, TemperatureDetailSerializer = temperature_serializers()

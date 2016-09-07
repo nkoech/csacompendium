@@ -1,4 +1,5 @@
-from csacompendium.locations.models import Location
+from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
+from csacompendium.locations.models import Location, LocationRelation
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
@@ -117,9 +118,14 @@ def location_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
+        create_location_relation_serializer, LocationRelationListSerializer, \
+        LocationRelationSerializer, LocationRelationContentTypeSerializer, \
+        LocationRelationDetailSerializer = location_relation_serializers()
+
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
+        relation_details = SerializerMethodField()
 
         class Meta:
             model = Location
@@ -134,6 +140,7 @@ def location_serializers():
                 'last_update',
                 'time_created',
                 'content_type_url',
+                'relation_details',
             ]
             read_only_fields = [
                 'id',
@@ -171,5 +178,31 @@ def location_serializers():
                 return obj.content_object.get_api_url()
             except:
                 return None
+
+        def get_relation_details(self, obj):
+            """
+            :param obj: Current record object
+            :return: Locations in a country
+            :rtype: Object/record
+            """
+##################     Place inside the LocationRelation manager     #################################
+            obj_qs = LocationRelation.objects.filter(location=obj.id)
+            if obj_qs.exists():
+                model_type = obj_qs.first().content_type
+                model_qs = ContentType.objects.filter(model=model_type)
+                if model_qs.exists():
+                    any_model = model_qs.first().model_class()
+                    qs = any_model.objects.get(pk=obj_qs.first().object_id)
+#####################################################################################################
+
+                    request = self.context['request']
+                    conten_type = self.LocationRelationContentTypeSerializer(
+                        qs.location_relations,
+                        context={'request': request},
+                        many=True
+                    ).data
+                    if not conten_type:
+                        return None
+                    return conten_type
 
     return create_location_serializer, LocationListSerializer, LocationDetailSerializer

@@ -34,7 +34,9 @@ def temperature_serializers():
         Serialize single record into an API. This is dependent on fields given.
         """
         create_location_relation_serializer, LocationRelationListSerializer, \
-        LocationRelationContentTypeSerializer, LocationRelationDetailSerializer = location_relation_serializers()
+        LocationRelationSerializer, LocationRelationContentTypeSerializer, \
+        LocationRelationDetailSerializer = location_relation_serializers()
+
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         locations = SerializerMethodField()
@@ -83,7 +85,7 @@ def temperature_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            locations = self.LocationRelationContentTypeListSerializer(
+            locations = self.LocationRelationSerializer(
                 obj.location_relations,
                 context={'request': request},
                 many=True
