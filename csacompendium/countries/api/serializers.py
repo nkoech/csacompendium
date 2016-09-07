@@ -74,7 +74,8 @@ class CountryDetailSerializer(ModelSerializer):
         :rtype: Object/record
         """
         request = self.context['request']
-        locations = LocationListSerializer(obj.locations, context={'request': request}, many=True).data
-        if not locations:
+        try:
+            locations = LocationListSerializer(obj.locations, context={'request': request}, many=True).data
+            return locations
+        except obj.DoesNotExist:
             return None
-        return locations

@@ -190,12 +190,12 @@ def location_serializers():
             request = self.context['request']
             try:
                 content_type = self.LocationRelationContentTypeSerializer(
-                    obj.model_type.location_relations,
+                    obj.model_type_relation,
                     context={'request': request},
                     many=True
                 ).data
                 return content_type
-            except:
+            except obj.DoesNotExist:
                 return None
 
     return create_location_serializer, LocationListSerializer, LocationDetailSerializer

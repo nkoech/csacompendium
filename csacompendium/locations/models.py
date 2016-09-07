@@ -6,6 +6,7 @@ from csacompendium.utils.abstractmodels import (
     CreateUpdateTime,
 )
 from csacompendium.utils.createslug import create_slug
+from csacompendium.utils.modelmanagers import model_instance_filter
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -25,10 +26,7 @@ class LocationManager(models.Manager):
         :return: Query result from content type/model
         :rtye: object/record
         """
-        content_type = ContentType.objects.get_for_model(instance.__class__)
-        obj_id = instance.id
-        qs = super(LocationManager, self).filter(content_type=content_type, object_id=obj_id)
-        return qs
+        return model_instance_filter(instance, self, LocationManager)
 
     def create_by_model_type(self, model_type, slug, location_name, latitude, longitude, elevation, user):
         """
@@ -72,8 +70,8 @@ class Location(AuthUserDetail, CreateUpdateTime):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     location_name = models.CharField(max_length=256, blank=True)
-    latitude = models.DecimalField(max_digits=8, decimal_places=6, unique=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, unique=True)
+    latitude = models.DecimalField(max_digits=8, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
     elevation = models.FloatField(blank=True, null=True)
     objects = LocationManager()
 
@@ -96,16 +94,15 @@ class Location(AuthUserDetail, CreateUpdateTime):
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Locations'
 
-
     @property
-    def model_type(self):
+    def model_type_relation(self):
         """
         Get related LocationRelation object/record
         :return: Query result from the LocationRelation model
         :rtye: object/record
         """
         instance = self
-        qs = LocationRelation.objects.get_model_type(instance)
+        qs = LocationRelation.objects.filter_by_model_type(instance)
         return qs
 
 
@@ -135,27 +132,23 @@ class LocationRelationManager(models.Manager):
         :return: Query result from content type/model
         :rtye: object/record
         """
-        content_type = ContentType.objects.get_for_model(instance.__class__)
-        obj_id = instance.id
-        qs = super(LocationRelationManager, self).filter(content_type=content_type, object_id=obj_id)
-        return qs
+        return model_instance_filter(instance, self, LocationRelationManager)
 
-    def get_model_type(self, instance):
+    def filter_by_model_type(self, instance):
         """
-        Get model type as an object
-        :param instance:
-        :return:
+        Query related objects/mode type
+        :param instance: Object instance
+        :return: Matching object else none
+        :rtype: Object/record
         """
         obj_qs = super(LocationRelationManager, self).filter(location=instance.id)
         if obj_qs.exists():
-            model_type = obj_qs.first().content_type
-            model_qs = ContentType.objects.filter(model=model_type)
-            if model_qs.exists():
-                any_model = model_qs.first().model_class()
-                any_model_id = obj_qs.first().object_id
-                qs = any_model.objects.get(pk=any_model_id)
-                return qs
-            return None
+            for obj in obj_qs.iterator():
+                try:
+                    qs = super(LocationRelationManager, self).filter(content_type=obj.content_type) and obj_qs
+                    return qs
+                except super(LocationRelationManager, self).DoesNotExist:
+                    return None
 
     def create_by_model_type(self, model_type, pk, location, user):
         """

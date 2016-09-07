@@ -85,13 +85,14 @@ def temperature_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            locations = self.LocationRelationSerializer(
-                obj.location_relations,
-                context={'request': request},
-                many=True
-            ).data
-            if not locations:
+            try:
+                locations = self.LocationRelationSerializer(
+                    obj.location_relations,
+                    context={'request': request},
+                    many=True
+                ).data
+                return locations
+            except obj.DoesNotExist:
                 return None
-            return locations
 
     return TemperatureListSerializer, TemperatureDetailSerializer
