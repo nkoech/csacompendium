@@ -1,7 +1,17 @@
 from django.contrib.contenttypes.models import ContentType
 
 
-def create_model_type(instance, model_type, key, slugify=False, **kwargs):
+def create_model_type(instance, model_type, key, slugify, **kwargs):
+    """
+    Create object by model type
+    :param instance: Model manager instance
+    :param model_type: Content/model type
+    :param key: Primary key or slug
+    :param slugify: Boolean to indicate whether to slugify or not
+    :param kwargs: Fields to be created
+    :return: Data object
+    :rtype: Object
+    """
     model_qs = ContentType.objects.filter(model=model_type)
     if model_qs.exists():
         any_model = model_qs.first().model_class()
@@ -10,15 +20,14 @@ def create_model_type(instance, model_type, key, slugify=False, **kwargs):
         else:
             obj_qs = any_model.objects.filter(pk=key)
         if obj_qs.exists() and obj_qs.count() == 1:
-            data_dict = {
+            field_values = {
                 'content_type': model_qs.first(),
                 'object_id': obj_qs.first().id
             }
-            data_dict.update(kwargs)
-            print(data_dict)
-            instance = instance.model(**data_dict)
-            instance.save()
-            return instance
+            field_values.update(kwargs)
+            data_instance = instance.model(**field_values)
+            data_instance.save()
+            return data_instance
         return None
 
 

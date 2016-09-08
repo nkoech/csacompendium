@@ -109,7 +109,11 @@ def location_relation_serializers():
                 """
                 location = validated_data.get('location')
                 location_relation = LocationRelation.objects.create_by_model_type(
-                    self.model_type, self.pk, location, self.user
+                    self.model_type,
+                    self.pk,
+                    location=location,
+                    user=user,
+                    modified_by=user
                 )
                 return location_relation
 

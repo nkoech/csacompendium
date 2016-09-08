@@ -32,17 +32,16 @@ class LocationManager(models.Manager):
         """
         return model_instance_filter(instance, self, LocationManager)
 
-    # def create_by_model_type(self, model_type, slug, location_name, latitude, longitude, elevation, user):
     def create_by_model_type(self, model_type, slug, **kwargs):
         """
         Create object by model type
         :param model_type: Content/model type
         :param slug: Slug
-        :param kwargs: Other fields
+        :param kwargs: Fields to be created
         :return: Data object
         :rtype: Object
         """
-        return create_model_type(self, model_type, slug, True, **kwargs)
+        return create_model_type(self, model_type, slug, slugify=True, **kwargs)
 
 
 class Location(AuthUserDetail, CreateUpdateTime):
@@ -129,30 +128,16 @@ class LocationRelationManager(models.Manager):
         obj_qs = super(LocationRelationManager, self).filter(location=instance.id)
         return model_type_filter(self, obj_qs, LocationRelationManager)
 
-    def create_by_model_type(self, model_type, pk, location, user):
+    def create_by_model_type(self, model_type, pk, **kwargs):
         """
         Create object by model type
         :param model_type: Content/model type
         :param pk: Primary key
-        :param location: Location object
-        :param user: Record owner
-        :return: Data object otherwise return None
+        :param kwargs: Fields to be created
+        :return: Data object
         :rtype: Object
         """
-        model_qs = ContentType.objects.filter(model=model_type)
-        if model_qs.exists():
-            any_model = model_qs.first().model_class()
-            obj_qs = any_model.objects.filter(pk=pk)
-            if obj_qs.exists() and obj_qs.count() == 1:
-                instance = self.model()
-                instance.content_type = model_qs.first()
-                instance.object_id = obj_qs.first().id
-                instance.location = location
-                instance.user = user
-                instance.modified_by = user
-                instance.save()
-                return instance
-            return None
+        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
 
 
 class LocationRelation(AuthUserDetail, CreateUpdateTime):
