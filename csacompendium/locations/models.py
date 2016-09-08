@@ -6,7 +6,7 @@ from csacompendium.utils.abstractmodels import (
     CreateUpdateTime,
 )
 from csacompendium.utils.createslug import create_slug
-from csacompendium.utils.modelmanagers import model_instance_filter
+from csacompendium.utils.modelmanagers import model_instance_filter, model_type_filter
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -142,13 +142,7 @@ class LocationRelationManager(models.Manager):
         :rtype: Object/record
         """
         obj_qs = super(LocationRelationManager, self).filter(location=instance.id)
-        if obj_qs.exists():
-            for obj in obj_qs.iterator():
-                try:
-                    qs = super(LocationRelationManager, self).filter(content_type=obj.content_type) and obj_qs
-                    return qs
-                except super(LocationRelationManager, self).DoesNotExist:
-                    return None
+        return model_type_filter(self, obj_qs, LocationRelationManager)
 
     def create_by_model_type(self, model_type, pk, location, user):
         """
