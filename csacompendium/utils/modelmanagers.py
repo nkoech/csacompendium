@@ -1,6 +1,27 @@
 from django.contrib.contenttypes.models import ContentType
 
 
+def create_model_type(instance, model_type, key, slugify=False, **kwargs):
+    model_qs = ContentType.objects.filter(model=model_type)
+    if model_qs.exists():
+        any_model = model_qs.first().model_class()
+        if slugify:
+            obj_qs = any_model.objects.filter(slug=key)
+        else:
+            obj_qs = any_model.objects.filter(pk=key)
+        if obj_qs.exists() and obj_qs.count() == 1:
+            data_dict = {
+                'content_type': model_qs.first(),
+                'object_id': obj_qs.first().id
+            }
+            data_dict.update(kwargs)
+            print(data_dict)
+            instance = instance.model(**data_dict)
+            instance.save()
+            return instance
+        return None
+
+
 def model_instance_filter(call_instance, current_instance, model_manager):
     """
     Object query based on a model instance

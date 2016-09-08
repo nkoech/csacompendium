@@ -6,7 +6,11 @@ from csacompendium.utils.abstractmodels import (
     CreateUpdateTime,
 )
 from csacompendium.utils.createslug import create_slug
-from csacompendium.utils.modelmanagers import model_instance_filter, model_type_filter
+from csacompendium.utils.modelmanagers import (
+    model_instance_filter,
+    model_type_filter,
+    create_model_type,
+)
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -28,36 +32,17 @@ class LocationManager(models.Manager):
         """
         return model_instance_filter(instance, self, LocationManager)
 
-    def create_by_model_type(self, model_type, slug, location_name, latitude, longitude, elevation, user):
+    # def create_by_model_type(self, model_type, slug, location_name, latitude, longitude, elevation, user):
+    def create_by_model_type(self, model_type, slug, **kwargs):
         """
         Create object by model type
         :param model_type: Content/model type
         :param slug: Slug
-        :param location_name: Name of the location
-        :param latitude: Latitude
-        :param longitude: Longitude
-        :param elevation: Elevation
-        :param user: Record creator
+        :param kwargs: Other fields
         :return: Data object
         :rtype: Object
         """
-        model_qs = ContentType.objects.filter(model=model_type)
-        if model_qs.exists():
-            any_model = model_qs.first().model_class()
-            obj_qs = any_model.objects.filter(slug=slug)
-            if obj_qs.exists() and obj_qs.count() == 1:
-                instance = self.model()
-                instance.content_type = model_qs.first()
-                instance.object_id = obj_qs.first().id
-                instance.location_name = location_name
-                instance.latitude = latitude
-                instance.longitude = longitude
-                instance.elevation = elevation
-                instance.user = user
-                instance.modified_by = user
-                instance.save()
-                return instance
-            return None
+        return create_model_type(self, model_type, slug, True, **kwargs)
 
 
 class Location(AuthUserDetail, CreateUpdateTime):

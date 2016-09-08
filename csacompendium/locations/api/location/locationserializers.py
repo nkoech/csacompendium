@@ -92,7 +92,14 @@ def location_serializers():
                 longitude = validated_data.get('longitude')
                 elevation = validated_data.get('elevation')
                 location = Location.objects.create_by_model_type(
-                    self.model_type, self.slug, location_name, latitude, longitude, elevation, self.user
+                    self.model_type,
+                    self.slug,
+                    location_name=location_name,
+                    latitude=latitude,
+                    longitude=longitude,
+                    elevation=elevation,
+                    user=user,
+                    modified_by=user
                 )
                 return location
 
