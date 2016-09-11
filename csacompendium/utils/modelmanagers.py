@@ -7,7 +7,7 @@ def create_model_type(instance, model_type, key, slugify, **kwargs):
     :param instance: Model manager instance
     :param model_type: Content/model type
     :param key: Primary key or slug
-    :param slugify: Boolean to indicate whether to slugify or not
+    :param slugify: Boolean to indicate availability of a slug or primary key
     :param kwargs: Fields to be created
     :return: Data object
     :rtype: Object

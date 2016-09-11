@@ -17,7 +17,7 @@ def location_serializers():
     :rtype: Object
     """
 
-    def create_location_serializer(model_type='country', slug=None, user=None):
+    def create_location_serializer(model_type=None, slug=None, user=None):
         """
         Creates a model serializer
         :param model_type: Model
