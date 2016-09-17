@@ -1,7 +1,5 @@
 from csacompendium.locations.models import Location, LocationRelation
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from csacompendium.utils.serializersutils import CreateSerializerUtil
 from rest_framework.serializers import (
     ModelSerializer,
@@ -286,5 +284,10 @@ def location_relation_serializers():
             except:
                 return None
 
-    return create_location_relation_serializer, LocationRelationListSerializer, \
-           LocationRelationSerializer, LocationRelationContentTypeSerializer, LocationRelationDetailSerializer
+    return {
+        'create_location_relation_serializer': create_location_relation_serializer,
+        'LocationRelationListSerializer': LocationRelationListSerializer,
+        'LocationRelationSerializer': LocationRelationSerializer,
+        'LocationRelationContentTypeSerializer': LocationRelationContentTypeSerializer,
+        'LocationRelationDetailSerializer': LocationRelationDetailSerializer
+    }

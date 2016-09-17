@@ -13,13 +13,9 @@ from rest_framework.permissions import (
     IsAdminUser,
 )
 from .filters import TemperatureListFilter
-# from csacompendium.locations.api.serializers import (
-#     TemperatureDetailSerializer,
-#     TemperatureListSerializer,
-# )
 
 from csacompendium.locations.api.temperature.temperatureserializers import temperature_serializers
-TemperatureListSerializer, TemperatureDetailSerializer = temperature_serializers()
+temperature_serializers = temperature_serializers()
 
 
 def temperature_views():
@@ -34,7 +30,7 @@ def temperature_views():
         Creates a single record.
         """
         queryset = Temperature.objects.all()
-        serializer_class = TemperatureDetailSerializer
+        serializer_class = temperature_serializers['TemperatureDetailSerializer']
         permission_classes = [IsAuthenticated]
 
         def perform_create(self, serializer):
@@ -51,7 +47,7 @@ def temperature_views():
         API list view. Gets all records API.
         """
         queryset = Temperature.objects.all()
-        serializer_class = TemperatureListSerializer
+        serializer_class = temperature_serializers['TemperatureListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = TemperatureListFilter
         pagination_class = APILimitOffsetPagination
@@ -61,7 +57,7 @@ def temperature_views():
         Updates a record.
         """
         queryset = Temperature.objects.all()
-        serializer_class = TemperatureDetailSerializer
+        serializer_class = temperature_serializers['TemperatureDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'pk'
 
@@ -95,5 +91,9 @@ def temperature_views():
             """
             serializer.save(modified_by=self.request.user)
 
-    return TemperatureListAPIView, TemperatureDetailAPIView, TemperatureCreateAPIView
+    return {
+        'TemperatureListAPIView': TemperatureListAPIView,
+        'TemperatureDetailAPIView': TemperatureDetailAPIView,
+        'TemperatureCreateAPIView': TemperatureCreateAPIView
+    }
 

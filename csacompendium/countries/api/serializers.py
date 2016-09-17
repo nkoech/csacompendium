@@ -2,7 +2,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField
 )
-from csacompendium.locations.api.serializers import LocationListSerializer
+from csacompendium.locations.api.serializers import location_serializers
 from csacompendium.countries.models import Country
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 
@@ -74,6 +74,7 @@ class CountryDetailSerializer(ModelSerializer):
         :rtype: Object/record
         """
         request = self.context['request']
+        LocationListSerializer = location_serializers['LocationListSerializer']
         try:
             locations = LocationListSerializer(obj.locations, context={'request': request}, many=True).data
             return locations

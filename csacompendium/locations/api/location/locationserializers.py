@@ -100,9 +100,7 @@ def location_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        create_location_relation_serializer, LocationRelationListSerializer, \
-        LocationRelationSerializer, LocationRelationContentTypeSerializer, \
-        LocationRelationDetailSerializer = location_relation_serializers()
+        location_relation_serializers = location_relation_serializers()
 
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
@@ -170,8 +168,11 @@ def location_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
+            LocationRelationContentTypeSerializer = self.location_relation_serializers[
+                'LocationRelationContentTypeSerializer'
+            ]
             try:
-                content_type = self.LocationRelationContentTypeSerializer(
+                content_type = LocationRelationContentTypeSerializer(
                     obj.model_type_relation,
                     context={'request': request},
                     many=True
@@ -180,4 +181,8 @@ def location_serializers():
             except obj.DoesNotExist:
                 return None
 
-    return create_location_serializer, LocationListSerializer, LocationDetailSerializer
+    return {
+        'create_location_serializer': create_location_serializer,
+        'LocationListSerializer': LocationListSerializer,
+        'LocationDetailSerializer': LocationDetailSerializer
+    }

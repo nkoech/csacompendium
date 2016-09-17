@@ -13,11 +13,7 @@ from rest_framework.permissions import (
     IsAdminUser,
 )
 from .filters import LocationRelationListFilter
-from csacompendium.locations.api.serializers import (
-    LocationRelationDetailSerializer,
-    LocationRelationListSerializer,
-    create_location_relation_serializer,
-)
+from csacompendium.locations.api.serializers import location_relation_serializers
 
 
 def location_relation_views():
@@ -42,6 +38,7 @@ def location_relation_views():
             model_type = self.request.GET.get('type')
             pk = self.request.GET.get('pk')
             user = self.request.user
+            create_location_relation_serializer = location_relation_serializers['create_location_relation_serializer']
             return create_location_relation_serializer(model_type, pk, user)
 
     class LocationRelationListAPIView(ListAPIView):
@@ -49,7 +46,7 @@ def location_relation_views():
         API list view. Gets all records API.
         """
         queryset = LocationRelation.objects.all()
-        serializer_class = LocationRelationListSerializer
+        serializer_class = location_relation_serializers['LocationRelationListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = LocationRelationListFilter
         pagination_class = APILimitOffsetPagination
@@ -59,7 +56,7 @@ def location_relation_views():
         Creates, deletes and updates a record.
         """
         queryset = LocationRelation.objects.all()
-        serializer_class = LocationRelationDetailSerializer
+        serializer_class = location_relation_serializers['LocationRelationDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'pk'
 
@@ -92,4 +89,9 @@ def location_relation_views():
             :return:
             """
             serializer.save(modified_by=self.request.user)
-    return LocationRelationCreateAPIView, LocationRelationListAPIView, LocationRelationDetailAPIView
+
+    return {
+        'LocationRelationCreateAPIView': LocationRelationCreateAPIView,
+        'LocationRelationListAPIView': LocationRelationListAPIView,
+        'LocationRelationDetailAPIView': LocationRelationDetailAPIView
+    }

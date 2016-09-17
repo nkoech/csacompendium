@@ -13,11 +13,7 @@ from rest_framework.permissions import (
     IsAdminUser,
 )
 from .filters import LocationListFilter
-from csacompendium.locations.api.serializers import (
-    LocationDetailSerializer,
-    LocationListSerializer,
-    create_location_serializer,
-)
+from csacompendium.locations.api.serializers import location_serializers
 
 
 def location_views():
@@ -42,6 +38,7 @@ def location_views():
             model_type = self.request.GET.get('type')
             slug = self.request.GET.get('slug')
             user = self.request.user
+            create_location_serializer = location_serializers['create_location_serializer']
             return create_location_serializer(model_type, slug, user)
 
     class LocationListAPIView(ListAPIView):
@@ -49,7 +46,7 @@ def location_views():
         API list view. Gets all records API.
         """
         queryset = Location.objects.all()
-        serializer_class = LocationListSerializer
+        serializer_class = location_serializers['LocationListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = LocationListFilter
         pagination_class = APILimitOffsetPagination
@@ -59,7 +56,7 @@ def location_views():
         Updates a record.
         """
         queryset = Location.objects.all()
-        serializer_class = LocationDetailSerializer
+        serializer_class = location_serializers['LocationDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 
@@ -92,4 +89,9 @@ def location_views():
             :return:
             """
             serializer.save(modified_by=self.request.user)
-    return LocationCreateAPIView, LocationListAPIView, LocationDetailAPIView
+
+    return {
+        'LocationCreateAPIView': LocationCreateAPIView,
+        'LocationListAPIView': LocationListAPIView,
+        'LocationDetailAPIView': LocationDetailAPIView
+    }
