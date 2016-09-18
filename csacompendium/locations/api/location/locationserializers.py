@@ -104,32 +104,22 @@ def location_serializers():
         Serialize single record into an API. This is dependent on fields given.
         """
         location_relation_serializers = location_relation_serializers()
-
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
         relation_details = SerializerMethodField()
 
         class Meta:
-            model = Location
-            fields = ['id', ] + LocationBaseSerializer.Meta.fields + \
-                     [
-                         'user',
-                         'modified_by',
-                         'last_update',
-                         'time_created',
-                         'content_type_url',
-                         'relation_details',
-                     ]
-            read_only_fields = [
-                'id',
-                'user',
+            common_fields = [
                 'modified_by',
                 'last_update',
                 'time_created',
                 'content_type_url',
                 'relation_details',
             ]
+            model = Location
+            fields = ['id', ] + LocationBaseSerializer.Meta.fields + ['user', ] + common_fields
+            read_only_fields = ['id', ] + common_fields
 
         def get_user(self, obj):
             """
