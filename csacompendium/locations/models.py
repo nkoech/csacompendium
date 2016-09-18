@@ -53,7 +53,7 @@ class Location(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    location_name = models.CharField(max_length=256, blank=True)
+    location_name = models.CharField(max_length=256, blank=True, null=True)
     latitude = models.DecimalField(max_digits=8, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     elevation = models.FloatField(blank=True, null=True)
@@ -145,7 +145,9 @@ class LocationRelation(AuthUserDetail, CreateUpdateTime):
     Location entry relationship model. A many to many bridge table between location  model
     and other models
     """
-    limit = models.Q(app_label='locations', model='temperature') | models.Q(app_label='locations', model='location')
+    limit = models.Q(app_label='locations', model='temperature') | \
+            models.Q(app_label='locations', model='location')
+            # models.Q(app_label='locations', model='precipitation') | \
     location = models.ForeignKey(Location, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -180,6 +182,43 @@ class Temperature(AuthUserDetail, CreateUpdateTime):
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Temperatures'
+
+    @property
+    def location_relations(self):
+        """
+        Get related LocationRelation object/record
+        :return: Query result from the LocationRelation model
+        :rtye: object/record
+        """
+        instance = self
+        qs = LocationRelation.objects.filter_by_instance(instance)
+        return qs
+
+
+class Precipitation(AuthUserDetail, CreateUpdateTime):
+    """
+    Precipitation model. Creates precipitation entity
+    """
+    precipitation = models.DecimalField(max_digits=7, decimal_places=2)
+    precipitation_uom = models.CharField(max_length=5, default='mm', verbose_name='Precipitation UOM')
+    precipitation_desc = models.TextField(blank=True, null=True, verbose_name='Description')
+
+    def __unicode__(self):
+        return str(self.precipitation)
+
+    def __str__(self):
+        return str(self.precipitation)
+
+    # def get_api_url(self):
+    #     """
+    #     Get precipitation URL as a reverse from model
+    #     :return: URL
+    #     :rtype: String
+    #     """
+    #     return reverse('location_api:precipitation_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
 
     @property
     def location_relations(self):

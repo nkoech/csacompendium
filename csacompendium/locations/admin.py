@@ -5,6 +5,7 @@ from .models import (
     Location,
     LocationRelation,
     Temperature,
+    Precipitation,
 )
 
 
@@ -39,5 +40,18 @@ class TemperatureModelAdmin(admin.ModelAdmin):
     class Meta:
         model = Temperature
 
+
+class PrecipitationModelAdmin(admin.ModelAdmin):
+    """
+    Precipitation model admin settings
+    """
+    list_display = ['precipitation', 'precipitation_uom', 'last_update', 'modified_by']
+    list_display_links = ['precipitation']
+    list_filter = ['precipitation', 'last_update', 'modified_by']
+
+    class Meta:
+        model = Precipitation
+
 admin.site.register(Location, LocationModelAdmin)
 admin.site.register(Temperature, TemperatureModelAdmin)
+admin.site.register(Precipitation, PrecipitationModelAdmin)
