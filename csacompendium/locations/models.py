@@ -161,7 +161,7 @@ class Temperature(AuthUserDetail, CreateUpdateTime):
     Temperature model. Creates temperature entity
     """
     temperature = models.DecimalField(max_digits=5, decimal_places=2)
-    temperature_uom = models.CharField(max_length=5, default='°C')
+    temperature_uom = models.CharField(max_length=5, default='°C', verbose_name='Temperature UOM')
 
     def __unicode__(self):
         return str(self.temperature)
