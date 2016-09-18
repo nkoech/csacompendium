@@ -40,25 +40,20 @@ def temperature_serializers():
         locations = SerializerMethodField()
 
         class Meta:
+            common_fields = [
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+                'locations',
+            ]
             model = Temperature
             fields = [
                 'id',
                 'temperature',
                 'temperature_uom',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'locations',
-            ]
-            read_only_fields = [
-                'id',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'locations',
-            ]
+            ] + common_fields
+            read_only_fields = ['id', ] + common_fields
 
         def get_user(self, obj):
             """
