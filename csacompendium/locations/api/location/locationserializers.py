@@ -16,6 +16,19 @@ def location_serializers():
     :rtype: Object
     """
 
+    class LocationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        class Meta:
+            model = Location
+            fields = [
+                'location_name',
+                'latitude',
+                'longitude',
+                'elevation',
+            ]
+
     def create_location_serializer(model_type=None, slug=None, user=None):
         """
         Creates a model serializer
@@ -26,22 +39,18 @@ def location_serializers():
         :rtype: Object
         """
 
-        class LocationCreateSerializer(ModelSerializer, CreateSerializerUtil):
+        class LocationCreateSerializer(LocationBaseSerializer, CreateSerializerUtil):
             """
             Create a record
             """
 
             class Meta:
                 model = Location
-                fields = [
-                    'id',
-                    'location_name',
-                    'latitude',
-                    'longitude',
-                    'elevation',
-                    'last_update',
-                    'time_created',
-                ]
+                fields = ['id', ] + LocationBaseSerializer.Meta.fields + \
+                         [
+                             'last_update',
+                             'time_created',
+                         ]
 
             def __init__(self, *args, **kwargs):
                 instance = super(LocationCreateSerializer, self).__init__(*args, **kwargs)
@@ -80,7 +89,7 @@ def location_serializers():
 
         return LocationCreateSerializer
 
-    class LocationListSerializer(ModelSerializer):
+    class LocationListSerializer(LocationBaseSerializer):
         """
         Serialize all records in given fields into an API
         """
@@ -88,15 +97,9 @@ def location_serializers():
 
         class Meta:
             model = Location
-            fields = [
-                'location_name',
-                'latitude',
-                'longitude',
-                'elevation',
-                'url',
-            ]
+            fields = LocationBaseSerializer.Meta.fields + ['url', ]
 
-    class LocationDetailSerializer(ModelSerializer):
+    class LocationDetailSerializer(LocationBaseSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
@@ -109,19 +112,15 @@ def location_serializers():
 
         class Meta:
             model = Location
-            fields = [
-                'id',
-                'location_name',
-                'latitude',
-                'longitude',
-                'elevation',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'content_type_url',
-                'relation_details',
-            ]
+            fields = ['id', ] + LocationBaseSerializer.Meta.fields + \
+                     [
+                         'user',
+                         'modified_by',
+                         'last_update',
+                         'time_created',
+                         'content_type_url',
+                         'relation_details',
+                     ]
             read_only_fields = [
                 'id',
                 'user',
