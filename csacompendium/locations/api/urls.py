@@ -3,6 +3,7 @@ from .views import (
     location_views,
     location_relation_views,
     temperature_views,
+    precipitation_views,
 )
 
 # Location Relation URLs
@@ -21,6 +22,25 @@ urlpatterns = [
         r'^location_relation/(?P<pk>[\w-]+)/$',
         location_relation_views['LocationRelationDetailAPIView'].as_view(),
         name='locationrelation_detail'
+    ),
+]
+
+# Precipitation URLs
+urlpatterns += [
+    url(
+        r'^precipitation/$',
+        precipitation_views['PrecipitationListAPIView'].as_view(),
+        name='precipitation_list'
+    ),
+    url(
+        r'^precipitation/create/$',
+        precipitation_views['PrecipitationCreateAPIView'].as_view(),
+        name='precipitation_create'
+    ),
+    url(
+        r'^precipitation/(?P<pk>[\w-]+)/$',
+        precipitation_views['PrecipitationDetailAPIView'].as_view(),
+        name='precipitation_detail'
     ),
 ]
 

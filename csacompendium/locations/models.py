@@ -145,9 +145,9 @@ class LocationRelation(AuthUserDetail, CreateUpdateTime):
     Location entry relationship model. A many to many bridge table between location  model
     and other models
     """
-    limit = models.Q(app_label='locations', model='temperature') | \
+    limit = models.Q(app_label='locations', model='precipitation') | \
+            models.Q(app_label='locations', model='temperature') | \
             models.Q(app_label='locations', model='location')
-            # models.Q(app_label='locations', model='precipitation') | \
     location = models.ForeignKey(Location, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -209,13 +209,13 @@ class Precipitation(AuthUserDetail, CreateUpdateTime):
     def __str__(self):
         return str(self.precipitation)
 
-    # def get_api_url(self):
-    #     """
-    #     Get precipitation URL as a reverse from model
-    #     :return: URL
-    #     :rtype: String
-    #     """
-    #     return reverse('location_api:precipitation_detail', kwargs={'pk': self.pk})
+    def get_api_url(self):
+        """
+        Get precipitation URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('location_api:precipitation_detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
