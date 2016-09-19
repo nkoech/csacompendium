@@ -50,6 +50,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     'csacompendium.countries',
     'csacompendium.locations',
+    'csacompendium.soils',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
