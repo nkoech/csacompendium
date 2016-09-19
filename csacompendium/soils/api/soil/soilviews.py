@@ -12,7 +12,7 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser,
 )
-# from .filters import SoilListFilter
+from .filters import SoilListFilter
 from csacompendium.soils.api.serializers import soil_serializers
 
 
@@ -47,51 +47,51 @@ def soil_views():
         """
         queryset = Soil.objects.all()
         serializer_class = soil_serializers['SoilListSerializer']
-        # filter_backends = (DjangoFilterBackend,)
-        # filter_class = LocationListFilter
+        filter_backends = (DjangoFilterBackend,)
+        filter_class = SoilListFilter
         pagination_class = APILimitOffsetPagination
 
-    # class LocationDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
-    #     """
-    #     Updates a record.
-    #     """
-    #     queryset = Location.objects.all()
-    #     serializer_class = location_serializers['LocationDetailSerializer']
-    #     permission_classes = [IsAuthenticated, IsAdminUser]
-    #     lookup_field = 'slug'
-    #
-    #     def put(self, request, *args, **kwargs):
-    #         """
-    #         Update record
-    #         :param request: Client request
-    #         :param args: List arguments
-    #         :param kwargs: Keyworded arguments
-    #         :return: Updated record
-    #         :rtype: Object
-    #         """
-    #         return self.update(request, *args, **kwargs)
-    #
-    #     def delete(self, request, *args, **kwargs):
-    #         """
-    #         Delete record
-    #         :param request: Client request
-    #         :param args: List arguments
-    #         :param kwargs: Keyworded arguments
-    #         :return: Updated record
-    #         :rtype: Object
-    #         """
-    #         return self.destroy(request, *args, **kwargs)
-    #
-    #     def perform_update(self, serializer):
-    #         """
-    #         Update individual value
-    #         :param serializer: Serializer object
-    #         :return:
-    #         """
-    #         serializer.save(modified_by=self.request.user)
+    class SoilDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
+        """
+        Updates a record.
+        """
+        queryset = Soil.objects.all()
+        serializer_class = soil_serializers['SoilDetailSerializer']
+        permission_classes = [IsAuthenticated, IsAdminUser]
+        lookup_field = 'pk'
+
+        def put(self, request, *args, **kwargs):
+            """
+            Update record
+            :param request: Client request
+            :param args: List arguments
+            :param kwargs: Keyworded arguments
+            :return: Updated record
+            :rtype: Object
+            """
+            return self.update(request, *args, **kwargs)
+
+        def delete(self, request, *args, **kwargs):
+            """
+            Delete record
+            :param request: Client request
+            :param args: List arguments
+            :param kwargs: Keyworded arguments
+            :return: Updated record
+            :rtype: Object
+            """
+            return self.destroy(request, *args, **kwargs)
+
+        def perform_update(self, serializer):
+            """
+            Update individual value
+            :param serializer: Serializer object
+            :return:
+            """
+            serializer.save(modified_by=self.request.user)
 
     return {
         # 'LocationCreateAPIView': LocationCreateAPIView,
-        'SoilListAPIView': SoilListAPIView
-        # 'LocationDetailAPIView': LocationDetailAPIView
+        'SoilListAPIView': SoilListAPIView,
+        'SoilDetailAPIView': SoilDetailAPIView
     }
