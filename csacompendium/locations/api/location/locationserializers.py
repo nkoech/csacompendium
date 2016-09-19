@@ -1,3 +1,4 @@
+from csacompendium.soils.api.serializers import soil_serializers
 from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
 from csacompendium.locations.models import Location
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
@@ -108,6 +109,7 @@ def location_serializers():
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
         relation_details = SerializerMethodField()
+        soils = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -116,6 +118,7 @@ def location_serializers():
                 'time_created',
                 'content_type_url',
                 'relation_details',
+                'soils',
             ]
             model = Location
             fields = ['id', ] + LocationBaseSerializer.Meta.fields + ['user', ] + common_fields
@@ -167,6 +170,21 @@ def location_serializers():
                     many=True
                 ).data
                 return content_type
+            except obj.DoesNotExist:
+                return None
+
+        def get_soils(self, obj):
+            """
+            Get related soil data
+            :param obj: Current record object
+            :return: Soils in a location
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            SoilListSerializer = soil_serializers['SoilListSerializer']
+            try:
+                soils = SoilListSerializer(obj.soils, context={'request': request}, many=True).data
+                return soils
             except obj.DoesNotExist:
                 return None
 

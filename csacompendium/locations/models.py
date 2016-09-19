@@ -5,6 +5,7 @@ from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )
+from csacompendium.soils.models import Soil
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
     model_instance_filter,
@@ -87,6 +88,18 @@ class Location(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = LocationRelation.objects.filter_by_model_type(instance)
+        return qs
+
+
+    @property
+    def soils(self):
+        """
+        Get related soil object/record
+        :return: Query result from the soil model
+        :rtye: object/record
+        """
+        instance = self
+        qs = Soil.objects.filter_by_instance(instance)
         return qs
 
 

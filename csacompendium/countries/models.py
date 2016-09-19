@@ -50,18 +50,6 @@ class Country(AuthUserDetail, CreateUpdateTime):
         qs = Location.objects.filter_by_instance(instance)
         return qs
 
-    @property
-    def get_content_type(self):
-        """
-        Get country content type
-        :return: Content type
-        :rtye: object/record
-        """
-        instance = self
-        content_type = ContentType.objects.get_for_model(instance.__class__)
-        return content_type
-
-
 @receiver(pre_save, sender=Country)
 def pre_save_country_receiver(sender, instance, *args, **kwargs):
     """

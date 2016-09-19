@@ -63,18 +63,18 @@ class Soil(AuthUserDetail, CreateUpdateTime):
     objects = SoilManager()
 
     def __unicode__(self):
-        return self.som
+        return str(self.som)
 
     def __str__(self):
         return self.som
 
-    def get_api_url(self):
-        """
-        Get soil URL as a reverse from model
-        :return: URL
-        :rtype: String
-        """
-        return reverse('soil_api:soil_detail', kwargs={'pk': self.pk})
+    # def get_api_url(self):
+    #     """
+    #     Get soil URL as a reverse from model
+    #     :return: URL
+    #     :rtype: String
+    #     """
+    #     return reverse('soil_api:soil_detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
