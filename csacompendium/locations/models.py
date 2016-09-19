@@ -91,10 +91,10 @@ class Location(AuthUserDetail, CreateUpdateTime):
 
 
 @receiver(pre_save, sender=Location)
-def pre_save_country_receiver(sender, instance, *args, **kwargs):
+def pre_save_location_receiver(sender, instance, *args, **kwargs):
     """
     Create a slug before save.
-    :param sender: Signal sending objec
+    :param sender: Signal sending object
     :param instance: Object instance
     :param args: Any other argument
     :param kwargs: Keyword arguments
