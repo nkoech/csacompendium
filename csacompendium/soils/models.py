@@ -19,6 +19,47 @@ from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 
 
+class SoilType(AuthUserDetail, CreateUpdateTime):
+    """
+    Soil type model.  Creates soil type entity.
+    """
+    slug = models.SlugField(unique=True, blank=True)
+    soil_type = models.TextField()
+    classification = models.TextField()
+
+    def __unicode__(self):
+        return self.soil_type
+
+    def __str__(self):
+        return self.soil_type
+
+    def get_api_url(self):
+        """
+        Get soil type URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('soil_api:soil_type_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Soil Types'
+
+@receiver(pre_save, sender=SoilType)
+def pre_save_location_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, SoilType, instance.soil_type)
+
+
 class SoilManager(models.Manager):
     """
     Soil model manager
@@ -49,7 +90,7 @@ class Soil(AuthUserDetail, CreateUpdateTime):
     Soil model.  Creates soil entity.
     """
     limit = models.Q(app_label='locations', model='location')
-    # soil_type = models.ForeignKey(SoilType, on_delete=models.PROTECT)
+    soil_type = models.ForeignKey(SoilType, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
