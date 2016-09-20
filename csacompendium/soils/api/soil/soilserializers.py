@@ -47,7 +47,7 @@ def soil_serializers():
         # location_relation_serializers = location_relation_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        # content_type_url = SerializerMethodField()
+        content_type_url = SerializerMethodField()
         # relation_details = SerializerMethodField()
 
         class Meta:
@@ -55,7 +55,7 @@ def soil_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                # 'content_type_url',
+                'content_type_url',
                 # 'relation_details',
             ]
             model = Soil
@@ -78,18 +78,18 @@ def soil_serializers():
             """
             return str(obj.modified_by.username)
 
-        # def get_content_type_url(self, obj):
-        #     """
-        #     Get related content type/object url
-        #     :param obj: Current record object
-        #     :return: URL to related object
-        #     :rtype: String
-        #     """
-        #     try:
-        #         return obj.content_object.get_api_url()
-        #     except:
-        #         return None
-        #
+        def get_content_type_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            try:
+                return obj.content_object.get_api_url()
+            except:
+                return None
+
         # def get_relation_details(self, obj):
         #     """
         #     Get related object type data
