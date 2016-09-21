@@ -24,8 +24,8 @@ class SoilType(AuthUserDetail, CreateUpdateTime):
     Soil type model.  Creates soil type entity.
     """
     slug = models.SlugField(unique=True, blank=True)
-    soil_type = models.TextField()
-    classification = models.TextField()
+    soil_type = models.CharField(max_length=80)
+    classification = models.CharField(max_length=80, blank=True, null=True)
 
     def __unicode__(self):
         return self.soil_type
@@ -45,8 +45,19 @@ class SoilType(AuthUserDetail, CreateUpdateTime):
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Soil Types'
 
+    @property
+    def model_type_relation(self):
+        """
+        Get related soil properties
+        :return: Query result from the LocationRelation model
+        :rtye: object/record
+        """
+        instance = self
+        qs = Soil.objects.filter_by_model_type(instance)
+        return qs
+
 @receiver(pre_save, sender=SoilType)
-def pre_save_location_receiver(sender, instance, *args, **kwargs):
+def pre_save_soil_type_receiver(sender, instance, *args, **kwargs):
     """
     Create a slug before save.
     :param sender: Signal sending object
@@ -73,6 +84,17 @@ class SoilManager(models.Manager):
         """
         return model_instance_filter(instance, self, SoilManager)
 
+    def filter_by_model_type(self, instance):
+        """
+        Query related objects/mode type
+        :param instance: Object instance
+        :return: Matching object else none
+        :rtype: Object/record
+        """
+        soil_type_obj_qs = super(SoilManager, self).filter(soil_type=instance.id)
+        if soil_type_obj_qs.exists():
+            return model_type_filter(self, soil_type_obj_qs, SoilManager)
+
     def create_by_model_type(self, model_type, pk, **kwargs):
         """
         Create object by model type
@@ -94,10 +116,10 @@ class Soil(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    som = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True, verbose_name='Soil Organic Matter')
-    som_uom = models.CharField(max_length=6, blank=True, null=True, verbose_name='Soil Organic Matter UOM')
+    som = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True, verbose_name='Soil Organic Matter (SOM)')
+    som_uom = models.CharField(max_length=6, blank=True, null=True, verbose_name='SOM UOM')
     initial_soc = models.DecimalField(
-        max_digits=6, decimal_places=4, blank=True, null=True, verbose_name='Initial Soil Organic Carbon'
+        max_digits=6, decimal_places=4, blank=True, null=True, verbose_name='Initial SOM'
     )
     soil_ph = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True)
     soil_years = models.SmallIntegerField(blank=True, null=True)

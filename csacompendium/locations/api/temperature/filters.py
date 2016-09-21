@@ -6,7 +6,7 @@ from csacompendium.locations.models import Temperature
 
 class TemperatureListFilter(FilterSet):
     """
-    Filter query list from country database
+    Filter query list from temperature database
     """
     class Meta:
         model = Temperature
