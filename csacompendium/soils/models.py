@@ -25,7 +25,7 @@ class SoilType(AuthUserDetail, CreateUpdateTime):
     Soil type model.  Creates soil type entity.
     """
     slug = models.SlugField(unique=True, blank=True)
-    soil_type = models.CharField(max_length=80)
+    soil_type = models.CharField(max_length=80, unique=True)
     classification = models.CharField(max_length=80, blank=True, null=True)
 
     def __unicode__(self):
@@ -77,7 +77,7 @@ class SoilTexture(AuthUserDetail, CreateUpdateTime):
     Soil texture model. Creates soil type entity.
     """
     slug = models.SlugField(unique=True, blank=True)
-    soil_texture = models.CharField(max_length=50)
+    soil_texture = models.CharField(max_length=50, unique=True)
 
     def __unicode__(self):
         return self.soil_texture
@@ -108,7 +108,7 @@ class SoilTexture(AuthUserDetail, CreateUpdateTime):
         qs = Soil.objects.filter_by_model_type(instance)
         return qs
 
-@receiver(pre_save, sender=SoilType)
+@receiver(pre_save, sender=SoilTexture)
 def pre_save_soil_texture_receiver(sender, instance, *args, **kwargs):
     """
     Create a slug before save.
@@ -120,7 +120,7 @@ def pre_save_soil_texture_receiver(sender, instance, *args, **kwargs):
     :rtype: None
     """
     if not instance.slug:
-        instance.slug = create_slug(instance, SoilType, instance.soil_type)
+        instance.slug = create_slug(instance, SoilTexture, instance.soil_texture)
 
 
 class SoilManager(models.Manager):
@@ -165,7 +165,7 @@ class Soil(AuthUserDetail, CreateUpdateTime):
     """
     limit = models.Q(app_label='locations', model='location')
     soiltype = models.ForeignKey(SoilType, on_delete=models.PROTECT)
-    # soiltexture = models.ForeignKey(SoilTexture, on_delete=models.PROTECT)
+    soiltexture = models.ForeignKey(SoilTexture, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
