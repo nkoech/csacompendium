@@ -9,6 +9,7 @@ from csacompendium.soils.models import Soil
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
     model_instance_filter,
+    model_foreign_key_qs,
     model_type_filter,
     create_model_type,
 )
@@ -138,8 +139,9 @@ class LocationRelationManager(models.Manager):
         :return: Matching object else none
         :rtype: Object/record
         """
-        obj_qs = super(LocationRelationManager, self).filter(location=instance.id)
-        return model_type_filter(self, obj_qs, LocationRelationManager)
+        obj_qs = model_foreign_key_qs(instance, self, LocationRelationManager)
+        if obj_qs.exists():
+            return model_type_filter(self, obj_qs, LocationRelationManager)
 
     def create_by_model_type(self, model_type, pk, **kwargs):
         """

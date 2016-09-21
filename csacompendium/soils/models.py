@@ -8,6 +8,7 @@ from csacompendium.utils.abstractmodels import (
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
     model_instance_filter,
+    model_foreign_key_qs,
     model_type_filter,
     create_model_type,
 )
@@ -73,7 +74,7 @@ def pre_save_soil_type_receiver(sender, instance, *args, **kwargs):
 
 class SoilTexture(AuthUserDetail, CreateUpdateTime):
     """
-    Soil texture model.  Creates soil type entity.
+    Soil texture model. Creates soil type entity.
     """
     slug = models.SlugField(unique=True, blank=True)
     soil_texture = models.CharField(max_length=50)
@@ -142,12 +143,9 @@ class SoilManager(models.Manager):
         :return: Matching object else none
         :rtype: Object/record
         """
-        soil_type_obj_qs = super(SoilManager, self).filter(soil_type=instance.id)
-        soil_texture_obj_qs = super(SoilManager, self).filter(soil_texture=instance.id)
-        if soil_type_obj_qs.exists():
-            return model_type_filter(self, soil_type_obj_qs, SoilManager)
-        else:
-            return model_type_filter(self, soil_texture_obj_qs, SoilManager)
+        obj_qs = model_foreign_key_qs(instance, self, SoilManager)
+        if obj_qs.exists():
+            return model_type_filter(self, obj_qs, SoilManager)
 
     def create_by_model_type(self, model_type, pk, **kwargs):
         """
@@ -166,8 +164,8 @@ class Soil(AuthUserDetail, CreateUpdateTime):
     Soil model.  Creates soil entity.
     """
     limit = models.Q(app_label='locations', model='location')
-    soil_type = models.ForeignKey(SoilType, on_delete=models.PROTECT)
-    soil_texture = models.ForeignKey(SoilTexture, on_delete=models.PROTECT)
+    soiltype = models.ForeignKey(SoilType, on_delete=models.PROTECT)
+    # soiltexture = models.ForeignKey(SoilTexture, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')

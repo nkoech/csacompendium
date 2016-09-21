@@ -46,6 +46,18 @@ def model_instance_filter(call_instance, current_instance, model_manager):
     return qs
 
 
+def model_foreign_key_qs(call_instance, current_instance, model_manager):
+    """
+
+    :return:
+    :rtype:
+    """
+    model_name = str(call_instance._meta.model_name)  # Foreignkey name should be similar to related model name
+    qs_filter = {model_name: call_instance.id}
+    obj_qs = super(model_manager, current_instance).filter(**qs_filter)
+    return obj_qs
+
+
 def model_type_filter(current_instance, obj_qs, model_manager):
     """
     Object query based on a model class
