@@ -39,7 +39,7 @@ class SoilType(AuthUserDetail, CreateUpdateTime):
         :return: URL
         :rtype: String
         """
-        return reverse('soil_api:soil_type_detail', kwargs={'pk': self.pk})
+        return reverse('soil_api:soil_type_detail', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
@@ -49,7 +49,7 @@ class SoilType(AuthUserDetail, CreateUpdateTime):
     def model_type_relation(self):
         """
         Get related soil properties
-        :return: Query result from the LocationRelation model
+        :return: Query result from the soil model
         :rtye: object/record
         """
         instance = self
@@ -58,6 +58,57 @@ class SoilType(AuthUserDetail, CreateUpdateTime):
 
 @receiver(pre_save, sender=SoilType)
 def pre_save_soil_type_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, SoilType, instance.soil_type)
+
+
+class SoilTexture(AuthUserDetail, CreateUpdateTime):
+    """
+    Soil texture model.  Creates soil type entity.
+    """
+    slug = models.SlugField(unique=True, blank=True)
+    soil_texture = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.soil_texture
+
+    def __str__(self):
+        return self.soil_texture
+
+    def get_api_url(self):
+        """
+        Get soil texture URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('soil_api:soil_texture_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Soil Textures'
+
+    @property
+    def model_type_relation(self):
+        """
+        Get related soil textures
+        :return: Query result from the soil model
+        :rtye: object/record
+        """
+        instance = self
+        qs = Soil.objects.filter_by_model_type(instance)
+        return qs
+
+@receiver(pre_save, sender=SoilType)
+def pre_save_soil_texture_receiver(sender, instance, *args, **kwargs):
     """
     Create a slug before save.
     :param sender: Signal sending object
@@ -86,14 +137,17 @@ class SoilManager(models.Manager):
 
     def filter_by_model_type(self, instance):
         """
-        Query related objects/mode type
+        Query related objects/model type
         :param instance: Object instance
         :return: Matching object else none
         :rtype: Object/record
         """
         soil_type_obj_qs = super(SoilManager, self).filter(soil_type=instance.id)
+        soil_texture_obj_qs = super(SoilManager, self).filter(soil_texture=instance.id)
         if soil_type_obj_qs.exists():
             return model_type_filter(self, soil_type_obj_qs, SoilManager)
+        else:
+            return model_type_filter(self, soil_texture_obj_qs, SoilManager)
 
     def create_by_model_type(self, model_type, pk, **kwargs):
         """
@@ -113,6 +167,7 @@ class Soil(AuthUserDetail, CreateUpdateTime):
     """
     limit = models.Q(app_label='locations', model='location')
     soil_type = models.ForeignKey(SoilType, on_delete=models.PROTECT)
+    soil_texture = models.ForeignKey(SoilTexture, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
@@ -130,14 +185,6 @@ class Soil(AuthUserDetail, CreateUpdateTime):
 
     def __str__(self):
         return self.som
-
-    # def get_api_url(self):
-    #     """
-    #     Get soil URL as a reverse from model
-    #     :return: URL
-    #     :rtype: String
-    #     """
-    #     return reverse('soil_api:soil_detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['-time_created', '-last_update']

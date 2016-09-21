@@ -4,6 +4,7 @@ from django.contrib import admin
 from .models import (
     Soil,
     SoilType,
+    SoilTexture,
 )
 
 
@@ -21,7 +22,7 @@ class SoilModelAdmin(admin.ModelAdmin):
 
 class SoilTypeModelAdmin(admin.ModelAdmin):
     """
-    Soil model admin settings
+    Soil type model admin settings
     """
     list_display = ['soil_type', 'classification', 'last_update', 'modified_by']
     list_display_links = ['soil_type']
@@ -31,5 +32,18 @@ class SoilTypeModelAdmin(admin.ModelAdmin):
         model = SoilType
 
 
+class SoilTextureModelAdmin(admin.ModelAdmin):
+    """
+    Soil texture model admin settings
+    """
+    list_display = ['soil_texture', 'last_update', 'modified_by']
+    list_display_links = ['soil_texture']
+    list_filter = ['soil_texture', 'last_update', 'modified_by']
+
+    class Meta:
+        model = SoilTexture
+
+
 admin.site.register(Soil, SoilModelAdmin)
 admin.site.register(SoilType, SoilTypeModelAdmin)
+admin.site.register(SoilTexture, SoilTextureModelAdmin)
