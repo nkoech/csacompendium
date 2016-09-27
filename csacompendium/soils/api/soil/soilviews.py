@@ -22,24 +22,24 @@ def soil_views():
     :return: All location views
     :rtype: Object
     """
-    # class LocationCreateAPIView(CreateAPIView):
-    #     """
-    #     Creates a single record.
-    #     """
-    #     queryset = Location.objects.all()
-    #     permission_classes = [IsAuthenticated]
-    #
-    #     def get_serializer_class(self):
-    #         """
-    #         Gets serializer class
-    #         :return: Location object
-    #         :rtype: Object
-    #         """
-    #         model_type = self.request.GET.get('type')
-    #         slug = self.request.GET.get('slug')
-    #         user = self.request.user
-    #         create_location_serializer = location_serializers['create_location_serializer']
-    #         return create_location_serializer(model_type, slug, user)
+    class SoilCreateAPIView(CreateAPIView):
+        """
+        Creates a single record.
+        """
+        queryset = Soil.objects.all()
+        permission_classes = [IsAuthenticated]
+
+        def get_serializer_class(self):
+            """
+            Gets serializer class
+            :return: Soil object
+            :rtype: Object
+            """
+            model_type = self.request.GET.get('type')
+            slug = self.request.GET.get('slug')
+            user = self.request.user
+            create_soil_serializer = soil_serializers['create_soil_serializer']
+            return create_soil_serializer(model_type, slug, user)
 
     class SoilListAPIView(ListAPIView):
         """
@@ -91,7 +91,7 @@ def soil_views():
             serializer.save(modified_by=self.request.user)
 
     return {
-        # 'LocationCreateAPIView': LocationCreateAPIView,
+        'SoilCreateAPIView': SoilCreateAPIView,
         'SoilListAPIView': SoilListAPIView,
         'SoilDetailAPIView': SoilDetailAPIView
     }

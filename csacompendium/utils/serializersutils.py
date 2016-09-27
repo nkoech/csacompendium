@@ -14,7 +14,6 @@ class CreateSerializerUtil:
         self.user = None
         self.slugify = None
         self.auth_user = None
-        # return super(LocationCreateSerializer, self).__init__(*args, **kwargs)
 
     def get_authenticated_user(self, user):
         """

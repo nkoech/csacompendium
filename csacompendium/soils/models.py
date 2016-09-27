@@ -147,16 +147,16 @@ class SoilManager(models.Manager):
         if obj_qs.exists():
             return model_type_filter(self, obj_qs, SoilManager)
 
-    def create_by_model_type(self, model_type, pk, **kwargs):
+    def create_by_model_type(self, model_type, slug, **kwargs):
         """
         Create object by model type
         :param model_type: Content/model type
-        :param pk: Primary key
+        :param slug: Slug
         :param kwargs: Fields to be created
         :return: Data object
         :rtype: Object
         """
-        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+        return create_model_type(self, model_type, slug, slugify=True, **kwargs)
 
 
 class Soil(AuthUserDetail, CreateUpdateTime):
@@ -169,7 +169,7 @@ class Soil(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    som = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True, verbose_name='Soil Organic Matter (SOM)')
+    som = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True, verbose_name='Soil Organic Matter-SOM')
     som_uom = models.CharField(max_length=6, blank=True, null=True, verbose_name='SOM UOM')
     initial_soc = models.DecimalField(
         max_digits=6, decimal_places=4, blank=True, null=True, verbose_name='Initial SOM'
