@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -74,3 +75,21 @@ def model_type_filter(current_instance, obj_qs, model_manager):
                 return qs
             except super(model_manager, current_instance).DoesNotExist:
                 return None
+
+
+def get_year_choices():
+    """
+    :return: Years
+    """
+    year_choice = []
+    for r in range(1950, (datetime.datetime.now().year + 1)):
+        year_choice.append((r, r))
+    return year_choice
+
+
+def get_datetime_now():
+    """
+    :return: Curreent year
+    """
+    return datetime.datetime.now().year
+

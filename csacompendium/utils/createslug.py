@@ -1,7 +1,7 @@
 from django.utils.text import slugify
 
 
-def create_slug(instance, model_type=None, instance_field=None, new_slug=None):
+def create_slug(instance, model_type=None, instance_field=None, new_slug=None,):
     """
     Create a slug from country name.
     :param instance: Object instance
@@ -11,7 +11,15 @@ def create_slug(instance, model_type=None, instance_field=None, new_slug=None):
     :return: Unique slug
     :rtype: string
     """
-    slug = slugify(instance_field)
+    slug = None
+    if type(instance_field) is list:
+        for i in instance_field:
+            if slug:
+                slug += '-' + slugify(i)
+            else:
+                slug = slugify(i)
+    else:
+        slug = slugify(instance_field)
     if new_slug is not None:
         slug = new_slug
     qs = model_type.objects.filter(slug=slug).order_by('-id')

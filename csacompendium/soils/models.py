@@ -11,6 +11,8 @@ from csacompendium.utils.modelmanagers import (
     model_foreign_key_qs,
     model_type_filter,
     create_model_type,
+    get_year_choices,
+    get_datetime_now,
 )
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -164,8 +166,8 @@ class Soil(AuthUserDetail, CreateUpdateTime):
     Soil model.  Creates soil entity.
     """
     limit = models.Q(app_label='locations', model='location')
-    soiltype = models.ForeignKey(SoilType, on_delete=models.PROTECT)
-    soiltexture = models.ForeignKey(SoilTexture, on_delete=models.PROTECT)
+    soiltype = models.ForeignKey(SoilType, on_delete=models.PROTECT, verbose_name='Soil Type')
+    soiltexture = models.ForeignKey(SoilTexture, on_delete=models.PROTECT, verbose_name='Soil Texture')
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
@@ -175,7 +177,9 @@ class Soil(AuthUserDetail, CreateUpdateTime):
         max_digits=6, decimal_places=4, blank=True, null=True, verbose_name='Initial SOM'
     )
     soil_ph = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True)
-    soil_years = models.SmallIntegerField(blank=True, null=True)
+    soil_years = models.SmallIntegerField(
+        max_length=4, choices=get_year_choices(), blank=True, null=True, default=get_datetime_now()
+    )
     objects = SoilManager()
 
     def __unicode__(self):
