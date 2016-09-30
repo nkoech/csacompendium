@@ -159,7 +159,7 @@ class Research(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    research_year = models.SmallIntegerField(max_length=4, choices=get_year_choices(), default=get_datetime_now())
+    research_year = models.SmallIntegerField(choices=get_year_choices(), default=get_datetime_now())
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
     research_type = models.CharField(max_length=120)
     experimentduration = models.ForeignKey(
@@ -177,12 +177,23 @@ class Research(AuthUserDetail, CreateUpdateTime):
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Research'
 
+    @property
+    def measurement_year(self):
+        """
+        Get related measurement year object/record
+        :return: Query result from the measurement year model
+        :rtye: object/record
+        """
+        instance = self
+        qs = MeasurementYear.objects.filter_by_instance(instance)
+        return qs
+
 
 class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
     """
     Measurement season model
     """
-    meas_season = models.SmallIntegerField(max_length=2, verbose_name='Measurement season')
+    meas_season = models.SmallIntegerField(verbose_name='Measurement season')
 
     def __unicode__(self):
         return str(self.meas_season)
@@ -259,7 +270,7 @@ class MeasurementYear(AuthUserDetail, CreateUpdateTime):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     meas_year = models.SmallIntegerField(
-        max_length=4, choices=get_year_choices(), default=get_datetime_now(), verbose_name='Measurement Year'
+        choices=get_year_choices(), default=get_datetime_now(), verbose_name='Measurement Year'
     )
     measurementseason = models.ForeignKey(
         MeasurementSeason, on_delete=models.PROTECT, verbose_name='Measurement season'

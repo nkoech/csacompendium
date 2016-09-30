@@ -5,6 +5,7 @@ from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )
+from csacompendium.research.models import Research
 from csacompendium.soils.models import Soil
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
@@ -91,6 +92,17 @@ class Location(AuthUserDetail, CreateUpdateTime):
         qs = LocationRelation.objects.filter_by_model_type(instance)
         return qs
 
+
+    @property
+    def research(self):
+        """
+        Get related research object/record
+        :return: Query result from the research model
+        :rtye: object/record
+        """
+        instance = self
+        qs = Research.objects.filter_by_instance(instance)
+        return qs
 
     @property
     def soils(self):
@@ -196,7 +208,7 @@ class Temperature(AuthUserDetail, CreateUpdateTime):
 
     class Meta:
         ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Temperatures'
+        verbose_name_plural = 'Temperature'
 
     @property
     def location_relations(self):
@@ -234,6 +246,7 @@ class Precipitation(AuthUserDetail, CreateUpdateTime):
 
     class Meta:
         ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Precipitation'
 
     @property
     def location_relations(self):

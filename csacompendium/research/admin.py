@@ -48,7 +48,7 @@ class ExperimentDurationModelAdmin(admin.ModelAdmin):
 
 class MeasurementYearModelAdmin(admin.ModelAdmin):
     """
-    Precipitation model admin settings
+    measurement year model admin settings
     """
     list_display = ['meas_year', 'measurementseason', 'last_update', 'modified_by']
     list_display_links = ['meas_year']
