@@ -165,7 +165,7 @@ def location_serializers():
             ]
             try:
                 content_type = LocationRelationContentTypeSerializer(
-                    obj.model_type_relation,
+                    obj.location_relation_relation,
                     context={'request': request},
                     many=True
                 ).data

@@ -82,7 +82,7 @@ class Location(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Locations'
 
     @property
-    def model_type_relation(self):
+    def location_relation_relation(self):
         """
         Get related LocationRelation object/record
         :return: Query result from the LocationRelation model
@@ -173,8 +173,7 @@ class LocationRelation(AuthUserDetail, CreateUpdateTime):
     and other models
     """
     limit = models.Q(app_label='locations', model='precipitation') | \
-            models.Q(app_label='locations', model='temperature') | \
-            models.Q(app_label='locations', model='location')
+            models.Q(app_label='locations', model='temperature')
     location = models.ForeignKey(Location, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -215,7 +214,7 @@ class Temperature(AuthUserDetail, CreateUpdateTime):
         """
         Get related LocationRelation object/record
         :return: Query result from the LocationRelation model
-        :rtye: object/record
+        :rtype: object/record
         """
         instance = self
         qs = LocationRelation.objects.filter_by_instance(instance)

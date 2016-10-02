@@ -49,7 +49,7 @@ class SoilType(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Soil Types'
 
     @property
-    def model_type_relation(self):
+    def soil_relation(self):
         """
         Get related soil properties
         :return: Query result from the soil model
@@ -100,9 +100,9 @@ class SoilTexture(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Soil Textures'
 
     @property
-    def model_type_relation(self):
+    def soil_relation(self):
         """
-        Get related soil textures
+        Get related soil properties
         :return: Query result from the soil model
         :rtye: object/record
         """
@@ -178,7 +178,7 @@ class Soil(AuthUserDetail, CreateUpdateTime):
     )
     soil_ph = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True)
     soil_years = models.SmallIntegerField(
-        max_length=4, choices=get_year_choices(), blank=True, null=True, default=get_datetime_now()
+        choices=get_year_choices(), blank=True, null=True, default=get_datetime_now()
     )
     objects = SoilManager()
 
@@ -186,7 +186,7 @@ class Soil(AuthUserDetail, CreateUpdateTime):
         return str(self.som)
 
     def __str__(self):
-        return self.som
+        return str(self.som)
 
     class Meta:
         ordering = ['-time_created', '-last_update']

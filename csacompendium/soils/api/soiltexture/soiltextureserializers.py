@@ -77,7 +77,7 @@ def soil_texture_serializers():
             SoilListSerializer = self.soil_serializers['SoilListSerializer']
             try:
                 soil_properties = SoilListSerializer(
-                    obj.model_type_relation,
+                    obj.soil_relation,
                     context={'request': request},
                     many=True
                 ).data
