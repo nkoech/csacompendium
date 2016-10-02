@@ -67,7 +67,7 @@ class Author(AuthUserDetail, CreateUpdateTime):
     first_name = models.CharField(max_length=64)
     middle_name = models.CharField(max_length=64, null=True, blank=True)
     last_name = models.CharField(max_length=64)
-    author_bio = models.TextField()
+    author_bio = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return self.first_name
@@ -161,7 +161,7 @@ class Research(AuthUserDetail, CreateUpdateTime):
     content_object = GenericForeignKey('content_type', 'object_id')
     research_year = models.SmallIntegerField(choices=get_year_choices(), default=get_datetime_now())
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
-    research_type = models.CharField(max_length=120)
+    research_type = models.CharField(max_length=120, blank=True, null=True)
     experimentduration = models.ForeignKey(
         ExperimentDuration, blank=True, null=True, on_delete=models.PROTECT, verbose_name='Experiment Duration'
     )
@@ -497,6 +497,7 @@ class ObjectCategory(AuthUserDetail, CreateUpdateTime):
 
     class Meta:
         ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Object Categories'
 
     @property
     def experiment_object_relation(self):
