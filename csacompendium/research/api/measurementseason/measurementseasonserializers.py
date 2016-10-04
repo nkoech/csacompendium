@@ -9,7 +9,7 @@ from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 
 def measurement_season_serializers():
     """
-    Measurement season type serializers
+    Measurement season serializers
     :return: All measurement season serializers
     :rtype: Object
     """
