@@ -19,7 +19,7 @@ from csacompendium.soils.api.serializers import soil_serializers
 def soil_views():
     """
     Soil views
-    :return: All location views
+    :return: All soil views
     :rtype: Object
     """
     class SoilCreateAPIView(CreateAPIView):

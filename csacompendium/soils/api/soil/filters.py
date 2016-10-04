@@ -6,7 +6,7 @@ from csacompendium.soils.models import Soil
 
 class SoilListFilter(FilterSet):
     """
-    Filter query list from country database
+    Filter query list from soil database
     """
     class Meta:
         model = Soil
