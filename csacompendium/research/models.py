@@ -216,13 +216,14 @@ class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
     """
     Measurement season model
     """
-    meas_season = models.SmallIntegerField(verbose_name='Measurement season')
+    slug = models.SlugField(unique=True, blank=True)
+    meas_season = models.CharField(max_length=22, verbose_name='Measurement season')
 
     def __unicode__(self):
-        return str(self.meas_season)
+        return self.meas_season
 
     def __str__(self):
-        return str(self.meas_season)
+        return self.meas_season
 
     def get_api_url(self):
         """
@@ -230,7 +231,7 @@ class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
         :return: URL
         :rtype: String
         """
-        return reverse('research_api:measurement_season_detail', kwargs={'pk': self.pk})
+        return reverse('research_api:measurement_season_detail', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
@@ -246,6 +247,21 @@ class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
         instance = self
         qs = MeasurementYear.objects.filter_by_model_type(instance)
         return qs
+
+
+@receiver(pre_save, sender=MeasurementSeason)
+def pre_save_measurement_season_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, MeasurementSeason, instance.meas_season)
 
 
 class MeasurementYearManager(models.Manager):
@@ -366,7 +382,7 @@ def pre_save_species_receiver(sender, instance, *args, **kwargs):
     :rtype: None
     """
     if not instance.slug:
-        instance.slug = create_slug(instance, Author, instance.species)
+        instance.slug = create_slug(instance, Species, instance.species)
 
 
 class ResearchSpeciesManager(models.Manager):
