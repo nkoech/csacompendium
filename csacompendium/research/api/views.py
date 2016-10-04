@@ -1,3 +1,5 @@
-from django.shortcuts import render
+# from .soil.soilviews import soil_views
+from .measurementyear.measurementyearviews import measurement_year_views
 
-# Create your views here.
+# soil_views = soil_views()
+measurement_year_views = measurement_year_views()
