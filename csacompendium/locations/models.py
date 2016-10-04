@@ -188,7 +188,7 @@ class Temperature(AuthUserDetail, CreateUpdateTime):
     """
     Temperature model. Creates temperature entity
     """
-    temperature = models.DecimalField(max_digits=5, decimal_places=2)
+    temperature = models.DecimalField(max_digits=5, decimal_places=2, unique=True)
     temperature_uom = models.CharField(max_length=5, default='°C', verbose_name='Temperature UOM')
 
     def __unicode__(self):
@@ -225,7 +225,7 @@ class Precipitation(AuthUserDetail, CreateUpdateTime):
     """
     Precipitation model. Creates precipitation entity
     """
-    precipitation = models.DecimalField(max_digits=7, decimal_places=2)
+    precipitation = models.DecimalField(max_digits=7, decimal_places=2,  unique=True)
     precipitation_uom = models.CharField(max_length=5, default='mm', verbose_name='Precipitation UOM')
     precipitation_desc = models.TextField(blank=True, null=True, verbose_name='Description')
 

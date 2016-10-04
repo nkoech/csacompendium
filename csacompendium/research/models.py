@@ -26,7 +26,7 @@ class ExperimentDuration(AuthUserDetail, CreateUpdateTime):
     """
     Experiment duration model
     """
-    exp_duration = models.DecimalField(max_digits=4, decimal_places=2, verbose_name='Experiment Duration')
+    exp_duration = models.DecimalField(max_digits=4, decimal_places=2, unique=True, verbose_name='Experiment Duration')
 
     def __unicode__(self):
         return str(self.exp_duration)
@@ -224,8 +224,13 @@ class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
     """
     Measurement season model
     """
+    RAIN_SEASONS = (
+        ('Long Rains', 'Long Rains'),
+        ('Short Rains', 'Short Rains'),
+    )
+
     slug = models.SlugField(unique=True, blank=True)
-    meas_season = models.CharField(max_length=22, verbose_name='Measurement season')
+    meas_season = models.CharField(max_length=22, choices=RAIN_SEASONS, unique=True, verbose_name='Measurement season')
 
     def __unicode__(self):
         return self.meas_season
@@ -312,6 +317,7 @@ class MeasurementYear(AuthUserDetail, CreateUpdateTime):
     """
     Creates measurement year entity.
     """
+
     limit = models.Q(app_label='research', model='research')
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -340,7 +346,7 @@ class Species(AuthUserDetail, CreateUpdateTime):
     Species model
     """
     slug = models.SlugField(unique=True, blank=True)
-    species = models.CharField(max_length=200)
+    species = models.CharField(max_length=200, unique=True)
 
     def get_api_url(self):
         """
@@ -503,7 +509,7 @@ class ObjectCategory(AuthUserDetail, CreateUpdateTime):
     Experiment object model. Creates experiment object entity.
     """
     slug = models.SlugField(unique=True, blank=True)
-    object_category = models.CharField(max_length=100)
+    object_category = models.CharField(max_length=100, unique=True)
 
     def __unicode__(self):
         return self.object_category
