@@ -15,7 +15,7 @@ from rest_framework.serializers import (
 def soil_serializers():
     """
     Soil serializers
-    :return: All location serializers
+    :return: All soil serializers
     :rtype: Object
     """
 
@@ -37,7 +37,7 @@ def soil_serializers():
         """
         Creates a model serializer
         :param model_type: Model
-        :param pk: Primary key
+        :param slug: slug
         :param user: Record owner
         :return: Serializer class
         :rtype: Object
@@ -67,7 +67,7 @@ def soil_serializers():
                 """
                 Created record from validated data
                 :param validated_data: Validated data
-                :return: Location object
+                :return: Soil object
                 :rtype: Object
                 """
                 soiltype = validated_data.get('soiltype')

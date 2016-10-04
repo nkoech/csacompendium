@@ -173,6 +173,14 @@ class Research(AuthUserDetail, CreateUpdateTime):
     def __str__(self):
         return str(self.research_year)
 
+    def get_api_url(self):
+        """
+        Get Research URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_api:research_detail', kwargs={'pk': self.pk})
+
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Research'
