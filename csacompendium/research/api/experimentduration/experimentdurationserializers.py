@@ -2,7 +2,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField
 )
-from csacompendium.research.api.research.researchserializers import research_serializers
+# from csacompendium.research.api.research.researchserializers import research_serializers
 from csacompendium.research.models import ExperimentDuration
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 
@@ -31,7 +31,7 @@ def experiment_duration_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        research_serializers = research_serializers()
+        # research_serializers = research_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         research = SerializerMethodField()
@@ -74,14 +74,15 @@ def experiment_duration_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            ResearchListSerializer = self.research_serializers['ResearchListSerializer']
+            # ResearchListSerializer = self.research_serializers['ResearchListSerializer']
             try:
-                research = ResearchListSerializer(
-                    obj.research_relation,
-                    context={'request': request},
-                    many=True
-                ).data
-                return research
+                pass
+                # research = ResearchListSerializer(
+                #     obj.research_relation,
+                #     context={'request': request},
+                #     many=True
+                # ).data
+                # return research
             except obj.DoesNotExist:
                 return None
 
