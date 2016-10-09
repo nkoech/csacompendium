@@ -6,7 +6,7 @@ from csacompendium.research.models import MeasurementSeason
 
 class MeasurementSeasonListFilter(FilterSet):
     """
-    Filter query list from measurement season type database
+    Filter query list from measurement season type database table
     """
     class Meta:
         model = MeasurementSeason

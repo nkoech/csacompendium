@@ -7,7 +7,7 @@ from csacompendium.countries.models import Country
 
 class CountryListFilter(FilterSet):
     """
-    Filter query list from country database
+    Filter query list from country database table
     """
     class Meta:
         model = Country
