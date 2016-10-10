@@ -63,7 +63,7 @@ class Author(AuthUserDetail, CreateUpdateTime):
     Research author model
     """
     slug = models.SlugField(unique=True, blank=True)
-    author_code = models.CharField(max_length=6, primary_key=True)
+    author_code = models.CharField(max_length=6, unique=True)
     first_name = models.CharField(max_length=64)
     middle_name = models.CharField(max_length=64, null=True, blank=True)
     last_name = models.CharField(max_length=64)
@@ -577,7 +577,7 @@ class ExperimentObject(AuthUserDetail, CreateUpdateTime):
     Experiment object model. Creates experiment object entity.
     """
     slug = models.SlugField(unique=True, blank=True)
-    exp_object_code = models.CharField(max_length=20, primary_key=True, verbose_name='Experiment Object Code')
+    exp_object_code = models.CharField(max_length=20, unique=True, verbose_name='Experiment Object Code')
     objectcategory = models.ForeignKey(ObjectCategory, on_delete=models.PROTECT, verbose_name='Object Category')
     object_name = models.CharField(max_length=250)
     latin_name = models.CharField(max_length=250, blank=True, null=True)

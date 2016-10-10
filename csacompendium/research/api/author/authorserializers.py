@@ -55,7 +55,7 @@ def author_serializers():
                 'research',
             ]
             model = Author
-            fields = ['id', ] + AuthorBaseSerializer.Meta.fields + ['author_bio', 'url', ] + common_fields
+            fields = ['id', ] + AuthorBaseSerializer.Meta.fields + ['author_bio', ] + common_fields
             read_only_fields = ['id', ] + common_fields
 
         def get_user(self, obj):
