@@ -4,6 +4,7 @@ from .views import (
     measurement_year_views,
     experiment_duration_views,
     author_views,
+    object_category_views,
     # soil_views,
 )
 
@@ -69,4 +70,23 @@ urlpatterns += [
     url(r'^author/$', author_views['AuthorListAPIView'].as_view(), name='author_list'),
     url(r'^author/create/$', author_views['AuthorCreateAPIView'].as_view(), name='author_create'),
     url(r'^author/(?P<slug>[\w-]+)/$', author_views['AuthorDetailAPIView'].as_view(), name='author_detail'),
+]
+
+# Object category URLs
+urlpatterns += [
+    url(
+        r'^objectcategory/$',
+        object_category_views['ObjectCategoryListAPIView'].as_view(),
+        name='object_category_list'
+    ),
+    url(
+        r'^objectcategory/create/$',
+        object_category_views['ObjectCategoryCreateAPIView'].as_view(),
+        name='object_category_create'
+    ),
+    url(
+        r'^objectcategory/(?P<slug>[\w-]+)/$',
+        object_category_views['ObjectCategoryDetailAPIView'].as_view(),
+        name='object_category_detail'
+    ),
 ]
