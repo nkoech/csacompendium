@@ -1,8 +1,9 @@
 from django.conf.urls import url
 from .views import (
-    experiment_duration_views,
     measurement_season_views,
     measurement_year_views,
+    experiment_duration_views,
+    author_views,
     # soil_views,
 )
 
@@ -61,4 +62,11 @@ urlpatterns += [
         experiment_duration_views['ExperimentDurationDetailAPIView'].as_view(),
         name='experiment_duration_detail'
     ),
+]
+
+# Author URLs
+urlpatterns += [
+    url(r'^author/$', author_views['AuthorListAPIView'].as_view(), name='author_list'),
+    url(r'^author/create/$', author_views['AuthorCreateAPIView'].as_view(), name='author_create'),
+    url(r'^author/(?P<slug>[\w-]+)/$', author_views['AuthorDetailAPIView'].as_view(), name='author_detail'),
 ]
