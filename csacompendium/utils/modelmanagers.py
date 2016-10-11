@@ -1,5 +1,7 @@
 import datetime
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import FieldDoesNotExist
+from django.db.models.base import ObjectDoesNotExist
 
 
 def create_model_type(instance, model_type, key, slugify, **kwargs):
@@ -49,9 +51,12 @@ def model_instance_filter(call_instance, current_instance, model_manager):
 
 def model_foreign_key_qs(call_instance, current_instance, model_manager):
     """
-
-    :return:
-    :rtype:
+    Object query based on  foreign key
+    :param call_instance: Instance of the model calling this method
+    :param current_instance: Instance of the model manager class this method would be called from
+    :param model_manager: The model manager class
+    :return: Object query based on foreign key otherwise return none
+    :rtype: Object/record
     """
     model_name = str(call_instance._meta.model_name)  # Foreignkey name should be similar to related model name
     qs_filter = {model_name: call_instance.id}
@@ -69,12 +74,29 @@ def model_type_filter(current_instance, obj_qs, model_manager):
     :rtype: Object/record
     """
     if obj_qs.exists():
-        for obj in obj_qs.iterator():
-            try:
-                qs = super(model_manager, current_instance).filter(content_type=obj.content_type) and obj_qs
-                return qs
-            except super(model_manager, current_instance).DoesNotExist:
-                return None
+        if model_field_exists(obj_qs, 'content_type'):
+            for obj in obj_qs.iterator():
+                try:
+                    qs = super(model_manager, current_instance).filter(content_type=obj.content_type) and obj_qs
+                    return qs
+                except ObjectDoesNotExist:
+                    return None
+        return obj_qs
+
+
+def model_field_exists(instance, field_name):
+    """
+    Check if field exists
+    :param instance: Instance of the model manager class this method would be called from
+    :param field_name: Field name to be checked
+    :return: True if field exists otherwise return false
+    :rtype: Boolean
+    """
+    try:
+        instance.model._meta.get_field(field_name)
+        return True
+    except FieldDoesNotExist:
+        return False
 
 
 def get_year_choices():

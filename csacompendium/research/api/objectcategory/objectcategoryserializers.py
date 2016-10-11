@@ -2,7 +2,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField
 )
-# from csacompendium.research.api.experimentobject.experimentobjectserializers import experiment_object_serializers
+from csacompendium.research.api.experimentobject.experimentobjectserializers import experiment_object_serializers
 from csacompendium.research.models import ObjectCategory
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 
@@ -31,7 +31,7 @@ def object_category_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        # experiment_object_serializers = experiment_object_serializers()
+        experiment_object_serializers = experiment_object_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         experiment_object = SerializerMethodField()
@@ -74,15 +74,14 @@ def object_category_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            # ExperimentObjectListSerializer = self.experiment_object_serializers['ExperimentObjectListSerializer']
+            ExperimentObjectListSerializer = self.experiment_object_serializers['ExperimentObjectListSerializer']
             try:
-                pass
-                # experiment_object = ExperimentObjectListSerializer(
-                #     obj.experiment_object_relation,
-                #     context={'request': request},
-                #     many=True
-                # ).data
-                # return experiment_object
+                experiment_object = ExperimentObjectListSerializer(
+                    obj.experiment_object_relation,
+                    context={'request': request},
+                    many=True
+                ).data
+                return experiment_object
             except obj.DoesNotExist:
                 return None
 

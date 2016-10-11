@@ -14,7 +14,7 @@ from rest_framework.serializers import (
 def measurement_year_serializers():
     """
     Measurement year serializers
-    :return: All location serializers
+    :return: All measurement year serializers
     :rtype: Object
     """
 
