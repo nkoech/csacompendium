@@ -5,7 +5,6 @@ from csacompendium.utils.viewsutils import (
     DetailViewUpdateDelete,
     get_http_request
 )
-
 from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
