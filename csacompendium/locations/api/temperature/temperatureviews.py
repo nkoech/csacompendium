@@ -1,7 +1,7 @@
 from csacompendium.locations.models import Temperature
 from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
-from csacompendium.utils.viewsutils import DetailViewUpdateDelete
+from csacompendium.utils.viewsutils import DetailViewUpdateDelete, CreateAPIViewHook
 from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -17,22 +17,13 @@ def temperature_views():
     """
     temperature_serializer = temperature_serializers()
 
-    class TemperatureCreateAPIView(CreateAPIView):
+    class TemperatureCreateAPIView(CreateAPIViewHook):
         """
         Creates a single record.
         """
         queryset = Temperature.objects.all()
         serializer_class = temperature_serializer['TemperatureDetailSerializer']
         permission_classes = [IsAuthenticated]
-
-        def perform_create(self, serializer):
-            """
-            Creates a new value on the user field
-            :param serializer: Serializer object
-            :return: None
-            :rtype: None
-            """
-            serializer.save(user=self.request.user)
 
     class TemperatureListAPIView(ListAPIView):
         """

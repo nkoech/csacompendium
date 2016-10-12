@@ -1,5 +1,20 @@
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import CreateAPIView, RetrieveAPIView
 from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
+
+
+class CreateAPIViewHook(CreateAPIView):
+    """
+    Object create overriding hook
+    """
+
+    def perform_create(self, serializer):
+        """
+        Creates a new value on the user field
+        :param serializer: Serializer object
+        :return: None
+        :rtype: None
+        """
+        serializer.save(user=self.request.user)
 
 
 class DetailViewUpdateDelete(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):

@@ -1,7 +1,7 @@
 from csacompendium.research.models import MeasurementSeason
 from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
-from csacompendium.utils.viewsutils import DetailViewUpdateDelete
+from csacompendium.utils.viewsutils import DetailViewUpdateDelete, CreateAPIViewHook
 from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -17,22 +17,13 @@ def measurement_season_views():
     """
     measurement_season_serializer = measurement_season_serializers()
 
-    class MeasurementSeasonCreateAPIView(CreateAPIView):
+    class MeasurementSeasonCreateAPIView(CreateAPIView, CreateAPIViewHook):
         """
         Creates a single record.
         """
         queryset = MeasurementSeason.objects.all()
         serializer_class = measurement_season_serializer['MeasurementSeasonDetailSerializer']
         permission_classes = [IsAuthenticated]
-
-        def perform_create(self, serializer):
-            """
-            Creates a new value on the user field
-            :param serializer: Serializer object
-            :return: None
-            :rtype: None
-            """
-            serializer.save(user=self.request.user)
 
     class MeasurementSeasonListAPIView(ListAPIView):
         """
