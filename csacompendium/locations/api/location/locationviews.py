@@ -4,10 +4,7 @@ from csacompendium.utils.permissions import IsOwnerOrReadOnly
 from csacompendium.utils.viewsutils import DetailViewUpdateDelete
 from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
-from rest_framework.permissions import (
-    IsAuthenticated,
-    IsAdminUser,
-)
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import LocationListFilter
 from csacompendium.locations.api.serializers import location_serializers
 
