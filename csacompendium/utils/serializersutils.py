@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
-from rest_framework.serializers import ValidationError
+from rest_framework.serializers import (
+    ValidationError,
+    SerializerMethodField
+)
 
 
 class CreateSerializerUtil:
@@ -58,3 +61,25 @@ class CreateSerializerUtil:
         """
         if not qs.exists() or qs.count() != 1:
             raise ValidationError(error_msg)
+
+
+class FieldMethodSerializer:
+    """
+    Serialize an object based on a provided field
+    """
+    user = SerializerMethodField()
+    modified_by = SerializerMethodField()
+
+    def get_user(self, obj):
+        """
+        :return: Name of user who created the record
+        :rtype: String
+        """
+        return str(obj.user.username)
+
+    def get_modified_by(self, obj):
+        """
+        :return: Name of user who edited a record
+        :rtype: String
+        """
+        return str(obj.modified_by.username)
