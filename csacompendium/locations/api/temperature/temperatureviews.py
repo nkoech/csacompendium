@@ -6,9 +6,7 @@ from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import TemperatureListFilter
-
 from csacompendium.locations.api.temperature.temperatureserializers import temperature_serializers
-temperature_serializers = temperature_serializers()
 
 
 def temperature_views():
@@ -17,13 +15,14 @@ def temperature_views():
     :return: All temperature views
     :rtype: Object
     """
+    temperature_serializer = temperature_serializers()
 
     class TemperatureCreateAPIView(CreateAPIView):
         """
         Creates a single record.
         """
         queryset = Temperature.objects.all()
-        serializer_class = temperature_serializers['TemperatureDetailSerializer']
+        serializer_class = temperature_serializer['TemperatureDetailSerializer']
         permission_classes = [IsAuthenticated]
 
         def perform_create(self, serializer):
@@ -40,7 +39,7 @@ def temperature_views():
         API list view. Gets all records API.
         """
         queryset = Temperature.objects.all()
-        serializer_class = temperature_serializers['TemperatureListSerializer']
+        serializer_class = temperature_serializer['TemperatureListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = TemperatureListFilter
         pagination_class = APILimitOffsetPagination
@@ -50,7 +49,7 @@ def temperature_views():
         Updates a record.
         """
         queryset = Temperature.objects.all()
-        serializer_class = temperature_serializers['TemperatureDetailSerializer']
+        serializer_class = temperature_serializer['TemperatureDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'pk'
 

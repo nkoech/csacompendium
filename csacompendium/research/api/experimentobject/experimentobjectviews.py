@@ -7,7 +7,6 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import ExperimentObjectListFilter
 from csacompendium.research.api.experimentobject.experimentobjectserializers import experiment_object_serializers
-experiment_object_serializers = experiment_object_serializers()
 
 
 def experiment_object_views():
@@ -16,13 +15,14 @@ def experiment_object_views():
     :return: All experiment object views
     :rtype: Object
     """
+    experiment_object_serializer = experiment_object_serializers()
 
     class ExperimentObjectCreateAPIView(CreateAPIView):
         """
         Creates a single record.
         """
         queryset = ExperimentObject.objects.all()
-        serializer_class = experiment_object_serializers['ExperimentObjectDetailSerializer']
+        serializer_class = experiment_object_serializer['ExperimentObjectDetailSerializer']
         permission_classes = [IsAuthenticated]
 
         def perform_create(self, serializer):
@@ -39,7 +39,7 @@ def experiment_object_views():
         API list view. Gets all records API.
         """
         queryset = ExperimentObject.objects.all()
-        serializer_class = experiment_object_serializers['ExperimentObjectListSerializer']
+        serializer_class = experiment_object_serializer['ExperimentObjectListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = ExperimentObjectListFilter
         pagination_class = APILimitOffsetPagination
@@ -49,7 +49,7 @@ def experiment_object_views():
         Updates a record.
         """
         queryset = ExperimentObject.objects.all()
-        serializer_class = experiment_object_serializers['ExperimentObjectDetailSerializer']
+        serializer_class = experiment_object_serializer['ExperimentObjectDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 

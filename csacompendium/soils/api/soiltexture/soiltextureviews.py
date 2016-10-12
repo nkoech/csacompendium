@@ -7,7 +7,6 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import SoilTextureListFilter
 from csacompendium.soils.api.soiltexture.soiltextureserializers import soil_texture_serializers
-soil_texture_serializers = soil_texture_serializers()
 
 
 def soil_texture_views():
@@ -16,13 +15,14 @@ def soil_texture_views():
     :return: All soil texture views
     :rtype: Object
     """
+    soil_texture_serializer = soil_texture_serializers()
 
     class SoilTextureCreateAPIView(CreateAPIView):
         """
         Creates a single record.
         """
         queryset = SoilTexture.objects.all()
-        serializer_class = soil_texture_serializers['SoilTextureDetailSerializer']
+        serializer_class = soil_texture_serializer['SoilTextureDetailSerializer']
         permission_classes = [IsAuthenticated]
 
         def perform_create(self, serializer):
@@ -39,7 +39,7 @@ def soil_texture_views():
         API list view. Gets all records API.
         """
         queryset = SoilTexture.objects.all()
-        serializer_class = soil_texture_serializers['SoilTextureListSerializer']
+        serializer_class = soil_texture_serializer['SoilTextureListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = SoilTextureListFilter
         pagination_class = APILimitOffsetPagination
@@ -49,7 +49,7 @@ def soil_texture_views():
         Updates a record.
         """
         queryset = SoilTexture.objects.all()
-        serializer_class = soil_texture_serializers['SoilTextureDetailSerializer']
+        serializer_class = soil_texture_serializer['SoilTextureDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 

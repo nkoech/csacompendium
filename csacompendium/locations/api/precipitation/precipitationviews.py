@@ -8,7 +8,6 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import PrecipitationListFilter
 
 from csacompendium.locations.api.precipitation.precipitationserializers import precipitation_serializers
-precipitation_serializers = precipitation_serializers()
 
 
 def precipitation_views():
@@ -17,13 +16,14 @@ def precipitation_views():
     :return: All precipitation views
     :rtype: Object
     """
+    precipitation_serializer = precipitation_serializers()
 
     class PrecipitationCreateAPIView(CreateAPIView):
         """
         Creates a single record.
         """
         queryset = Precipitation.objects.all()
-        serializer_class = precipitation_serializers['PrecipitationDetailSerializer']
+        serializer_class = precipitation_serializer['PrecipitationDetailSerializer']
         permission_classes = [IsAuthenticated]
 
         def perform_create(self, serializer):
@@ -40,7 +40,7 @@ def precipitation_views():
         API list view. Gets all records API.
         """
         queryset = Precipitation.objects.all()
-        serializer_class = precipitation_serializers['PrecipitationListSerializer']
+        serializer_class = precipitation_serializer['PrecipitationListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = PrecipitationListFilter
         pagination_class = APILimitOffsetPagination
@@ -50,7 +50,7 @@ def precipitation_views():
         Updates a record.
         """
         queryset = Precipitation.objects.all()
-        serializer_class = precipitation_serializers['PrecipitationDetailSerializer']
+        serializer_class = precipitation_serializer['PrecipitationDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'pk'
 

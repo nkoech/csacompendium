@@ -7,7 +7,6 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import AuthorListFilter
 from csacompendium.research.api.author.authorserializers import author_serializers
-author_serializers = author_serializers()
 
 
 def author_views():
@@ -16,13 +15,14 @@ def author_views():
     :return: All author views
     :rtype: Object
     """
+    author_serializer = author_serializers()
 
     class AuthorCreateAPIView(CreateAPIView):
         """
         Creates a single record.
         """
         queryset = Author.objects.all()
-        serializer_class = author_serializers['AuthorDetailSerializer']
+        serializer_class = author_serializer['AuthorDetailSerializer']
         permission_classes = [IsAuthenticated]
 
         def perform_create(self, serializer):
@@ -39,7 +39,7 @@ def author_views():
         API list view. Gets all records API.
         """
         queryset = Author.objects.all()
-        serializer_class = author_serializers['AuthorListSerializer']
+        serializer_class = author_serializer['AuthorListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = AuthorListFilter
         pagination_class = APILimitOffsetPagination
@@ -49,7 +49,7 @@ def author_views():
         Updates a record.
         """
         queryset = Author.objects.all()
-        serializer_class = author_serializers['AuthorDetailSerializer']
+        serializer_class = author_serializer['AuthorDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 

@@ -7,7 +7,6 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import SoilTypeListFilter
 from csacompendium.soils.api.soiltype.soiltypeserializers import soil_type_serializers
-soil_type_serializers = soil_type_serializers()
 
 
 def soil_type_views():
@@ -16,13 +15,14 @@ def soil_type_views():
     :return: All soil type views
     :rtype: Object
     """
+    soil_type_serializer = soil_type_serializers()
 
     class SoilTypeCreateAPIView(CreateAPIView):
         """
         Creates a single record.
         """
         queryset = SoilType.objects.all()
-        serializer_class = soil_type_serializers['SoilTypeDetailSerializer']
+        serializer_class = soil_type_serializer['SoilTypeDetailSerializer']
         permission_classes = [IsAuthenticated]
 
         def perform_create(self, serializer):
@@ -39,7 +39,7 @@ def soil_type_views():
         API list view. Gets all records API.
         """
         queryset = SoilType.objects.all()
-        serializer_class = soil_type_serializers['SoilTypeListSerializer']
+        serializer_class = soil_type_serializer['SoilTypeListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = SoilTypeListFilter
         pagination_class = APILimitOffsetPagination
@@ -49,7 +49,7 @@ def soil_type_views():
         Updates a record.
         """
         queryset = SoilType.objects.all()
-        serializer_class = soil_type_serializers['SoilTypeDetailSerializer']
+        serializer_class = soil_type_serializer['SoilTypeDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 

@@ -7,7 +7,6 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import ExperimentDurationListFilter
 from csacompendium.research.api.experimentduration.experimentdurationserializers import experiment_duration_serializers
-experiment_duration_serializers = experiment_duration_serializers()
 
 
 def experiment_duration_views():
@@ -16,13 +15,14 @@ def experiment_duration_views():
     :return: All experiment duration views
     :rtype: Object
     """
-
+    experiment_duration_serializer = experiment_duration_serializers()
+    
     class ExperimentDurationCreateAPIView(CreateAPIView):
         """
         Creates a single record.
         """
         queryset = ExperimentDuration.objects.all()
-        serializer_class = experiment_duration_serializers['ExperimentDurationDetailSerializer']
+        serializer_class = experiment_duration_serializer['ExperimentDurationDetailSerializer']
         permission_classes = [IsAuthenticated]
 
         def perform_create(self, serializer):
@@ -39,7 +39,7 @@ def experiment_duration_views():
         API list view. Gets all records API.
         """
         queryset = ExperimentDuration.objects.all()
-        serializer_class = experiment_duration_serializers['ExperimentDurationListSerializer']
+        serializer_class = experiment_duration_serializer['ExperimentDurationListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = ExperimentDurationListFilter
         pagination_class = APILimitOffsetPagination
@@ -49,7 +49,7 @@ def experiment_duration_views():
         Updates a record.
         """
         queryset = ExperimentDuration.objects.all()
-        serializer_class = experiment_duration_serializers['ExperimentDurationDetailSerializer']
+        serializer_class = experiment_duration_serializer['ExperimentDurationDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'pk'
 

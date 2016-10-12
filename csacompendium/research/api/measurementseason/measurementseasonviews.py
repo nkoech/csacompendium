@@ -7,7 +7,6 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import MeasurementSeasonListFilter
 from csacompendium.research.api.measurementseason.measurementseasonserializers import measurement_season_serializers
-measurement_season_serializers = measurement_season_serializers()
 
 
 def measurement_season_views():
@@ -16,13 +15,14 @@ def measurement_season_views():
     :return: All measurement season views
     :rtype: Object
     """
+    measurement_season_serializer = measurement_season_serializers()
 
     class MeasurementSeasonCreateAPIView(CreateAPIView):
         """
         Creates a single record.
         """
         queryset = MeasurementSeason.objects.all()
-        serializer_class = measurement_season_serializers['MeasurementSeasonDetailSerializer']
+        serializer_class = measurement_season_serializer['MeasurementSeasonDetailSerializer']
         permission_classes = [IsAuthenticated]
 
         def perform_create(self, serializer):
@@ -39,7 +39,7 @@ def measurement_season_views():
         API list view. Gets all records API.
         """
         queryset = MeasurementSeason.objects.all()
-        serializer_class = measurement_season_serializers['MeasurementSeasonListSerializer']
+        serializer_class = measurement_season_serializer['MeasurementSeasonListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = MeasurementSeasonListFilter
         pagination_class = APILimitOffsetPagination
@@ -49,7 +49,7 @@ def measurement_season_views():
         Updates a record.
         """
         queryset = MeasurementSeason.objects.all()
-        serializer_class = measurement_season_serializers['MeasurementSeasonDetailSerializer']
+        serializer_class = measurement_season_serializer['MeasurementSeasonDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 

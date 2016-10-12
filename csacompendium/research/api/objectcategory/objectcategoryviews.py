@@ -7,7 +7,6 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import ObjectCategoryListFilter
 from csacompendium.research.api.objectcategory.objectcategoryserializers import object_category_serializers
-object_category_serializers = object_category_serializers()
 
 
 def object_category_views():
@@ -16,13 +15,14 @@ def object_category_views():
     :return: All object category views
     :rtype: Object
     """
+    object_category_serializer = object_category_serializers()
 
     class ObjectCategoryCreateAPIView(CreateAPIView):
         """
         Creates a single record.
         """
         queryset = ObjectCategory.objects.all()
-        serializer_class = object_category_serializers['ObjectCategoryDetailSerializer']
+        serializer_class = object_category_serializer['ObjectCategoryDetailSerializer']
         permission_classes = [IsAuthenticated]
 
         def perform_create(self, serializer):
@@ -39,7 +39,7 @@ def object_category_views():
         API list view. Gets all records API.
         """
         queryset = ObjectCategory.objects.all()
-        serializer_class = object_category_serializers['ObjectCategoryListSerializer']
+        serializer_class = object_category_serializer['ObjectCategoryListSerializer']
         filter_backends = (DjangoFilterBackend,)
         filter_class = ObjectCategoryListFilter
         pagination_class = APILimitOffsetPagination
@@ -49,7 +49,7 @@ def object_category_views():
         Updates a record.
         """
         queryset = ObjectCategory.objects.all()
-        serializer_class = object_category_serializers['ObjectCategoryDetailSerializer']
+        serializer_class = object_category_serializer['ObjectCategoryDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 
