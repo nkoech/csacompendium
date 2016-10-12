@@ -1,13 +1,9 @@
 from csacompendium.locations.models import Location
 from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
+from csacompendium.utils.viewsutils import DetailViewUpdateDelete
 from rest_framework.filters import DjangoFilterBackend
-from rest_framework.generics import (
-    CreateAPIView,
-    ListAPIView,
-    RetrieveAPIView,
-)
-from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser,
@@ -51,7 +47,7 @@ def location_views():
         filter_class = LocationListFilter
         pagination_class = APILimitOffsetPagination
 
-    class LocationDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
+    class LocationDetailAPIView(DetailViewUpdateDelete):
         """
         Updates a record.
         """
@@ -59,36 +55,6 @@ def location_views():
         serializer_class = location_serializers['LocationDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
-
-        def put(self, request, *args, **kwargs):
-            """
-            Update record
-            :param request: Client request
-            :param args: List arguments
-            :param kwargs: Keyworded arguments
-            :return: Updated record
-            :rtype: Object
-            """
-            return self.update(request, *args, **kwargs)
-
-        def delete(self, request, *args, **kwargs):
-            """
-            Delete record
-            :param request: Client request
-            :param args: List arguments
-            :param kwargs: Keyworded arguments
-            :return: Updated record
-            :rtype: Object
-            """
-            return self.destroy(request, *args, **kwargs)
-
-        def perform_update(self, serializer):
-            """
-            Update individual value
-            :param serializer: Serializer object
-            :return:
-            """
-            serializer.save(modified_by=self.request.user)
 
     return {
         'LocationCreateAPIView': LocationCreateAPIView,
