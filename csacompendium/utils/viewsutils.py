@@ -3,6 +3,9 @@ from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
 
 
 class DetailViewUpdateDelete(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
+    """
+    Updates and deletes records in the view detail serializer
+    """
     def put(self, request, *args, **kwargs):
         """
         Update record
