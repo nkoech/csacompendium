@@ -35,3 +35,20 @@ class DetailViewUpdateDelete(DestroyModelMixin, UpdateModelMixin, RetrieveAPIVie
         :return:
         """
         serializer.save(modified_by=self.request.user)
+
+
+def get_http_request(request, slug=False):
+    """
+    Get http request values
+    :param request:
+    :param slug: Checks if slug is provided
+    :return: Content/model type, request parameter and user creator
+    :rtype: String
+    """
+
+    model_type = request.GET.get('type')
+    url_parameter = request.GET.get('pk')
+    user = request.user
+    if slug:
+        url_parameter = request.GET.get('slug')
+    return model_type, url_parameter, user
