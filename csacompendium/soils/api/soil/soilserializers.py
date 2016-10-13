@@ -55,13 +55,12 @@ def soil_serializers():
                          ['last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
-                instance = super(SoilCreateSerializer, self).__init__(*args, **kwargs)
+                super(SoilCreateSerializer, self).__init__(*args, **kwargs)
                 self.model_type = model_type
                 self.key = slug
                 self.user = user
                 self.slugify = True
                 self.auth_user = self.get_authenticated_user(self.user)
-                return instance
 
             def create(self, validated_data):
                 """
