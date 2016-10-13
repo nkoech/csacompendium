@@ -86,7 +86,15 @@ class FieldMethodSerializer:
 
 
 def get_related_content(obj, serializer, relation_filter, request):
-
+    """
+    Gets related content based on type or foreign key
+    :param obj: Object/record
+    :param serializer: Model serializer
+    :param relation_filter: Related data queryset
+    :param request: Interface/device request
+    :return: Related object/record otherwise return none
+    :rtype: Object
+    """
     try:
         relation_type = serializer(
             relation_filter,
