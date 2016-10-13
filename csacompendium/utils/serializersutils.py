@@ -83,3 +83,16 @@ class FieldMethodSerializer:
         :rtype: String
         """
         return str(obj.modified_by.username)
+
+
+def get_related_content(obj, serializer, relation_filter, request):
+
+    try:
+        relation_type = serializer(
+            relation_filter,
+            context={'request': request},
+            many=True
+        ).data
+        return relation_type
+    except obj.DoesNotExist:
+        return None

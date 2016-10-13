@@ -2,7 +2,7 @@ from csacompendium.soils.api.serializers import soil_serializers
 from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
 from csacompendium.locations.models import Location
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import CreateSerializerUtil
+from csacompendium.utils.serializersutils import CreateSerializerUtil, get_related_content
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
@@ -47,10 +47,7 @@ def location_serializers():
             class Meta:
                 model = Location
                 fields = ['id', ] + LocationBaseSerializer.Meta.fields + \
-                         [
-                             'last_update',
-                             'time_created',
-                         ]
+                         ['last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
                 super(LocationCreateSerializer, self).__init__(*args, **kwargs)
@@ -161,15 +158,10 @@ def location_serializers():
             LocationRelationContentTypeSerializer = self.location_relation_serializers[
                 'LocationRelationContentTypeSerializer'
             ]
-            try:
-                content_type = LocationRelationContentTypeSerializer(
-                    obj.location_relation_relation,
-                    context={'request': request},
-                    many=True
-                ).data
-                return content_type
-            except obj.DoesNotExist:
-                return None
+            related_content = get_related_content(
+                obj, LocationRelationContentTypeSerializer, obj.location_relation_relation, request
+            )
+            return related_content
 
         def get_soils(self, obj):
             """
@@ -180,11 +172,8 @@ def location_serializers():
             """
             request = self.context['request']
             SoilListSerializer = soil_serializers['SoilListSerializer']
-            try:
-                soils = SoilListSerializer(obj.soils, context={'request': request}, many=True).data
-                return soils
-            except obj.DoesNotExist:
-                return None
+            related_content = get_related_content(obj, SoilListSerializer, obj.soils, request)
+            return related_content
 
     return {
         'create_location_serializer': create_location_serializer,
