@@ -44,7 +44,6 @@ def location_serializers():
             """
             Create a record
             """
-
             class Meta:
                 model = Location
                 fields = ['id', ] + LocationBaseSerializer.Meta.fields + \

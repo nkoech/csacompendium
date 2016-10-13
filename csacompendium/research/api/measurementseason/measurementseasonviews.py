@@ -17,7 +17,7 @@ def measurement_season_views():
     """
     measurement_season_serializer = measurement_season_serializers()
 
-    class MeasurementSeasonCreateAPIView(CreateAPIView, CreateAPIViewHook):
+    class MeasurementSeasonCreateAPIView(CreateAPIViewHook):
         """
         Creates a single record.
         """
