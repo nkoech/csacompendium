@@ -54,7 +54,7 @@ class CreateSerializerUtil:
     def validation_error(self, qs, error_msg):
         """
         Raises validation error
-        :param obj_qs: Model or object queryset
+        :param qs: Model or object queryset
         :param error_msg: Validation error message
         :return: None:
         :rtype: None
