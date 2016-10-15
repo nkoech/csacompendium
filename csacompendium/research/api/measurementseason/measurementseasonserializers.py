@@ -5,6 +5,7 @@ from rest_framework.serializers import (
 from csacompendium.research.api.measurementyear.measurementyearserializers import measurement_year_serializers
 from csacompendium.research.models import MeasurementSeason
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
+from csacompendium.utils.serializersutils import get_related_content
 
 
 def measurement_season_serializers():
@@ -75,15 +76,10 @@ def measurement_season_serializers():
             """
             request = self.context['request']
             MeasurementYearListSerializer = self.measurement_year_serializers['MeasurementYearListSerializer']
-            try:
-                measurement_year = MeasurementYearListSerializer(
-                    obj.measurement_year_relation,
-                    context={'request': request},
-                    many=True
-                ).data
-                return measurement_year
-            except obj.DoesNotExist:
-                return None
+            related_content = get_related_content(
+                obj, MeasurementYearListSerializer , obj.measurement_year_relation, request
+            )
+            return related_content
 
     return {
         'MeasurementSeasonListSerializer': MeasurementSeasonListSerializer,

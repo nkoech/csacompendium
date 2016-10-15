@@ -4,6 +4,7 @@ from csacompendium.research.models import (
 )
 # from csacompendium.research.api.researchobject.researchobjectserializers import research_object_serializers
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
+from csacompendium.utils.serializersutils import get_related_content
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
@@ -98,16 +99,10 @@ def experiment_object_serializers():
             """
             request = self.context['request']
             # ResearchObjectListSerializer = self.research_object_serializers['ResearchObjectListSerializer']
-            try:
-                pass
-                # research_object = ResearchObjectListSerializer(
-                #     obj.research_object_relation,
-                #     context={'request': request},
-                #     many=True
-                # ).data
-                # return research_object
-            except obj.DoesNotExist:
-                return None
+            # related_content = get_related_content(
+            #     obj, ResearchObjectListSerializer, obj.research_object_relation, request
+            # )
+            # return related_content
 
     return {
         'ExperimentObjectListSerializer': ExperimentObjectListSerializer,

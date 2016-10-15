@@ -5,6 +5,7 @@ from rest_framework.serializers import (
 from csacompendium.soils.api.soil.soilserializers import soil_serializers
 from csacompendium.soils.models import SoilTexture
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
+from csacompendium.utils.serializersutils import get_related_content
 
 
 def soil_texture_serializers():
@@ -75,15 +76,8 @@ def soil_texture_serializers():
             """
             request = self.context['request']
             SoilListSerializer = self.soil_serializers['SoilListSerializer']
-            try:
-                soil_properties = SoilListSerializer(
-                    obj.soil_relation,
-                    context={'request': request},
-                    many=True
-                ).data
-                return soil_properties
-            except obj.DoesNotExist:
-                return None
+            related_content = get_related_content(obj, SoilListSerializer, obj.soil_relation, request)
+            return related_content
 
     return {
         'SoilTextureListSerializer': SoilTextureListSerializer,

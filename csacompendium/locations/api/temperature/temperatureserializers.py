@@ -5,6 +5,7 @@ from rest_framework.serializers import (
 from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
 from csacompendium.locations.models import Temperature
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
+from csacompendium.utils.serializersutils import get_related_content
 
 
 def temperature_serializers():
@@ -79,15 +80,8 @@ def temperature_serializers():
             """
             request = self.context['request']
             LocationRelationSerializer = self.location_relation_serializers['LocationRelationSerializer']
-            try:
-                locations = LocationRelationSerializer(
-                    obj.location_relations,
-                    context={'request': request},
-                    many=True
-                ).data
-                return locations
-            except obj.DoesNotExist:
-                return None
+            related_content = get_related_content(obj, LocationRelationSerializer, obj.location_relations, request)
+            return related_content
 
     return {
         'TemperatureListSerializer': TemperatureListSerializer,

@@ -5,6 +5,7 @@ from rest_framework.serializers import (
 from csacompendium.research.api.experimentobject.experimentobjectserializers import experiment_object_serializers
 from csacompendium.research.models import ObjectCategory
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
+from csacompendium.utils.serializersutils import get_related_content
 
 
 def object_category_serializers():
@@ -75,15 +76,10 @@ def object_category_serializers():
             """
             request = self.context['request']
             ExperimentObjectListSerializer = self.experiment_object_serializers['ExperimentObjectListSerializer']
-            try:
-                experiment_object = ExperimentObjectListSerializer(
-                    obj.experiment_object_relation,
-                    context={'request': request},
-                    many=True
-                ).data
-                return experiment_object
-            except obj.DoesNotExist:
-                return None
+            related_content = get_related_content(
+                obj, ExperimentObjectListSerializer, obj.experiment_object_relation, request
+            )
+            return related_content
 
     return {
         'ObjectCategoryListSerializer': ObjectCategoryListSerializer,

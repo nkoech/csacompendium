@@ -5,6 +5,7 @@ from rest_framework.serializers import (
 # from csacompendium.research.api.research.researchserializers import research_serializers
 from csacompendium.research.models import Author
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
+from csacompendium.utils.serializersutils import get_related_content
 
 
 def author_serializers():
@@ -82,16 +83,8 @@ def author_serializers():
             """
             request = self.context['request']
             # ResearchListSerializer = self.research_serializers['ResearchListSerializer']
-            try:
-                pass
-                # research = ResearchListSerializer(
-                #     obj.research_relation,
-                #     context={'request': request},
-                #     many=True
-                # ).data
-                # return research
-            except obj.DoesNotExist:
-                return None
+            # related_content = get_related_content(obj, ResearchListSerializer, obj.research_relation, request)
+            # return related_content
 
     return {
         'AuthorListSerializer': AuthorListSerializer,
