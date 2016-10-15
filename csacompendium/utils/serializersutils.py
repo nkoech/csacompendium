@@ -113,3 +113,18 @@ def get_related_content(obj, serializer, relation_filter, request):
         return relation_type
     except obj.DoesNotExist:
         return None
+
+
+def get_related_content_url(model, related_field):
+    """
+    Gets related object/content as url based on foreign key
+    :param model: Model
+    :param related_field: Foreign key field
+    :return: Related object/content url
+    :rtype: String
+    """
+    try:
+        related_content_obj = model.objects.get(id=related_field)
+        return related_content_obj.get_api_url()
+    except:
+        return None

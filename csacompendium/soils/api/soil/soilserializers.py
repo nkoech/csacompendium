@@ -4,7 +4,11 @@ from csacompendium.soils.models import (
     SoilTexture,
 )
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import CreateSerializerUtil, FieldMethodSerializer
+from csacompendium.utils.serializersutils import (
+    get_related_content_url,
+    CreateSerializerUtil,
+    FieldMethodSerializer
+)
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
@@ -135,11 +139,7 @@ def soil_serializers():
             :return: URL to related object
             :rtype: String
             """
-            try:
-                soiltype_obj = SoilType.objects.get(id=obj.soiltype.id)
-                return soiltype_obj.get_api_url()
-            except:
-                return None
+            return get_related_content_url(SoilType, obj.soiltype.id)
 
         def get_soil_texture_url(self, obj):
             """
@@ -148,11 +148,7 @@ def soil_serializers():
             :return: URL to related object
             :rtype: String
             """
-            try:
-                soiltexture_obj = SoilTexture.objects.get(id=obj.soiltexture.id)
-                return soiltexture_obj.get_api_url()
-            except:
-                return None
+            return get_related_content_url(SoilTexture, obj.soiltexture.id)
 
     return {
         'create_soil_serializer': create_soil_serializer,
