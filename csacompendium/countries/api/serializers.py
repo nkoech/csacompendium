@@ -5,6 +5,7 @@ from rest_framework.serializers import (
 from csacompendium.locations.api.serializers import location_serializers
 from csacompendium.countries.models import Country
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
+from csacompendium.utils.serializersutils import get_related_content
 
 
 class CountryListSerializer(ModelSerializer):
@@ -75,8 +76,5 @@ class CountryDetailSerializer(ModelSerializer):
         """
         request = self.context['request']
         LocationListSerializer = location_serializers['LocationListSerializer']
-        try:
-            locations = LocationListSerializer(obj.locations, context={'request': request}, many=True).data
-            return locations
-        except obj.DoesNotExist:
-            return None
+        related_content = get_related_content(obj, LocationListSerializer, obj.locations, request)
+        return related_content
