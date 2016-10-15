@@ -5,7 +5,7 @@ from rest_framework.serializers import (
 # from csacompendium.research.api.research.researchserializers import research_serializers
 from csacompendium.research.models import Author
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import get_related_content
+from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
 
 
 def author_serializers():
@@ -38,7 +38,7 @@ def author_serializers():
             model = Author
             fields = AuthorBaseSerializer.Meta.fields + ['url', ]
 
-    class AuthorDetailSerializer(AuthorBaseSerializer):
+    class AuthorDetailSerializer(AuthorBaseSerializer, FieldMethodSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
@@ -58,22 +58,6 @@ def author_serializers():
             model = Author
             fields = ['id', ] + AuthorBaseSerializer.Meta.fields + ['author_bio', ] + common_fields
             read_only_fields = ['id', ] + common_fields
-
-        def get_user(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who created the record
-            :rtype: String
-            """
-            return str(obj.user.username)
-
-        def get_modified_by(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who edited a record
-            :rtype: String
-            """
-            return str(obj.modified_by.username)
 
         def get_research(self, obj):
             """

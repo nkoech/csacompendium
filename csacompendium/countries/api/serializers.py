@@ -5,7 +5,7 @@ from rest_framework.serializers import (
 from csacompendium.locations.api.serializers import location_serializers
 from csacompendium.countries.models import Country
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import get_related_content
+from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
 
 
 class CountryListSerializer(ModelSerializer):
@@ -23,7 +23,7 @@ class CountryListSerializer(ModelSerializer):
         ]
 
 
-class CountryDetailSerializer(ModelSerializer):
+class CountryDetailSerializer(ModelSerializer, FieldMethodSerializer):
     """
     Serialize single record into an API. This is dependent on fields given.
     """
@@ -51,22 +51,6 @@ class CountryDetailSerializer(ModelSerializer):
             'time_created',
             'locations',
         ]
-
-    def get_user(self, obj):
-        """
-        :param obj: Current record object
-        :return: Name of user who created the record
-        :rtype: String
-        """
-        return str(obj.user.username)
-
-    def get_modified_by(self, obj):
-        """
-        :param obj: Current record object
-        :return: Name of user who edited a record
-        :rtype: String
-        """
-        return str(obj.modified_by.username)
 
     def get_locations(self, obj):
         """

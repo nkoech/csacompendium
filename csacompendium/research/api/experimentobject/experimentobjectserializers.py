@@ -4,7 +4,7 @@ from csacompendium.research.models import (
 )
 # from csacompendium.research.api.researchobject.researchobjectserializers import research_object_serializers
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import get_related_content
+from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
@@ -40,7 +40,7 @@ def experiment_object_serializers():
             model = ExperimentObject
             fields = ExperimentObjectBaseSerializer.Meta.fields + ['url', ]
 
-    class ExperimentObjectDetailSerializer(ExperimentObjectBaseSerializer):
+    class ExperimentObjectDetailSerializer(ExperimentObjectBaseSerializer, FieldMethodSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
@@ -74,22 +74,6 @@ def experiment_object_serializers():
                 return objectcategory_obj.get_api_url()
             except:
                 return None
-
-        def get_user(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who created the record
-            :rtype: String
-            """
-            return str(obj.user.username)
-
-        def get_modified_by(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who edited a record
-            :rtype: String
-            """
-            return str(obj.modified_by.username)
 
         def get_research_object(self, obj):
             """

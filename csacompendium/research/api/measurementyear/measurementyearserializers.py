@@ -3,7 +3,7 @@ from csacompendium.research.models import (
     MeasurementSeason,
 )
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import CreateSerializerUtil
+from csacompendium.utils.serializersutils import CreateSerializerUtil, FieldMethodSerializer
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
@@ -91,7 +91,7 @@ def measurement_year_serializers():
             model = MeasurementYear
             fields = MeasurementYearBaseSerializer.Meta.fields + ['url', ]
 
-    class MeasurementYearDetailSerializer(MeasurementYearBaseSerializer):
+    class MeasurementYearDetailSerializer(MeasurementYearBaseSerializer, FieldMethodSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
@@ -122,34 +122,6 @@ def measurement_year_serializers():
             try:
                 measurementseason_obj = MeasurementSeason.objects.get(id=obj.measurementseason.id)
                 return measurementseason_obj.get_api_url()
-            except:
-                return None
-
-        def get_user(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who created the record
-            :rtype: String
-            """
-            return str(obj.user.username)
-
-        def get_modified_by(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who edited a record
-            :rtype: String
-            """
-            return str(obj.modified_by.username)
-
-        def get_content_type_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            try:
-                return obj.content_object.get_api_url()
             except:
                 return None
 

@@ -67,9 +67,6 @@ class FieldMethodSerializer:
     """
     Serialize an object based on a provided field
     """
-    user = SerializerMethodField()
-    modified_by = SerializerMethodField()
-
     def get_user(self, obj):
         """
         :return: Name of user who created the record
@@ -83,6 +80,18 @@ class FieldMethodSerializer:
         :rtype: String
         """
         return str(obj.modified_by.username)
+
+    def get_content_type_url(self, obj):
+        """
+        Get related content type/object url
+        :param obj: Current record object
+        :return: URL to related object
+        :rtype: String
+        """
+        try:
+            return obj.content_object.get_api_url()
+        except:
+            return None
 
 
 def get_related_content(obj, serializer, relation_filter, request):

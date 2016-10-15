@@ -1,6 +1,6 @@
 from csacompendium.locations.models import Location, LocationRelation
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import CreateSerializerUtil
+from csacompendium.utils.serializersutils import CreateSerializerUtil, FieldMethodSerializer
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
@@ -93,7 +93,7 @@ def location_relation_serializers():
 
         return LocationRelationCreateSerializer
 
-    class LocationRelationListSerializer(ModelSerializer):
+    class LocationRelationListSerializer(ModelSerializer, FieldMethodSerializer):
         """
         Serialize all records in given fields into an API
         """
@@ -123,18 +123,6 @@ def location_relation_serializers():
                 return location_obj.get_api_url()
             except:
                 return None
-
-        def get_content_type_url(self, obj):
-                """
-                Get related content type/object url
-                :param obj: Current record object
-                :return: URL to related object
-                :rtype: String
-                """
-                try:
-                    return obj.content_object.get_api_url()
-                except:
-                    return None
 
     class LocationRelationSerializer(ModelSerializer):
         """
@@ -174,7 +162,7 @@ def location_relation_serializers():
             """
             return obj.id
 
-    class LocationRelationContentTypeSerializer(ModelSerializer):
+    class LocationRelationContentTypeSerializer(ModelSerializer, FieldMethodSerializer):
         """
         Serialize all records in given fields into an API
         """
@@ -199,19 +187,7 @@ def location_relation_serializers():
             """
             return obj.id
 
-        def get_content_type_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            try:
-                return obj.content_object.get_api_url()
-            except:
-                return None
-
-    class LocationRelationDetailSerializer(ModelSerializer):
+    class LocationRelationDetailSerializer(ModelSerializer, FieldMethodSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
@@ -252,34 +228,6 @@ def location_relation_serializers():
             try:
                 location_obj = Location.objects.get(id=obj.location.id)
                 return location_obj.get_api_url()
-            except:
-                return None
-
-        def get_user(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who created the record
-            :rtype: String
-            """
-            return str(obj.user.username)
-
-        def get_modified_by(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who edited a record
-            :rtype: String
-            """
-            return str(obj.modified_by.username)
-
-        def get_content_type_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            try:
-                return obj.content_object.get_api_url()
             except:
                 return None
 

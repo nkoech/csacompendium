@@ -5,7 +5,7 @@ from rest_framework.serializers import (
 from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
 from csacompendium.locations.models import Temperature
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import get_related_content
+from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
 
 
 def temperature_serializers():
@@ -30,12 +30,11 @@ def temperature_serializers():
                 'url',
             ]
 
-    class TemperatureDetailSerializer(ModelSerializer):
+    class TemperatureDetailSerializer(ModelSerializer, FieldMethodSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
         location_relation_serializers = location_relation_serializers()
-
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         locations = SerializerMethodField()
@@ -55,22 +54,6 @@ def temperature_serializers():
                 'temperature_uom',
             ] + common_fields
             read_only_fields = ['id', ] + common_fields
-
-        def get_user(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who created the record
-            :rtype: String
-            """
-            return str(obj.user.username)
-
-        def get_modified_by(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who edited a record
-            :rtype: String
-            """
-            return str(obj.modified_by.username)
 
         def get_locations(self, obj):
             """

@@ -2,7 +2,11 @@ from csacompendium.soils.api.serializers import soil_serializers
 from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
 from csacompendium.locations.models import Location
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import CreateSerializerUtil, get_related_content
+from csacompendium.utils.serializersutils import (
+    CreateSerializerUtil,
+    FieldMethodSerializer,
+    get_related_content
+)
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
@@ -95,7 +99,7 @@ def location_serializers():
             model = Location
             fields = LocationBaseSerializer.Meta.fields + ['url', ]
 
-    class LocationDetailSerializer(LocationBaseSerializer):
+    class LocationDetailSerializer(LocationBaseSerializer, FieldMethodSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
@@ -118,34 +122,6 @@ def location_serializers():
             model = Location
             fields = ['id', ] + LocationBaseSerializer.Meta.fields + ['user', ] + common_fields
             read_only_fields = ['id', ] + common_fields
-
-        def get_user(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who created the record
-            :rtype: String
-            """
-            return str(obj.user.username)
-
-        def get_modified_by(self, obj):
-            """
-            :param obj: Current record object
-            :return: Name of user who edited a record
-            :rtype: String
-            """
-            return str(obj.modified_by.username)
-
-        def get_content_type_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            try:
-                return obj.content_object.get_api_url()
-            except:
-                return None
 
         def get_relation_details(self, obj):
             """
