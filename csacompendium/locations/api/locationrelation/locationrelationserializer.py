@@ -1,6 +1,10 @@
 from csacompendium.locations.models import Location, LocationRelation
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import CreateSerializerUtil, FieldMethodSerializer
+from csacompendium.utils.serializersutils import (
+    CreateSerializerUtil,
+    get_related_content_url,
+    FieldMethodSerializer
+)
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
@@ -118,11 +122,7 @@ def location_relation_serializers():
             :return: URL to related object
             :rtype: String
             """
-            try:
-                location_obj = Location.objects.get(id=obj.location.id)
-                return location_obj.get_api_url()
-            except:
-                return None
+            return get_related_content_url(Location, obj.location.id)
 
     class LocationRelationSerializer(ModelSerializer):
         """
@@ -148,11 +148,7 @@ def location_relation_serializers():
             :return: URL to related object
             :rtype: String
             """
-            try:
-                location_obj = Location.objects.get(id=obj.location.id)
-                return location_obj.get_api_url()
-            except:
-                return None
+            return get_related_content_url(Location, obj.location.id)
 
         def get_relation_id (self, obj):
             """
@@ -225,11 +221,7 @@ def location_relation_serializers():
             :return: URL to related object
             :rtype: String
             """
-            try:
-                location_obj = Location.objects.get(id=obj.location.id)
-                return location_obj.get_api_url()
-            except:
-                return None
+            return get_related_content_url(Location, obj.location.id)
 
     return {
         'create_location_relation_serializer': create_location_relation_serializer,

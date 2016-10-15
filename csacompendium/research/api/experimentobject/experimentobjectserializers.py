@@ -4,7 +4,11 @@ from csacompendium.research.models import (
 )
 # from csacompendium.research.api.researchobject.researchobjectserializers import research_object_serializers
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
+from csacompendium.utils.serializersutils import (
+    FieldMethodSerializer,
+    get_related_content,
+    get_related_content_url
+)
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
@@ -69,11 +73,7 @@ def experiment_object_serializers():
             :return: URL to related object
             :rtype: String
             """
-            try:
-                objectcategory_obj = ObjectCategory.objects.get(id=obj.objectcategory.id)
-                return objectcategory_obj.get_api_url()
-            except:
-                return None
+            return get_related_content_url(ObjectCategory, obj.objectcategory.id)
 
         def get_research_object(self, obj):
             """

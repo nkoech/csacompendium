@@ -3,7 +3,11 @@ from csacompendium.research.models import (
     MeasurementSeason,
 )
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
-from csacompendium.utils.serializersutils import CreateSerializerUtil, FieldMethodSerializer
+from csacompendium.utils.serializersutils import (
+    CreateSerializerUtil,
+    get_related_content_url,
+    FieldMethodSerializer
+)
 from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField,
@@ -119,11 +123,7 @@ def measurement_year_serializers():
             :return: URL to related object
             :rtype: String
             """
-            try:
-                measurementseason_obj = MeasurementSeason.objects.get(id=obj.measurementseason.id)
-                return measurementseason_obj.get_api_url()
-            except:
-                return None
+            return get_related_content_url(MeasurementSeason, obj.measurementseason.id)
 
     return {
         'create_measurement_year_serializer': create_measurement_year_serializer,
