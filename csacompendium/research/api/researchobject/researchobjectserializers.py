@@ -17,8 +17,8 @@ from rest_framework.serializers import (
 
 def research_object_serializers():
     """
-    Research object serializers
-    :return: All research object serializers
+    Research object object serializers
+    :return: All research object object serializers
     :rtype: Object
     """
 
@@ -65,7 +65,7 @@ def research_object_serializers():
                 """
                 Created record from validated data
                 :param validated_data: Validated data
-                :return: Research object
+                :return: Research object object
                 :rtype: Object
                 """
                 experimentobject = validated_data.get('experimentobject')
