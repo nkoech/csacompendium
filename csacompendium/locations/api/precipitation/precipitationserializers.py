@@ -60,7 +60,7 @@ def precipitation_serializers():
         def get_locations(self, obj):
             """
             :param obj: Current record object
-            :return: Locations in a country
+            :return: Related location relation object
             :rtype: Object/record
             """
             request = self.context['request']
