@@ -101,6 +101,7 @@ def model_field_exists(instance, field_name):
 
 def get_year_choices():
     """
+    Get years as model choices
     :return: Years
     """
     year_choice = []
@@ -111,7 +112,9 @@ def get_year_choices():
 
 def get_datetime_now():
     """
+    Get current year
     :return: Curreent year
     """
     return datetime.datetime.now().year
+
 
