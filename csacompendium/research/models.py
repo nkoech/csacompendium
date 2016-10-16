@@ -219,6 +219,17 @@ class Research(AuthUserDetail, CreateUpdateTime):
         qs = ResearchOutcomeIndicator.objects.filter_by_model_type(instance)
         return qs
 
+    @property
+    def research_object(self):
+        """
+        Get related research object object/record
+        :return: Query result from the research object model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchObject.objects.filter_by_instance(instance)
+        return qs
+
 
 class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
     """
