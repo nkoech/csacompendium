@@ -3,7 +3,7 @@ from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
 from csacompendium.utils.viewsutils import DetailViewUpdateDelete, CreateAPIViewHook
 from rest_framework.filters import DjangoFilterBackend
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import SpeciesListFilter
 from csacompendium.research.api.species.speciesserializers import species_serializers
