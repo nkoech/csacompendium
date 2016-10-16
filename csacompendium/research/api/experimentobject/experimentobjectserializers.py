@@ -2,7 +2,7 @@ from csacompendium.research.models import (
     ExperimentObject,
     ObjectCategory,
 )
-# from csacompendium.research.api.researchobject.researchobjectserializers import research_object_serializers
+from csacompendium.research.api.researchobject.researchobjectserializers import research_object_serializers
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
     FieldMethodSerializer,
@@ -48,7 +48,7 @@ def experiment_object_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        # research_object_serializers = research_object_serializers()
+        research_object_serializers = research_object_serializers()
         object_category_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
@@ -82,11 +82,11 @@ def experiment_object_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            # ResearchObjectListSerializer = self.research_object_serializers['ResearchObjectListSerializer']
-            # related_content = get_related_content(
-            #     obj, ResearchObjectListSerializer, obj.research_object_relation, request
-            # )
-            # return related_content
+            ResearchObjectListSerializer = self.research_object_serializers['ResearchObjectListSerializer']
+            related_content = get_related_content(
+                obj, ResearchObjectListSerializer, obj.research_object_relation, request
+            )
+            return related_content
 
     return {
         'ExperimentObjectListSerializer': ExperimentObjectListSerializer,
