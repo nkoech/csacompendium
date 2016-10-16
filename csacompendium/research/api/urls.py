@@ -6,6 +6,7 @@ from .views import (
     author_views,
     object_category_views,
     experiment_object_views,
+    research_object_views,
     # soil_views,
 )
 
@@ -108,5 +109,24 @@ urlpatterns += [
         r'^experimentobject/(?P<slug>[\w-]+)/$',
         experiment_object_views['ExperimentObjectDetailAPIView'].as_view(),
         name='experiment_object_detail'
+    ),
+]
+
+# Research object URLs
+urlpatterns += [
+    url(
+        r'^researchobject/$',
+        research_object_views['ResearchObjectListAPIView'].as_view(),
+        name='research_object_list'
+    ),
+    url(
+        r'^researchobject/create/$',
+        research_object_views['ResearchObjectCreateAPIView'].as_view(),
+        name='research_object_create'
+    ),
+    url(
+        r'^researchobject/(?P<pk>[\w-]+)/$',
+        research_object_views['ResearchObjectDetailAPIView'].as_view(),
+        name='research_object_detail'
     ),
 ]
