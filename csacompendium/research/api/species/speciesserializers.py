@@ -40,11 +40,11 @@ def species_serializers():
 
         class Meta:
             common_fields = [
-                'research_species',
                 'user',
                 'modified_by',
                 'last_update',
                 'time_created',
+                'research_species',
             ]
             model = Species
             fields = [

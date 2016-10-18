@@ -356,7 +356,7 @@ class Species(AuthUserDetail, CreateUpdateTime):
     """
     Species model
     """
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
     species = models.CharField(max_length=200, unique=True)
 
     def get_api_url(self):
