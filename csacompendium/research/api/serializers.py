@@ -5,6 +5,7 @@ from .experimentduration.experimentdurationserializers import experiment_duratio
 from .researchobject.researchobjectserializers import research_object_serializers
 from .experimentobject.experimentobjectserializers import experiment_object_serializers
 from .objectcategory.objectcategoryserializers import object_category_serializers
+from .researchspecies.researchspeciesserializers import research_species_serializers
 from .species.speciesserializers import species_serializers
 
 # soil_serializers = soil_serializers()
@@ -14,4 +15,5 @@ experiment_duration_serializers = experiment_duration_serializers()
 research_object_serializers = research_object_serializers()
 experiment_object_serializers = experiment_object_serializers()
 object_category_serializers = object_category_serializers()
+research_species_serializers = research_species_serializers()
 species_serializers = species_serializers()

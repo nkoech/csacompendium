@@ -15,7 +15,7 @@ from rest_framework.serializers import (
 def location_relation_serializers():
     """
     LocationsRelation serializers
-    :return: All location serializers
+    :return: All location relation serializers
     :rtype: Object
     """
 
@@ -33,53 +33,28 @@ def location_relation_serializers():
             """
             Create a record
             """
-            user = SerializerMethodField()
-            modified_by = SerializerMethodField()
-
             class Meta:
                 model = LocationRelation
                 fields = [
                     'id',
                     'location',
-                    'user',
-                    'modified_by',
                     'last_update',
                     'time_created',
                 ]
-                read_only_fields = [
-                    'user',
-                    'modified_by',
-                ]
-
-            def get_user(self, obj):
-                """
-                :param obj: Current record object
-                :return: Name of user who created the record
-                :rtype: String
-                """
-                return str(obj.user.username)
-
-            def get_modified_by(self, obj):
-                """
-                :param obj: Current record object
-                :return: Name of user who edited a record
-                :rtype: String
-                """
-                return str(obj.modified_by.username)
 
             def __init__(self, *args, **kwargs):
                 super(LocationRelationCreateSerializer, self).__init__(*args, **kwargs)
                 self.model_type = model_type
                 self.key = pk
                 self.user = user
-                self.slugify = True
+                self.slugify = False
                 self.auth_user = self.get_authenticated_user(self.user)
 
             def create(self, validated_data):
                 """
                 Created record from validated data
                 :param validated_data: Validated data
-                :return: Location object
+                :return: Location relation object
                 :rtype: Object
                 """
                 location = validated_data.get('location')
@@ -153,8 +128,8 @@ def location_relation_serializers():
         def get_relation_id (self, obj):
             """
             :param obj: Current record object
-            :return: Name of the location
-            :rtype: String
+            :return: Location relation id
+            :rtype: Integer
             """
             return obj.id
 
@@ -178,7 +153,7 @@ def location_relation_serializers():
         def get_relation_id (self, obj):
             """
             :param obj: Current record object
-            :return: Name of the location
+            :return: Research species id
             :rtype: String
             """
             return obj.id
