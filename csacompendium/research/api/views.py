@@ -6,6 +6,7 @@ from .author.authorviews import author_views
 from .researchobject.researchobjectviews import research_object_views
 from .experimentobject.experimentobjectviews import experiment_object_views
 from .objectcategory.objectcategoryviews import object_category_views
+from .researchspecies.researchspeciesviews import research_species_views
 from .species.speciesviews import species_views
 
 # soil_views = soil_views()
@@ -16,4 +17,5 @@ author_views = author_views()
 research_object_views = research_object_views()
 experiment_object_views = experiment_object_views()
 object_category_views = object_category_views()
+research_species_views = research_species_views()
 species_views = species_views()

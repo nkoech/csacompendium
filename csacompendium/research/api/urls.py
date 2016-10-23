@@ -8,6 +8,7 @@ from .views import (
     experiment_object_views,
     research_object_views,
     species_views,
+    research_species_views,
     # soil_views,
 )
 
@@ -137,4 +138,23 @@ urlpatterns += [
     url(r'^species/$', species_views['SpeciesListAPIView'].as_view(), name='species_list'),
     url(r'^species/create/$', species_views['SpeciesCreateAPIView'].as_view(), name='species_create'),
     url(r'^species/(?P<slug>[\w-]+)/$', species_views['SpeciesDetailAPIView'].as_view(), name='species_detail'),
+]
+
+# Research species URLs
+urlpatterns += [
+    url(
+        r'^researchspecies/$',
+        research_species_views['ResearchSpeciesListAPIView'].as_view(),
+        name='research_species_list'
+    ),
+    url(
+        r'^researchspecies/create/$',
+        research_species_views['ResearchSpeciesCreateAPIView'].as_view(),
+        name='research_species_create'
+    ),
+    url(
+        r'^researchspecies/(?P<pk>[\w-]+)/$',
+        research_species_views['ResearchSpeciesDetailAPIView'].as_view(),
+        name='research_species_detail'
+    ),
 ]
