@@ -11,7 +11,7 @@ from csacompendium.research.api.serializers import research_species_serializers
 
 def research_species_views():
     """
-    Location views
+    Research outcome indicator views
     :return: All research species views
     :rtype: Object
     """
