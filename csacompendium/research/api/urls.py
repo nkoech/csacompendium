@@ -159,7 +159,9 @@ urlpatterns += [
         name='research_species_detail'
     ),
 
-]# Research outcome indicator URLs
+]
+
+# Research outcome indicator URLs
 urlpatterns += [
     url(
         r'^researchoutcomeindicator/$',
