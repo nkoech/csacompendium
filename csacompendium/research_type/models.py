@@ -22,6 +22,42 @@ from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 
 
+class ExperimentRep(AuthUserDetail, CreateUpdateTime):
+    """
+    Experiment replication model
+    """
+    no_replication = models.SmallIntegerField(verbose_name='Experiment Replication Number')
+
+    def __unicode__(self):
+        return str(self.no_replication)
+
+    def __str__(self):
+        return str(self.no_replication)
+
+    def get_api_url(self):
+        """
+        Get experiment replication URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_type_api:experiment_replication_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Experiment Replications'
+
+    @property
+    def control_research_relation(self):
+        """
+        Get related control research properties
+        :return: Query result from the control research model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ControlResearch.objects.filter_by_model_type(instance)
+        return qs
+
+
 class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
     """
     Nitrogen applied model
@@ -156,7 +192,7 @@ class ControlResearch(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    csapractice = models.ForeignKey(CsaPractice, on_delete=models.PROTECT, verbose_name='CSA Practice')
+    csapractice = models.ForeignKey(CSAPractice, on_delete=models.PROTECT, verbose_name='CSA Practice')
     experimentrep = models.ForeignKey(
         ExperimentRep, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Experiment Replications'
     )
