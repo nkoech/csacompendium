@@ -5,6 +5,7 @@ from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )
+from csacompendium.research_type.models import ControlResearch
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
     model_instance_filter,
@@ -228,6 +229,17 @@ class Research(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = ResearchObject.objects.filter_by_instance(instance)
+        return qs
+
+    @property
+    def control_research(self):
+        """
+        Get related control research object/record
+        :return: Query result from the control research model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ControlResearch.objects.filter_by_instance(instance)
         return qs
 
 
