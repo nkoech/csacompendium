@@ -22,6 +22,95 @@ from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 
 
+class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
+    """
+    Nitrogen applied model
+    """
+    nitrogen_amount = models.DecimalField(max_digits=6, decimal_places=2,  unique=True)
+    amount_uom = models.CharField(max_length=12, default='kg/ha', verbose_name='Nitrogen UOM')
+
+    def __unicode__(self):
+        return str(self.nitrogen_amount)
+
+    def __str__(self):
+        return str(self.nitrogen_amount)
+
+    def get_api_url(self):
+        """
+        Get nitrogen applied URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_type_api:nitrogen_applied_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Nitrogen Applied'
+
+    @property
+    def control_research_relation(self):
+        """
+        Get related control research properties
+        :return: Query result from the control research model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ControlResearch.objects.filter_by_model_type(instance)
+        return qs
+
+
+class ExperimentDetails(AuthUserDetail, CreateUpdateTime):
+    """
+    Experiment details model
+    """
+    slug = models.SlugField(unique=True, blank=True)
+    exp_detail = models.CharField(max_length=250, unique=True, verbose_name='Experiment Details')
+
+    def __unicode__(self):
+        return self.exp_detail
+
+    def __str__(self):
+        return self.exp_detail
+
+    def get_api_url(self):
+        """
+        Get experiment details URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_type_api:experiment_details_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Experiment Details'
+
+    @property
+    def control_research_relation(self):
+        """
+        Get related control research properties
+        :return: Query result from the control research model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ControlResearch.objects.filter_by_model_type(instance)
+        return qs
+
+
+@receiver(pre_save, sender=ExperimentDetails)
+def pre_save_experiment_details_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, ExperimentDetails, instance.exp_detail)
+
+
 class ControlResearchManager(models.Manager):
     """
     Control research model manager
