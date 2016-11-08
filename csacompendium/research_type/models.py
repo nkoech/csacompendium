@@ -57,6 +57,17 @@ class ExperimentRep(AuthUserDetail, CreateUpdateTime):
         qs = ControlResearch.objects.filter_by_model_type(instance)
         return qs
 
+    @property
+    def treatment_research_relation(self):
+        """
+        Get related treatment research properties
+        :return: Query result from the treatment research model
+        :rtype: object/record
+        """
+        instance = self
+        qs = TreatmentResearch.objects.filter_by_model_type(instance)
+        return qs
+
 
 class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
     """
@@ -94,6 +105,17 @@ class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
         qs = ControlResearch.objects.filter_by_model_type(instance)
         return qs
 
+    @property
+    def treatment_research_relation(self):
+        """
+        Get related treatment research properties
+        :return: Query result from the treatment research model
+        :rtype: object/record
+        """
+        instance = self
+        qs = TreatmentResearch.objects.filter_by_model_type(instance)
+        return qs
+
 
 class ExperimentDetails(AuthUserDetail, CreateUpdateTime):
     """
@@ -129,6 +151,17 @@ class ExperimentDetails(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = ControlResearch.objects.filter_by_model_type(instance)
+        return qs
+
+    @property
+    def treatment_research_relation(self):
+        """
+        Get related treatment research properties
+        :return: Query result from the treatment research model
+        :rtype: object/record
+        """
+        instance = self
+        qs = TreatmentResearch.objects.filter_by_model_type(instance)
         return qs
 
 
