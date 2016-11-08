@@ -38,7 +38,7 @@ class ExperimentRep(AuthUserDetail, CreateUpdateTime):
     #     :return: URL
     #     :rtype: String
     #     """
-    #     return reverse('research_type_api:experiment_replication_detail', kwargs={'pk': self.pk})
+    #     return reverse('research_type_api:experiment_rep_detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
