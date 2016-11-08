@@ -11,8 +11,6 @@ from csacompendium.utils.modelmanagers import (
     model_foreign_key_qs,
     model_type_filter,
     create_model_type,
-    get_year_choices,
-    get_datetime_now,
 )
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
