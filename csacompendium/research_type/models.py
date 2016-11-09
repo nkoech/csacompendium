@@ -32,13 +32,13 @@ class ExperimentRep(AuthUserDetail, CreateUpdateTime):
     def __str__(self):
         return str(self.no_replication)
 
-    # def get_api_url(self):
-    #     """
-    #     Get experiment replication URL as a reverse from model
-    #     :return: URL
-    #     :rtype: String
-    #     """
-    #     return reverse('research_type_api:experiment_rep_detail', kwargs={'pk': self.pk})
+    def get_api_url(self):
+        """
+        Get experiment replication URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_type_api:experiment_rep_detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
