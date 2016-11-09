@@ -61,7 +61,7 @@ def measurement_season_serializers():
             request = self.context['request']
             MeasurementYearListSerializer = self.measurement_year_serializers['MeasurementYearListSerializer']
             related_content = get_related_content(
-                obj, MeasurementYearListSerializer , obj.measurement_year_relation, request
+                obj, MeasurementYearListSerializer, obj.measurement_year_relation, request
             )
             return related_content
 
