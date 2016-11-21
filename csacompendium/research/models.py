@@ -5,7 +5,10 @@ from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )
-from csacompendium.research_type.models import ControlResearch
+from csacompendium.research_type.models import (
+    ControlResearch,
+    TreatmentResearch
+)
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
     model_instance_filter,
@@ -240,6 +243,18 @@ class Research(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = ControlResearch.objects.filter_by_instance(instance)
+        return qs
+
+
+    @property
+    def treatment_research(self):
+        """
+        Get related treatment research object/record
+        :return: Query result from the treatment research model
+        :rtype: object/record
+        """
+        instance = self
+        qs = TreatmentResearch.objects.filter_by_instance(instance)
         return qs
 
 
