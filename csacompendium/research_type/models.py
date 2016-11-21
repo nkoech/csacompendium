@@ -119,7 +119,7 @@ class ExperimentDetails(AuthUserDetail, CreateUpdateTime):
     """
     Experiment details model
     """
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=250, unique=True, blank=True)
     exp_detail = models.CharField(max_length=250, unique=True, verbose_name='Experiment Details')
 
     def __unicode__(self):
