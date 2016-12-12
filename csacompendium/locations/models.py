@@ -109,7 +109,7 @@ class Location(AuthUserDetail, CreateUpdateTime):
         """
         Get related soil object/record
         :return: Query result from the soil model
-        :rtye: object/record
+        :rtype: object/record
         """
         instance = self
         qs = Soil.objects.filter_by_instance(instance)

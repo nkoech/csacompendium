@@ -1,4 +1,4 @@
-from csacompendium.locations.models import Soil
+from csacompendium.soils.models import Soil
 from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
 from csacompendium.utils.viewsutils import DetailViewUpdateDelete, get_http_request
