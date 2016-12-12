@@ -36,11 +36,10 @@ def control_research_serializers():
         :rtype: Object
         """
 
-        class ControlResearchCreateSerializer(CreateSerializerUtil):
+        class ControlResearchCreateSerializer(ModelSerializer, CreateSerializerUtil):
             """
             Create a record
             """
-
             class Meta:
                 model = ControlResearch
                 # fields = ['id', 'csapractice', 'experimentrep', 'experimentdetails',
@@ -87,7 +86,7 @@ def control_research_serializers():
 
         return ControlResearchCreateSerializer
 
-    class ControlResearchListSerializer:
+    class ControlResearchListSerializer(ModelSerializer):
         """
         Serialize all records in given fields into an API
         """
@@ -97,7 +96,7 @@ def control_research_serializers():
             model = ControlResearch
             fields = ['id', 'url', ]
 
-    class ControlResearchDetailSerializer(FieldMethodSerializer):
+    class ControlResearchDetailSerializer(ModelSerializer, FieldMethodSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """

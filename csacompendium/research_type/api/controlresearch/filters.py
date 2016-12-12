@@ -12,11 +12,11 @@ class ControlResearchListFilter(FilterSet):
     class Meta:
         model = ControlResearch
         fields = {
-            'csapractice': ['exact'],
+            # 'csapractice': ['exact'],
             'experimentrep': ['exact'],
             'experimentdetails': ['exact'],
             'nitrogenapplied': ['exact'],
             'object_id': ['exact'],
             'content_type': ['exact'],
         }
-        order_by = ['csapractice']
+        order_by = ['experimentrep']

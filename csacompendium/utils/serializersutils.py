@@ -138,8 +138,9 @@ def valid_integer(obj):
     :return: False if string
     :rtype: Boolean
     """
-    try:
-        int(obj)
-        return True
-    except ValueError:
-        return False
+    if obj:
+        try:
+            int(obj)
+            return True
+        except ValueError:
+            return False
