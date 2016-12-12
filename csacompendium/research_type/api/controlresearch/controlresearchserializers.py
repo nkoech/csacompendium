@@ -26,11 +26,11 @@ def control_research_serializers():
     :rtype: Object
     """
 
-    def create_control_research_serializer(model_type=None, unique_id=None, user=None):
+    def create_control_research_serializer(model_type=None, request_key=None, user=None):
         """
         Creates a model serializer
         :param model_type: Model
-        :param unique_id: A slug or primary key depending on what is passed
+        :param request_key: A slug or primary key depending on what is passed
         :param user: Record owner
         :return: Serializer class
         :rtype: Object
@@ -51,9 +51,9 @@ def control_research_serializers():
             def __init__(self, *args, **kwargs):
                 super(ControlResearchCreateSerializer, self).__init__(*args, **kwargs)
                 self.model_type = model_type
-                self.key = unique_id
+                self.key = request_key
                 self.user = user
-                if valid_integer(unique_id):
+                if valid_integer(request_key):
                     self.slugify = False
                 else:
                     self.slugify = True

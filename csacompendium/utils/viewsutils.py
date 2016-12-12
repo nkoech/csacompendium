@@ -67,3 +67,15 @@ def get_http_request(request, slug=None):
     if slug:
         url_parameter = request.GET.get('slug')
     return model_type, url_parameter, user
+
+
+def validate_request_key(request):
+    """
+    Validates type of request key
+    :param request: Client request object
+    :return: Type of request key
+    :rtype: String
+    """
+    for key in request.query_params:
+        if key == 'pk' or key == 'slug':
+            return key
