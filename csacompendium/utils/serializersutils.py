@@ -128,3 +128,18 @@ def get_related_content_url(model, related_field):
         return related_content_obj.get_api_url()
     except:
         return None
+
+
+def valid_integer(obj):
+    """
+    Validates if input is an integer
+    :param obj: Input object. This could be a string or integer
+    :return: True if integer
+    :return: False if string
+    :rtype: Boolean
+    """
+    try:
+        int(obj)
+        return True
+    except ValueError:
+        return False

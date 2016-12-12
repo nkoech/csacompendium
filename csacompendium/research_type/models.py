@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# from csacompendium.csa_practice.models import CsaPractice
 from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
