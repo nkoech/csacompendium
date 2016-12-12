@@ -3,6 +3,7 @@ from .views import (
     experiment_rep_views,
     nitrogen_applied_views,
     experiment_details_views,
+    control_research_views,
 )
 
 # Experiment replication URLs
@@ -59,5 +60,24 @@ urlpatterns += [
         r'^experimentdetails/(?P<slug>[\w-]+)/$',
         experiment_details_views['ExperimentDetailsDetailAPIView'].as_view(),
         name='experiment_details_detail'
+    ),
+]
+
+# Control research URLs
+urlpatterns += [
+    url(
+        r'^controlresearch/$',
+        control_research_views['ControlResearchListAPIView'].as_view(),
+        name='control_research_list'
+    ),
+    url(
+        r'^controlresearch/create/$',
+        control_research_views['ControlResearchCreateAPIView'].as_view(),
+        name='control_research_create'
+    ),
+    url(
+        r'controlresearch/(?P<pk>[\w-]+)/$',
+        control_research_views['ControlResearchDetailAPIView'].as_view(),
+        name='control_research_detail'
     ),
 ]
