@@ -53,6 +53,7 @@ LOCAL_APPS = [
     'csacompendium.soils',
     'csacompendium.research',
     'csacompendium.research_type',
+    'csacompendium.csa_practice',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
