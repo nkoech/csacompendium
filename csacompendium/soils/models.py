@@ -53,11 +53,12 @@ class SoilType(AuthUserDetail, CreateUpdateTime):
         """
         Get related soil properties
         :return: Query result from the soil model
-        :rtye: object/record
+        :rtype: object/record
         """
         instance = self
         qs = Soil.objects.filter_by_model_type(instance)
         return qs
+
 
 @receiver(pre_save, sender=SoilType)
 def pre_save_soil_type_receiver(sender, instance, *args, **kwargs):
@@ -109,6 +110,7 @@ class SoilTexture(AuthUserDetail, CreateUpdateTime):
         instance = self
         qs = Soil.objects.filter_by_model_type(instance)
         return qs
+
 
 @receiver(pre_save, sender=SoilTexture)
 def pre_save_soil_texture_receiver(sender, instance, *args, **kwargs):
