@@ -10,7 +10,7 @@ class CsaThemeListFilter(FilterSet):
     """
     class Meta:
         model = CsaTheme
-        # fields = {
-        #     'soil_texture': ['iexact', 'icontains'],
-        # }
-        # order_by = ['soil_texture']
+        fields = {
+            'csa_theme': ['iexact', 'icontains'],
+        }
+        order_by = ['csa_theme']
