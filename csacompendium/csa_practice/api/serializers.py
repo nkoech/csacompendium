@@ -1,3 +1,5 @@
 from .csatheme.csathemeserializers import csa_theme_serializers
+from .practicelevel.practicelevelserializers import practice_level_serializers
 
 csa_theme_serializers = csa_theme_serializers()
+practice_level_serializers = practice_level_serializers()
