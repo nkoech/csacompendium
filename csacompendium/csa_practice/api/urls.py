@@ -2,6 +2,7 @@ from django.conf.urls import url
 from .views import (
     csa_theme_views,
     practice_level_views,
+    practice_type_views,
 )
 
 # CSA theme URLs
@@ -42,21 +43,21 @@ urlpatterns += [
     ),
 ]
 
-# # Practice type URLs
-# urlpatterns += [
-#     url(
-#         r'^practicelevel/$',
-#         practice_level_views['PracticeLevelListAPIView'].as_view(),
-#         name='practice_level_list'
-#     ),
-#     url(
-#         r'^practicelevel/create/$',
-#         practice_level_views['PracticeLevelCreateAPIView'].as_view(),
-#         name='practice_level_create'
-#     ),
-#     url(
-#         r'^practicelevel/(?P<slug>[\w-]+)/$',
-#         practice_level_views['PracticeLevelDetailAPIView'].as_view(),
-#         name='practice_level_detail'
-#     ),
-# ]
+# Practice type URLs
+urlpatterns += [
+    url(
+        r'^practicetype/$',
+        practice_type_views['PracticeTypeListAPIView'].as_view(),
+        name='practice_type_list'
+    ),
+    url(
+        r'practicetype/create/$',
+        practice_type_views['PracticeTypeCreateAPIView'].as_view(),
+        name='practice_type_create'
+    ),
+    url(
+        r'^practicetype/(?P<slug>[\w-]+)/$',
+        practice_type_views['PracticeTypeDetailAPIView'].as_view(),
+        name='practice_type_detail'
+    ),
+]

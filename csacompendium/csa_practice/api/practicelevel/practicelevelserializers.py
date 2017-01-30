@@ -52,7 +52,7 @@ def practice_level_serializers():
             ] + common_fields
             read_only_fields = ['id', ] + common_fields
 
-        def get_practice_level(self, obj):
+        def get_csa_practices(self, obj):
             """
             :param obj: Current record object
             :return: CSA practices related to CSA practice level
