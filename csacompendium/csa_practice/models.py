@@ -241,7 +241,7 @@ class CsaPractice(AuthUserDetail, CreateUpdateTime):
         :rtype: object/record
         """
         instance = self
-        qs = ControlResearch.objects.filter_by_instance(instance)
+        qs = TreatmentResearch.objects.filter_by_instance(instance)
         return qs
 
 
