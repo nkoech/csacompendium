@@ -4,13 +4,17 @@ from rest_framework.filters import (
 from csacompendium.csa_practice.models import CsaPractice
 
 
-class CsaThemeListFilter(FilterSet):
+class CsaPracticeListFilter(FilterSet):
     """
     Filter query list from CSA practice database
     """
     class Meta:
         model = CsaPractice
-        # fields = {
-        #     'soil_texture': ['iexact', 'icontains'],
-        # }
-        # order_by = ['soil_texture']
+        fields = {'practice_code': ['iexact', 'icontains'],
+                  'csatheme': ['exact'],
+                  'practicelevel': ['exact'],
+                  'sub_practice_level': ['iexact', 'icontains'],
+                  'definition': ['iexact', 'icontains'],
+                  'practicetype': ['exact'],
+                  }
+        order_by = ['exp_object_code']
