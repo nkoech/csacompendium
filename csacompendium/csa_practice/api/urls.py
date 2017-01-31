@@ -3,6 +3,7 @@ from .views import (
     csa_theme_views,
     practice_level_views,
     practice_type_views,
+    csa_practice_views,
 )
 
 # CSA theme URLs
@@ -61,3 +62,23 @@ urlpatterns += [
         name='practice_type_detail'
     ),
 ]
+
+# CSA practice type URLs
+urlpatterns += [
+    url(
+        r'^$',
+        csa_practice_views['CsaPracticeListSerializer'].as_view(),
+        name='csa_practice_list'
+    ),
+    url(
+        r'^create/$',
+        csa_practice_views['CsaPracticeCreateSerializer'].as_view(),
+        name='csa_practice_create'
+    ),
+    url(
+        r'^(?P<slug>[\w-]+)/$',
+        csa_practice_views['CsaPracticeDetailSerializer'].as_view(),
+        name='csa_practice_detail'
+    ),
+]
+
