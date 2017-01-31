@@ -122,6 +122,7 @@ def soil_serializers():
 
         class Meta:
             common_fields = [
+                'user',
                 'modified_by',
                 'last_update',
                 'time_created',

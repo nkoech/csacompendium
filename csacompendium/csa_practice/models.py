@@ -200,7 +200,7 @@ class CsaPractice(AuthUserDetail, CreateUpdateTime):
     csatheme = models.ForeignKey(CsaTheme, on_delete=models.PROTECT, verbose_name='CSA Theme')
     practicelevel = models.ForeignKey(PracticeLevel, on_delete=models.PROTECT, verbose_name='Practice Level')
     sub_practice_level = models.TextField(blank=True, null=True)
-    define = models.TextField(blank=True, null=True)
+    definition = models.TextField(blank=True, null=True)
     practicetype = models.ForeignKey(PracticeType, on_delete=models.PROTECT, verbose_name='Practice Category')
     objects = CsaPracticeManager()
 
