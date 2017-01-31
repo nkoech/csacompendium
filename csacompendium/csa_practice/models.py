@@ -24,7 +24,7 @@ class CsaTheme(AuthUserDetail, CreateUpdateTime):
     CSA theme model.  Creates CSA theme entity.
     """
     slug = models.SlugField(unique=True, blank=True)
-    csa_theme = models.CharField(max_length=80, unique=True)
+    csa_theme = models.CharField(max_length=80, unique=True, verbose_name='CSA theme')
 
     def __unicode__(self):
         return self.csa_theme
@@ -197,11 +197,11 @@ class CsaPractice(AuthUserDetail, CreateUpdateTime):
     """
     slug = models.SlugField(unique=True, blank=True)
     practice_code = models.CharField(max_length=6, unique=True, help_text='User defined CSA practice code')
-    csatheme = models.ForeignKey(CsaTheme, on_delete=models.PROTECT, verbose_name='CSA Theme')
-    practicelevel = models.ForeignKey(PracticeLevel, on_delete=models.PROTECT, verbose_name='Practice Level')
+    csatheme = models.ForeignKey(CsaTheme, on_delete=models.PROTECT, verbose_name='CSA theme')
+    practicelevel = models.ForeignKey(PracticeLevel, on_delete=models.PROTECT, verbose_name='Practice level')
     sub_practice_level = models.TextField(blank=True, null=True)
     definition = models.TextField(blank=True, null=True)
-    practicetype = models.ForeignKey(PracticeType, on_delete=models.PROTECT, verbose_name='Practice Category')
+    practicetype = models.ForeignKey(PracticeType, on_delete=models.PROTECT, verbose_name='Practice category')
     objects = CsaPracticeManager()
 
     def __unicode__(self):

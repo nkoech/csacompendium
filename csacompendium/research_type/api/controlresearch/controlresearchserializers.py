@@ -1,4 +1,4 @@
-# from csacompendium.csa_practice.models import CsaPractice
+from csacompendium.csa_practice.models import CsaPractice
 from csacompendium.research_type.models import (
     ControlResearch,
     ExperimentRep,

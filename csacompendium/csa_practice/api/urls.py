@@ -67,17 +67,17 @@ urlpatterns += [
 urlpatterns += [
     url(
         r'^$',
-        csa_practice_views['CsaPracticeListSerializer'].as_view(),
+        csa_practice_views['CsaPracticeListAPIView'].as_view(),
         name='csa_practice_list'
     ),
     url(
         r'^create/$',
-        csa_practice_views['CsaPracticeCreateSerializer'].as_view(),
+        csa_practice_views['CsaPracticeCreateAPIView'].as_view(),
         name='csa_practice_create'
     ),
     url(
         r'^(?P<slug>[\w-]+)/$',
-        csa_practice_views['CsaPracticeDetailSerializer'].as_view(),
+        csa_practice_views['CsaPracticeDetailAPIView'].as_view(),
         name='csa_practice_detail'
     ),
 ]
