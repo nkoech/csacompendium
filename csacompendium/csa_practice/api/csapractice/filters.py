@@ -17,4 +17,4 @@ class CsaPracticeListFilter(FilterSet):
                   'definition': ['iexact', 'icontains'],
                   'practicetype': ['exact'],
                   }
-        order_by = ['exp_object_code']
+        order_by = ['practice_code']

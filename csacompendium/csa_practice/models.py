@@ -5,8 +5,6 @@ from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )
-from csacompendium.research_type.models import ControlResearch
-from csacompendium.research_type.models import TreatmentResearch
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
     model_foreign_key_qs,
@@ -23,7 +21,7 @@ class CsaTheme(AuthUserDetail, CreateUpdateTime):
     """
     CSA theme model.  Creates CSA theme entity.
     """
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=80, unique=True, blank=True)
     csa_theme = models.CharField(max_length=80, unique=True, verbose_name='CSA theme')
 
     def __unicode__(self):
@@ -75,7 +73,7 @@ class PracticeLevel(AuthUserDetail, CreateUpdateTime):
     """
     CSA level of practice model.  Creates CSA practice level entity.
     """
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=150, unique=True, blank=True)
     practice_level = models.CharField(max_length=150, unique=True)
 
     def __unicode__(self):
@@ -127,8 +125,8 @@ class PracticeType(AuthUserDetail, CreateUpdateTime):
     """
     CSA practice type model.  Creates CSA practice type entity.
     """
-    slug = models.SlugField(unique=True, blank=True)
-    practice_type = models.CharField(max_length=120, unique=True)
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
+    practice_type = models.CharField(max_length=120, unique=True, verbose_name='Practice category')
 
     def __unicode__(self):
         return self.practice_type
@@ -222,28 +220,6 @@ class CsaPractice(AuthUserDetail, CreateUpdateTime):
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'CSA Practices'
 
-    @property
-    def control_research(self):
-        """
-        Get related control research object/record
-        :return: Query result from the control research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = ControlResearch.objects.filter_by_instance(instance)
-        return qs
-
-    @property
-    def treatment_research(self):
-        """
-        Get related treatment research object/record
-        :return: Query result from the treatment research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = TreatmentResearch.objects.filter_by_instance(instance)
-        return qs
-
 
 @receiver(pre_save, sender=CsaPractice)
 def pre_save_csa_practice_receiver(sender, instance, *args, **kwargs):
@@ -257,7 +233,7 @@ def pre_save_csa_practice_receiver(sender, instance, *args, **kwargs):
     :rtype: None
     """
     if not instance.slug:
-        instance.slug = create_slug(instance, CsaPractice, instance.location_name)
+        instance.slug = create_slug(instance, CsaPractice, instance.practice_code)
 
 
 

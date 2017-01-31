@@ -1,4 +1,4 @@
-# from csacompendium.csa_practice.models import CsaPractice
+from csacompendium.csa_practice.models import CsaPractice
 from csacompendium.research_type.models import (
     TreatmentResearch,
     ExperimentRep,
@@ -42,9 +42,7 @@ def treatment_research_serializers():
             """
             class Meta:
                 model = TreatmentResearch
-                # fields = ['id', 'csapractice', 'experimentrep', 'experimentdetails',
-                #           'nitrogenapplied', 'last_update', 'time_created', ]
-                fields = ['id', 'experimentrep', 'experimentdetails',
+                fields = ['id', 'csapractice', 'experimentrep', 'experimentdetails',
                           'nitrogenapplied', 'last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
@@ -65,14 +63,14 @@ def treatment_research_serializers():
                 :return: Treatment research object
                 :rtype: Object
                 """
-                # csapractice = validated_data.get('csapractice')
+                csapractice = validated_data.get('csapractice')
                 experimentrep = validated_data.get('experimentrep')
                 experimentdetails = validated_data.get('experimentdetails')
                 nitrogenapplied = validated_data.get('nitrogenapplied')
                 treatment_research = TreatmentResearch.objects.create_by_model_type(
                     self.model_type,
                     self.key,
-                    # csapractice=csapractice,
+                    csapractice=csapractice,
                     experimentrep=experimentrep,
                     experimentdetails=experimentdetails,
                     nitrogenapplied=nitrogenapplied,
@@ -127,8 +125,7 @@ def treatment_research_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return None
-            # return get_related_content_url(CsaPractice, obj.csapractice.id)
+            return get_related_content_url(CsaPractice, obj.csapractice.id)
 
         def get_experiment_details_url(self, obj):
             """

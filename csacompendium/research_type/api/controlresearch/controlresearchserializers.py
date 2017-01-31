@@ -42,9 +42,7 @@ def control_research_serializers():
             """
             class Meta:
                 model = ControlResearch
-                # fields = ['id', 'csapractice', 'experimentrep', 'experimentdetails',
-                #           'nitrogenapplied', 'last_update', 'time_created', ]
-                fields = ['id', 'experimentrep', 'experimentdetails',
+                fields = ['id', 'csapractice', 'experimentrep', 'experimentdetails',
                           'nitrogenapplied', 'last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
@@ -65,14 +63,14 @@ def control_research_serializers():
                 :return: Control research object
                 :rtype: Object
                 """
-                # csapractice = validated_data.get('csapractice')
+                csapractice = validated_data.get('csapractice')
                 experimentrep = validated_data.get('experimentrep')
                 experimentdetails = validated_data.get('experimentdetails')
                 nitrogenapplied = validated_data.get('nitrogenapplied')
                 control_research = ControlResearch.objects.create_by_model_type(
                     self.model_type,
                     self.key,
-                    # csapractice=csapractice,
+                    csapractice=csapractice,
                     experimentrep=experimentrep,
                     experimentdetails=experimentdetails,
                     nitrogenapplied=nitrogenapplied,
@@ -127,8 +125,7 @@ def control_research_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return None
-            # return get_related_content_url(CsaPractice, obj.csapractice.id)
+            return get_related_content_url(CsaPractice, obj.csapractice.id)
 
         def get_experiment_details_url(self, obj):
             """

@@ -1,5 +1,9 @@
 from csacompendium.research_type.api.serializers import control_research_serializers
 from csacompendium.research_type.api.serializers import treatment_research_serializers
+from csacompendium.research_type.models import (
+    ControlResearch,
+    TreatmentResearch,
+)
 from csacompendium.csa_practice.models import (
     CsaPractice,
     CsaTheme,
@@ -36,7 +40,7 @@ def csa_practice_serializers():
                 'definition',
             ]
 
-    class CsaPracticeCreateSerializer(CsaPracticeBaseSerializer):
+    class CsaPracticeCreateSerializer(CsaPracticeBaseSerializer, FieldMethodSerializer):
         """
         Create a record
         """
@@ -120,27 +124,29 @@ def csa_practice_serializers():
 
         def get_control_research(self, obj):
             """
-            Get related control research data
             :param obj: Current record object
-            :return: Control research of a given CSA practice
+            :return: Control research object
             :rtype: Object/record
             """
+            qs = ControlResearch.objects.filter_by_model_type(obj)
             request = self.context['request']
             ControlResearchListSerializer = control_research_serializers['ControlResearchListSerializer']
-            related_content = get_related_content(obj, ControlResearchListSerializer, obj.control_research, request)
+            related_content = get_related_content(
+                obj, ControlResearchListSerializer,  qs, request
+            )
             return related_content
 
         def get_treatment_research(self, obj):
             """
-            Get related treatment research data
             :param obj: Current record object
-            :return: Treatment research of a given CSA practice
+            :return: Treatment research object
             :rtype: Object/record
             """
+            qs = TreatmentResearch.objects.filter_by_model_type(obj)
             request = self.context['request']
             TreatmentResearchListSerializer = treatment_research_serializers['TreatmentResearchListSerializer']
             related_content = get_related_content(
-                obj, TreatmentResearchListSerializer, obj.treatment_research, request
+                obj, TreatmentResearchListSerializer, qs, request
             )
             return related_content
 

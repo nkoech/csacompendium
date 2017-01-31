@@ -12,7 +12,7 @@ class ControlResearchListFilter(FilterSet):
     class Meta:
         model = ControlResearch
         fields = {
-            # 'csapractice': ['exact'],
+            'csapractice': ['exact'],
             'experimentrep': ['exact'],
             'experimentdetails': ['exact'],
             'nitrogenapplied': ['exact'],
