@@ -404,17 +404,6 @@ class Species(AuthUserDetail, CreateUpdateTime):
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Species'
 
-    # @property
-    # def research_species_relation(self):
-    #     """
-    #     Get related research species properties
-    #     :return: Query result from the research species model
-    #     :rtye: object/record
-    #     """
-    #     instance = self
-    #     qs = ResearchSpecies.objects.filter_by_model_type(instance)
-    #     return qs
-
     @property
     def research_species(self):
         """
