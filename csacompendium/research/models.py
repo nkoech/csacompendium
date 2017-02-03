@@ -386,6 +386,12 @@ class Species(AuthUserDetail, CreateUpdateTime):
     slug = models.SlugField(max_length=100, unique=True, blank=True)
     species = models.CharField(max_length=200, unique=True)
 
+    def __unicode__(self):
+        return self.species
+
+    def __str__(self):
+        return self.species
+
     def get_api_url(self):
         """
         Get species URL as a reverse from model
