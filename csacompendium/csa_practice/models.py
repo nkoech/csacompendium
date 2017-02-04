@@ -21,7 +21,7 @@ class CsaTheme(AuthUserDetail, CreateUpdateTime):
     """
     CSA theme model.  Creates CSA theme entity.
     """
-    slug = models.SlugField(max_length=80, unique=True, blank=True)
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
     csa_theme = models.CharField(max_length=80, unique=True, verbose_name='CSA theme')
 
     def __unicode__(self):

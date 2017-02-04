@@ -54,6 +54,7 @@ LOCAL_APPS = [
     'csacompendium.research',
     'csacompendium.research_type',
     'csacompendium.csa_practice',
+    'csacompendium.indicators',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
