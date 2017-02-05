@@ -22,6 +22,58 @@ from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 
 
+class IndicatorType(AuthUserDetail, CreateUpdateTime):
+    """
+    Indicator type model.  Creates indicator type entity.
+    """
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
+    indicator_type = models.CharField(max_length=120, unique=True, verbose_name='Indicator category')
+
+    def __unicode__(self):
+        return self.indicator_type
+
+    def __str__(self):
+        return self.indicator_type
+
+    def get_api_url(self):
+        """
+        Get indicator type URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('indicator_api:indicator_type_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Indicator Types'
+
+    @property
+    def outcome_indicator_relation(self):
+        """
+        Get related outcome indicator
+        :return: Query result from the outcome indicator model
+        :rtype: object/record
+        """
+        instance = self
+        qs = OutcomeIndicator.objects.filter_by_model_type(instance)
+        return qs
+
+
+@receiver(pre_save, sender=IndicatorType)
+def pre_save_indicator_type_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, IndicatorType, instance.indicator_type)
+
+
 class Subpillar(AuthUserDetail, CreateUpdateTime):
     """
     Subpillar model
