@@ -5,16 +5,12 @@ from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )
+from csacompendium.research.models import ResearchOutcomeIndicator
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
-    model_instance_filter,
     model_foreign_key_qs,
     model_type_filter,
-    create_model_type,
-    get_year_choices,
-    get_datetime_now,
 )
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import pre_save
@@ -194,3 +190,77 @@ def pre_save_indicator_receiver(sender, instance, *args, **kwargs):
     """
     if not instance.slug:
         instance.slug = create_slug(instance, Indicator, instance.indicator)
+
+
+class OutcomeIndicatorManager(models.Manager):
+    """
+    Outcome indicator model manager
+    """
+    def filter_by_model_type(self, instance):
+        """
+        Query related objects/model type
+        :param instance: Object instance
+        :return: Matching object else none
+        :rtype: Object/record
+        """
+        obj_qs = model_foreign_key_qs(instance, self, OutcomeIndicatorManager)
+        if obj_qs.exists():
+            return model_type_filter(self, obj_qs, OutcomeIndicatorManager)
+
+
+class OutcomeIndicator(AuthUserDetail, CreateUpdateTime):
+    """
+    Outcome indicator model. Creates outcome indicator entity
+    """
+    slug = models.SlugField(unique=True, blank=True)
+    indicator_code = models.PositiveSmallIntegerField(help_text='User defined indicator code')
+    indicator = models.ForeignKey(Indicator, on_delete=models.PROTECT)
+    subindicator = models.CharField(max_length=150, blank=True, null=True)
+    definition = models.TextField(blank=True, null=True)
+    common_uom = models.CharField(max_length=450, blank=True, null=True)
+    indicatortype = models.ForeignKey(IndicatorType, on_delete=models.PROTECT, verbose_name='Indicator Type')
+    objects = OutcomeIndicatorManager()
+
+    def __unicode__(self):
+        return str(self.indicator_code)
+
+    def __str__(self):
+        return str(self.indicator_code)
+
+    def get_api_url(self):
+        """
+        Get outcome indicator URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('indicator_api:outcome_indicator_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Outcome Indicators'
+
+    @property
+    def research_outcome_indicator(self):
+        """
+        Get related ResearchOutcomeIndicator object/record
+        :return: Query result from the ResearchOutcomeIndicator model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchOutcomeIndicator.objects.filter_by_instance(instance)
+        return qs
+
+
+@receiver(pre_save, sender=OutcomeIndicator)
+def pre_save_indicator_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, OutcomeIndicator, instance.indicator_code)
