@@ -1,51 +1,51 @@
-from csacompendium.research.models import MeasurementSeason
+from csacompendium.indicators.models import Subpillar
 from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
 from csacompendium.utils.viewsutils import DetailViewUpdateDelete, CreateAPIViewHook
 from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .filters import MeasurementSeasonListFilter
-from csacompendium.research.api.measurementseason.measurementseasonserializers import measurement_season_serializers
+from .filters import SubpillarListFilter
+from csacompendium.indicators.api.subpillar.subpillarserializers import subpillar_serializers
 
 
-def measurement_season_views():
+def subpillar_views():
     """
-    measurement season views
-    :return: All measurement season views
+    Subpillar views
+    :return: All subpillar views
     :rtype: Object
     """
-    measurement_season_serializer = measurement_season_serializers()
+    subpillar_serializer = subpillar_serializers()
 
-    class MeasurementSeasonCreateAPIView(CreateAPIViewHook):
+    class SubpillarCreateAPIView(CreateAPIViewHook):
         """
         Creates a single record.
         """
-        queryset = MeasurementSeason.objects.all()
-        serializer_class = measurement_season_serializer['MeasurementSeasonDetailSerializer']
+        queryset = Subpillar.objects.all()
+        serializer_class = subpillar_serializer['SubpillarDetailSerializer']
         permission_classes = [IsAuthenticated]
 
-    class MeasurementSeasonListAPIView(ListAPIView):
+    class SubpillarListAPIView(ListAPIView):
         """
         API list view. Gets all records API.
         """
-        queryset = MeasurementSeason.objects.all()
-        serializer_class = measurement_season_serializer['MeasurementSeasonListSerializer']
+        queryset = Subpillar.objects.all()
+        serializer_class = subpillar_serializer['SubpillarListSerializer']
         filter_backends = (DjangoFilterBackend,)
-        filter_class = MeasurementSeasonListFilter
+        filter_class = SubpillarListFilter
         pagination_class = APILimitOffsetPagination
 
-    class MeasurementSeasonDetailAPIView(DetailViewUpdateDelete):
+    class SubpillarDetailAPIView(DetailViewUpdateDelete):
         """
         Updates a record.
         """
-        queryset = MeasurementSeason.objects.all()
-        serializer_class = measurement_season_serializer['MeasurementSeasonDetailSerializer']
+        queryset = Subpillar.objects.all()
+        serializer_class = subpillar_serializer['SubpillarDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 
     return {
-        'MeasurementSeasonListAPIView': MeasurementSeasonListAPIView,
-        'MeasurementSeasonDetailAPIView': MeasurementSeasonDetailAPIView,
-        'MeasurementSeasonCreateAPIView': MeasurementSeasonCreateAPIView
+        'SubpillarListAPIView': SubpillarListAPIView,
+        'SubpillarDetailAPIView': SubpillarDetailAPIView,
+        'SubpillarCreateAPIView': SubpillarCreateAPIView
     }
