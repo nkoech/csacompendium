@@ -8,34 +8,34 @@ from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
 
 
-def measurement_season_serializers():
+def subpillar_serializers():
     """
-    Measurement season serializers
-    :return: All measurement season serializers
+    Subpillar serializers
+    :return: All subpillar serializers
     :rtype: Object
     """
 
-    class MeasurementSeasonListSerializer(ModelSerializer):
+    class SubpillarListSerializer(ModelSerializer):
         """
         Serialize all records in given fields into an API
         """
-        url = hyperlinked_identity('research_api:measurement_season_detail', 'slug')
+        url = hyperlinked_identity('indicator_api:subpillar_detail', 'slug')
 
         class Meta:
-            model = MeasurementSeason
+            model = Subpillar
             fields = [
-                'meas_season',
+                'subpillar',
                 'url',
             ]
 
-    class MeasurementSeasonDetailSerializer(ModelSerializer, FieldMethodSerializer):
+    class SubpillarDetailSerializer(ModelSerializer, FieldMethodSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        measurement_year_serializers = measurement_year_serializers()
+        # indicator_serializers = indicator_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        measurement_year = SerializerMethodField()
+        indicator = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -43,29 +43,29 @@ def measurement_season_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'measurement_year',
+                'indicator',
             ]
-            model = MeasurementSeason
+            model = Subpillar
             fields = [
                 'id',
-                'meas_season',
+                'subpillar',
             ] + common_fields
             read_only_fields = ['id', ] + common_fields
 
-        def get_measurement_year(self, obj):
+        def get_indicator(self, obj):
             """
             :param obj: Current record object
-            :return: Measurement year of a season
+            :return: Indicator of a subpillar
             :rtype: Object/record
             """
             request = self.context['request']
-            MeasurementYearListSerializer = self.measurement_year_serializers['MeasurementYearListSerializer']
-            related_content = get_related_content(
-                obj, MeasurementYearListSerializer, obj.measurement_year_relation, request
-            )
-            return related_content
+            # IndicatorListSerializer = self.indicator_serializers['IndicatorListSerializer']
+            # related_content = get_related_content(
+            #     obj, IndicatorListSerializer, obj.indicator_relation, request
+            # )
+            # return related_content
 
     return {
-        'MeasurementSeasonListSerializer': MeasurementSeasonListSerializer,
-        'MeasurementSeasonDetailSerializer': MeasurementSeasonDetailSerializer
+        'SubpillarListSerializer': SubpillarListSerializer,
+        'SubpillarDetailSerializer': SubpillarDetailSerializer
     }
