@@ -63,7 +63,7 @@ urlpatterns += [
     ),
 ]
 
-# CSA practice type URLs
+# CSA practice URLs
 urlpatterns += [
     url(
         r'^$',
