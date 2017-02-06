@@ -1,4 +1,4 @@
-from .indicatortype.indicatortypeserializers import  indicator_type_serializers
+from .indicatortype.indicatortypeserializers import indicator_type_serializers
 from .indicator.indicatorserializers import indicator_serializers
 from .subpillar.subpillarserializers import subpillar_serializers
 
