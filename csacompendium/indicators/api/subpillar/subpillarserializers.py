@@ -35,7 +35,7 @@ def subpillar_serializers():
         indicator_serializers = indicator_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        indicator = SerializerMethodField()
+        indicators = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -43,7 +43,7 @@ def subpillar_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'indicator',
+                'indicators',
             ]
             model = Subpillar
             fields = [
@@ -52,7 +52,7 @@ def subpillar_serializers():
             ] + common_fields
             read_only_fields = ['id', ] + common_fields
 
-        def get_indicator(self, obj):
+        def get_indicators(self, obj):
             """
             :param obj: Current record object
             :return: Indicator of a subpillar

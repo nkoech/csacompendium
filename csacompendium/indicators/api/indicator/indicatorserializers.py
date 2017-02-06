@@ -2,7 +2,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField
 )
-# from csacompendium.indicators.api.outcomeindicator import outcome_indicator_serializers
+# from csacompendium.indicators.api.outcomeindicator.outcomeindicatorserializers import outcome_indicator_serializers
 from csacompendium.indicators.models import Indicator, Subpillar
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
@@ -40,7 +40,7 @@ def indicator_serializers():
         subpillar_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        outcome_indicator = SerializerMethodField()
+        outcome_indicators = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -49,7 +49,7 @@ def indicator_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'outcome_indicator',
+                'outcome_indicators',
             ]
             model = Indicator
             fields = [
@@ -68,7 +68,7 @@ def indicator_serializers():
             """
             return get_related_content_url(Subpillar, obj.subpillar.id)
 
-        def get_outcome_indicator(self, obj):
+        def get_outcome_indicators(self, obj):
             """
             :param obj: Current record object
             :return: Outcome indicator of the indicator record
