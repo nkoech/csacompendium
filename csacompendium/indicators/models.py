@@ -37,7 +37,7 @@ class IndicatorType(AuthUserDetail, CreateUpdateTime):
         :return: URL
         :rtype: String
         """
-        return reverse('indicator_api:indicator_type_detail', kwargs={'slug': self.slug})
+        return reverse('indicator_outcome_api:indicator_type_detail', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
@@ -89,7 +89,7 @@ class Subpillar(AuthUserDetail, CreateUpdateTime):
         :return: URL
         :rtype: String
         """
-        return reverse('indicator_api:subpillar_detail', kwargs={'slug': self.slug})
+        return reverse('indicator_outcome_api:subpillar_detail', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
@@ -159,7 +159,7 @@ class Indicator(AuthUserDetail, CreateUpdateTime):
         :return: URL
         :rtype: String
         """
-        return reverse('indicator_api:indicator_detail', kwargs={'slug': self.slug})
+        return reverse('indicator_outcome_api:indicator_detail', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
@@ -233,7 +233,7 @@ class OutcomeIndicator(AuthUserDetail, CreateUpdateTime):
         :return: URL
         :rtype: String
         """
-        return reverse('indicator_api:outcome_indicator_detail', kwargs={'slug': self.slug})
+        return reverse('indicator_outcome_api:outcome_indicator_detail', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['-time_created', '-last_update']

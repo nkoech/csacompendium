@@ -19,7 +19,7 @@ def indicator_type_serializers():
         """
         Serialize all records in given fields into an API
         """
-        url = hyperlinked_identity('indicator_api:indicator_type_detail', 'slug')
+        url = hyperlinked_identity('indicator_outcome_api:indicator_type_detail', 'slug')
 
         class Meta:
             model = IndicatorType

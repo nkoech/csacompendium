@@ -19,7 +19,7 @@ def subpillar_serializers():
         """
         Serialize all records in given fields into an API
         """
-        url = hyperlinked_identity('indicator_api:subpillar_detail', 'slug')
+        url = hyperlinked_identity('indicator_outcome_api:subpillar_detail', 'slug')
 
         class Meta:
             model = Subpillar
