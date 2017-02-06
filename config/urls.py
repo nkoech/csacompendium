@@ -3,7 +3,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/indicator/', include('csacompendium.indicators.api.urls', namespace='indicator_api')),
+    # url(r'^api/indicator/', include('csacompendium.indicators.api.urls', namespace='indicator_api')),
     url(r'^api/csapractice/', include('csacompendium.csa_practice.api.urls', namespace='csa_practice_api')),
     url(r'^api/researchtype/', include('csacompendium.research_type.api.urls', namespace='research_type_api')),
     url(r'^api/research/', include('csacompendium.research.api.urls', namespace='research_api')),
