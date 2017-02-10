@@ -3,6 +3,7 @@ from .views import (
     subpillar_views,
     indicator_views,
     indicator_type_views,
+    outcome_indicator_views,
 )
 
 # Subpillar URLs
@@ -59,5 +60,24 @@ urlpatterns += [
         r'^indicatortype/(?P<slug>[\w-]+)/$',
         indicator_type_views['IndicatorTypeDetailAPIView'].as_view(),
         name='indicator_type_detail'
+    ),
+]
+
+# Outcome indicator URLs
+urlpatterns += [
+    url(
+        r'^$',
+        outcome_indicator_views['OutcomeIndicatorListAPIView'].as_view(),
+        name='outcome_indicator_list'
+    ),
+    url(
+        r'^create/$',
+        outcome_indicator_views['OutcomeIndicatorCreateAPIView'].as_view(),
+        name='outcome_indicator_create'
+    ),
+    url(
+        r'^(?P<slug>[\w-]+)/$',
+        outcome_indicator_views['OutcomeIndicatorDetailAPIView'].as_view(),
+        name='outcome_indicator_detail'
     ),
 ]
