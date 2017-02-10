@@ -6,47 +6,47 @@ from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import OutcomeIndicatorListFilter
-from csacompendium.locations.api.temperature.temperatureserializers import temperature_serializers
+from csacompendium.indicators.api.outcomeindicator.outcomeindicatorserializers import outcome_indicator_serializers
 
 
-def temperature_views():
+def outcome_indicator_views():
     """
-    Temperature views
-    :return: All temperature views
+    Outcome indicator views
+    :return: All outcome indicator views
     :rtype: Object
     """
-    temperature_serializer = temperature_serializers()
+    outcome_indicator_serializer = outcome_indicator_serializers()
 
-    class TemperatureCreateAPIView(CreateAPIViewHook):
+    class OutcomeIndicatorCreateAPIView(CreateAPIViewHook):
         """
         Creates a single record.
         """
-        queryset = Temperature.objects.all()
-        serializer_class = temperature_serializer['TemperatureDetailSerializer']
+        queryset = OutcomeIndicator.objects.all()
+        serializer_class = outcome_indicator_serializer['OutcomeIndicatorDetailSerializer']
         permission_classes = [IsAuthenticated]
 
-    class TemperatureListAPIView(ListAPIView):
+    class OutcomeIndicatorListAPIView(ListAPIView):
         """
         API list view. Gets all records API.
         """
-        queryset = Temperature.objects.all()
-        serializer_class = temperature_serializer['TemperatureListSerializer']
+        queryset = OutcomeIndicator.objects.all()
+        serializer_class = outcome_indicator_serializer['OutcomeIndicatorListSerializer']
         filter_backends = (DjangoFilterBackend,)
-        filter_class = TemperatureListFilter
+        filter_class = OutcomeIndicatorListFilter
         pagination_class = APILimitOffsetPagination
 
-    class TemperatureDetailAPIView(DetailViewUpdateDelete):
+    class OutcomeIndicatorDetailAPIView(DetailViewUpdateDelete):
         """
         Updates a record.
         """
-        queryset = Temperature.objects.all()
-        serializer_class = temperature_serializer['TemperatureDetailSerializer']
+        queryset = OutcomeIndicator.objects.all()
+        serializer_class = outcome_indicator_serializer['OutcomeIndicatorDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
-        lookup_field = 'pk'
+        lookup_field = 'slug'
 
     return {
-        'TemperatureListAPIView': TemperatureListAPIView,
-        'TemperatureDetailAPIView': TemperatureDetailAPIView,
-        'TemperatureCreateAPIView': TemperatureCreateAPIView
+        'OutcomeIndicatorListAPIView': OutcomeIndicatorListAPIView,
+        'OutcomeIndicatorDetailAPIView': OutcomeIndicatorDetailAPIView,
+        'OutcomeIndicatorCreateAPIView': OutcomeIndicatorCreateAPIView
     }
 
