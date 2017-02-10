@@ -69,7 +69,7 @@ class ExperimentDurationModelAdmin(admin.ModelAdmin):
 
 class MeasurementYearModelAdmin(admin.ModelAdmin):
     """
-    measurement year model admin settings
+    Measurement year model admin settings
     """
     list_display = ['meas_year', 'measurementseason', 'last_update', 'modified_by']
     list_display_links = ['meas_year']
@@ -81,7 +81,7 @@ class MeasurementYearModelAdmin(admin.ModelAdmin):
 
 class MeasurementSeasonModelAdmin(admin.ModelAdmin):
     """
-    Precipitation model admin settings
+    Measurement season model admin settings
     """
     list_display = ['meas_season', 'last_update', 'modified_by']
     list_display_links = ['meas_season']
