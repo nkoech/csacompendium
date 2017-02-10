@@ -8,6 +8,7 @@ from .models import (
     Subpillar,
 )
 
+
 class OutcomeIndicatorModelAdmin(admin.ModelAdmin):
     """
     Outcome indicator model admin settings
@@ -21,6 +22,7 @@ class OutcomeIndicatorModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = OutcomeIndicator
+
 
 class IndicatorTypeModelAdmin(admin.ModelAdmin):
     """
