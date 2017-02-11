@@ -10,7 +10,6 @@ from .models import (
     ResearchSpecies,
     MeasurementSeason,
     MeasurementYear,
-    ExperimentDuration,
     Research,
     Author,
 )
@@ -34,9 +33,9 @@ class ResearchModelAdmin(admin.ModelAdmin):
     """
     Location model admin settings
     """
-    list_display = ['author', 'experimentduration', 'research_year', 'last_update', 'modified_by']
+    list_display = ['author', 'research_year', 'last_update', 'modified_by']
     list_display_links = ['author']
-    list_filter = ['author', 'experimentduration', 'last_update', 'modified_by', 'research_year']
+    list_filter = ['author', 'last_update', 'modified_by', 'research_year']
     inlines = [ResearchSpeciesInline, ResearchOutcomeIndicatorInline, ]
 
     class Meta:
@@ -53,18 +52,6 @@ class AuthorModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Author
-
-
-class ExperimentDurationModelAdmin(admin.ModelAdmin):
-    """
-    Precipitation model admin settings
-    """
-    list_display = ['exp_duration', 'last_update', 'modified_by']
-    list_display_links = ['exp_duration']
-    list_filter = ['exp_duration', 'last_update', 'modified_by']
-
-    class Meta:
-        model = ExperimentDuration
 
 
 class MeasurementYearModelAdmin(admin.ModelAdmin):
@@ -140,7 +127,6 @@ class ResearchObjectModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Research, ResearchModelAdmin)
 admin.site.register(Author, AuthorModelAdmin)
-admin.site.register(ExperimentDuration, ExperimentDurationModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Species, SpeciesModelAdmin)

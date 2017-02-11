@@ -179,6 +179,55 @@ def pre_save_experiment_details_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance, ExperimentDetails, instance.exp_detail)
 
 
+class ExperimentDuration(AuthUserDetail, CreateUpdateTime):
+    """
+    Experiment duration model
+    """
+    exp_duration = models.DecimalField(
+        max_digits=4, decimal_places=2, unique=True, verbose_name='Experiment Duration'
+    )
+
+    def __unicode__(self):
+        return str(self.exp_duration)
+
+    def __str__(self):
+        return str(self.exp_duration)
+
+    def get_api_url(self):
+        """
+        Get experiment duration URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_type_api:experiment_duration_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Experiment Durations'
+
+    @property
+    def control_research_relation(self):
+        """
+        Get related control research properties
+        :return: Query result from the control research model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ControlResearch.objects.filter_by_model_type(instance)
+        return qs
+
+    @property
+    def treatment_research_relation(self):
+        """
+        Get related treatment research properties
+        :return: Query result from the treatment research model
+        :rtype: object/record
+        """
+        instance = self
+        qs = TreatmentResearch.objects.filter_by_model_type(instance)
+        return qs
+
+
 class ControlResearchManager(models.Manager):
     """
     Control research model manager
@@ -233,6 +282,9 @@ class ControlResearch(AuthUserDetail, CreateUpdateTime):
     )
     nitrogenapplied = models.ForeignKey(
         NitrogenApplied, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Nitrogen Applied'
+    )
+    experimentduration = models.ForeignKey(
+        ExperimentDuration, blank=True, null=True, on_delete=models.PROTECT, verbose_name='Experiment Duration'
     )
     objects = ControlResearchManager()
 
@@ -301,6 +353,9 @@ class TreatmentResearch(AuthUserDetail, CreateUpdateTime):
     )
     nitrogenapplied = models.ForeignKey(
         NitrogenApplied, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Nitrogen Applied'
+    )
+    experimentduration = models.ForeignKey(
+        ExperimentDuration, blank=True, null=True, on_delete=models.PROTECT, verbose_name='Experiment Duration'
     )
     objects = TreatmentResearchManager()
 

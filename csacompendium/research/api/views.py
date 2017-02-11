@@ -1,7 +1,6 @@
 # from .soil.soilviews import soil_views
 from .measurementyear.measurementyearviews import measurement_year_views
 from .measurementseason.measurementseasonviews import measurement_season_views
-from .experimentduration.experimentdurationviews import experiment_duration_views
 from .author.authorviews import author_views
 from .researchobject.researchobjectviews import research_object_views
 from .experimentobject.experimentobjectviews import experiment_object_views
@@ -13,7 +12,6 @@ from .researchoutcomeindicator.researchoutcomeindicatorviews import research_out
 # soil_views = soil_views()
 measurement_year_views = measurement_year_views()
 measurement_season_views = measurement_season_views()
-experiment_duration_views = experiment_duration_views()
 author_views = author_views()
 research_object_views = research_object_views()
 experiment_object_views = experiment_object_views()
