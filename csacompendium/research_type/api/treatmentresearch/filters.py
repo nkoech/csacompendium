@@ -16,6 +16,7 @@ class TreatmentResearchListFilter(FilterSet):
             'experimentrep': ['exact'],
             'experimentdetails': ['exact'],
             'nitrogenapplied': ['exact'],
+            'experimentduration': ['exact'],
             'object_id': ['exact'],
             'content_type': ['exact'],
         }
