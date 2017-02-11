@@ -150,16 +150,16 @@ class Research(AuthUserDetail, CreateUpdateTime):
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Research'
 
-    @property
-    def measurement_year(self):
-        """
-        Get related measurement year object/record
-        :return: Query result from the measurement year model
-        :rtye: object/record
-        """
-        instance = self
-        qs = MeasurementYear.objects.filter_by_instance(instance)
-        return qs
+    # @property
+    # def measurement_year(self):
+    #     """
+    #     Get related measurement year object/record
+    #     :return: Query result from the measurement year model
+    #     :rtye: object/record
+    #     """
+    #     instance = self
+    #     qs = MeasurementYear.objects.filter_by_instance(instance)
+    #     return qs
 
     @property
     def research_species_relation(self):
@@ -219,125 +219,125 @@ class Research(AuthUserDetail, CreateUpdateTime):
         return qs
 
 
-class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
-    """
-    Measurement season model
-    """
-    RAIN_SEASONS = (
-        ('Long Rains', 'Long Rains'),
-        ('Short Rains', 'Short Rains'),
-    )
-
-    slug = models.SlugField(unique=True, blank=True)
-    meas_season = models.CharField(max_length=22, choices=RAIN_SEASONS, unique=True, verbose_name='Measurement season')
-
-    def __unicode__(self):
-        return self.meas_season
-
-    def __str__(self):
-        return self.meas_season
-
-    def get_api_url(self):
-        """
-        Get measurement season URL as a reverse from model
-        :return: URL
-        :rtype: String
-        """
-        return reverse('research_api:measurement_season_detail', kwargs={'slug': self.slug})
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Measurement Seasons'
-
-    @property
-    def measurement_year_relation(self):
-        """
-        Get related measurement year properties
-        :return: Query result from the measurement year model
-        :rtye: object/record
-        """
-        instance = self
-        qs = MeasurementYear.objects.filter_by_model_type(instance)
-        return qs
-
-
-@receiver(pre_save, sender=MeasurementSeason)
-def pre_save_measurement_season_receiver(sender, instance, *args, **kwargs):
-    """
-    Create a slug before save.
-    :param sender: Signal sending object
-    :param instance: Object instance
-    :param args: Any other argument
-    :param kwargs: Keyword arguments
-    :return: None
-    :rtype: None
-    """
-    if not instance.slug:
-        instance.slug = create_slug(instance, MeasurementSeason, instance.meas_season)
-
-
-class MeasurementYearManager(models.Manager):
-    """
-    Measurement year model manager
-    """
-    def filter_by_instance(self, instance):
-        """
-        Query a related measurement year object/record from another model's object
-        :param instance: Object instance
-        :return: Query result from content type/model
-        :rtye: object/record
-        """
-        return model_instance_filter(instance, self, MeasurementYearManager)
-
-    def filter_by_model_type(self, instance):
-        """
-        Query related objects/model type
-        :param instance: Object instance
-        :return: Matching object else none
-        :rtype: Object/record
-        """
-        obj_qs = model_foreign_key_qs(instance, self, MeasurementYearManager)
-        if obj_qs.exists():
-            return model_type_filter(self, obj_qs, MeasurementYearManager)
-
-    def create_by_model_type(self, model_type, pk, **kwargs):
-        """
-        Create object by model type
-        :param model_type: Content/model type
-        :param pk: Primary Key
-        :param kwargs: Fields to be created
-        :return: Data object
-        :rtype: Object
-        """
-        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
-
-
-class MeasurementYear(AuthUserDetail, CreateUpdateTime):
-    """
-    Creates measurement year entity.
-    """
-
-    limit = models.Q(app_label='research', model='research')
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
-    meas_year = models.SmallIntegerField(
-        choices=get_year_choices(), default=get_datetime_now(), verbose_name='Measurement Year'
-    )
-    measurementseason = models.ForeignKey(
-        MeasurementSeason, on_delete=models.PROTECT, verbose_name='Measurement season'
-    )
-    objects = MeasurementYearManager()
-
-    def __unicode__(self):
-        return str(self.meas_year)
-
-    def __str__(self):
-        return str(self.meas_year)
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Measurement Years'
+# class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
+#     """
+#     Measurement season model
+#     """
+#     RAIN_SEASONS = (
+#         ('Long Rains', 'Long Rains'),
+#         ('Short Rains', 'Short Rains'),
+#     )
+#
+#     slug = models.SlugField(unique=True, blank=True)
+#     meas_season = models.CharField(max_length=22, choices=RAIN_SEASONS, unique=True, verbose_name='Measurement season')
+#
+#     def __unicode__(self):
+#         return self.meas_season
+#
+#     def __str__(self):
+#         return self.meas_season
+#
+#     def get_api_url(self):
+#         """
+#         Get measurement season URL as a reverse from model
+#         :return: URL
+#         :rtype: String
+#         """
+#         return reverse('research_api:measurement_season_detail', kwargs={'slug': self.slug})
+#
+#     class Meta:
+#         ordering = ['-time_created', '-last_update']
+#         verbose_name_plural = 'Measurement Seasons'
+#
+#     @property
+#     def measurement_year_relation(self):
+#         """
+#         Get related measurement year properties
+#         :return: Query result from the measurement year model
+#         :rtye: object/record
+#         """
+#         instance = self
+#         qs = MeasurementYear.objects.filter_by_model_type(instance)
+#         return qs
+#
+#
+# @receiver(pre_save, sender=MeasurementSeason)
+# def pre_save_measurement_season_receiver(sender, instance, *args, **kwargs):
+#     """
+#     Create a slug before save.
+#     :param sender: Signal sending object
+#     :param instance: Object instance
+#     :param args: Any other argument
+#     :param kwargs: Keyword arguments
+#     :return: None
+#     :rtype: None
+#     """
+#     if not instance.slug:
+#         instance.slug = create_slug(instance, MeasurementSeason, instance.meas_season)
+#
+#
+# class MeasurementYearManager(models.Manager):
+#     """
+#     Measurement year model manager
+#     """
+#     def filter_by_instance(self, instance):
+#         """
+#         Query a related measurement year object/record from another model's object
+#         :param instance: Object instance
+#         :return: Query result from content type/model
+#         :rtye: object/record
+#         """
+#         return model_instance_filter(instance, self, MeasurementYearManager)
+#
+#     def filter_by_model_type(self, instance):
+#         """
+#         Query related objects/model type
+#         :param instance: Object instance
+#         :return: Matching object else none
+#         :rtype: Object/record
+#         """
+#         obj_qs = model_foreign_key_qs(instance, self, MeasurementYearManager)
+#         if obj_qs.exists():
+#             return model_type_filter(self, obj_qs, MeasurementYearManager)
+#
+#     def create_by_model_type(self, model_type, pk, **kwargs):
+#         """
+#         Create object by model type
+#         :param model_type: Content/model type
+#         :param pk: Primary Key
+#         :param kwargs: Fields to be created
+#         :return: Data object
+#         :rtype: Object
+#         """
+#         return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+#
+#
+# class MeasurementYear(AuthUserDetail, CreateUpdateTime):
+#     """
+#     Creates measurement year entity.
+#     """
+#
+#     limit = models.Q(app_label='research', model='research')
+#     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+#     object_id = models.PositiveIntegerField()
+#     content_object = GenericForeignKey('content_type', 'object_id')
+#     meas_year = models.SmallIntegerField(
+#         choices=get_year_choices(), default=get_datetime_now(), verbose_name='Measurement Year'
+#     )
+#     measurementseason = models.ForeignKey(
+#         MeasurementSeason, on_delete=models.PROTECT, verbose_name='Measurement season'
+#     )
+#     objects = MeasurementYearManager()
+#
+#     def __unicode__(self):
+#         return str(self.meas_year)
+#
+#     def __str__(self):
+#         return str(self.meas_year)
+#
+#     class Meta:
+#         ordering = ['-time_created', '-last_update']
+#         verbose_name_plural = 'Measurement Years'
 
 
 class Species(AuthUserDetail, CreateUpdateTime):

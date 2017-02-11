@@ -8,8 +8,8 @@ from .models import (
     ResearchOutcomeIndicator,
     Species,
     ResearchSpecies,
-    MeasurementSeason,
-    MeasurementYear,
+    # MeasurementSeason,
+    # MeasurementYear,
     Research,
     Author,
 )
@@ -54,28 +54,28 @@ class AuthorModelAdmin(admin.ModelAdmin):
         model = Author
 
 
-class MeasurementYearModelAdmin(admin.ModelAdmin):
-    """
-    Measurement year model admin settings
-    """
-    list_display = ['meas_year', 'measurementseason', 'last_update', 'modified_by']
-    list_display_links = ['meas_year']
-    list_filter = ['measurementseason', 'last_update', 'modified_by', 'meas_year']
+# class MeasurementYearModelAdmin(admin.ModelAdmin):
+#     """
+#     Measurement year model admin settings
+#     """
+#     list_display = ['meas_year', 'measurementseason', 'last_update', 'modified_by']
+#     list_display_links = ['meas_year']
+#     list_filter = ['measurementseason', 'last_update', 'modified_by', 'meas_year']
+#
+#     class Meta:
+#         model = MeasurementYear
 
-    class Meta:
-        model = MeasurementYear
 
-
-class MeasurementSeasonModelAdmin(admin.ModelAdmin):
-    """
-    Measurement season model admin settings
-    """
-    list_display = ['meas_season', 'last_update', 'modified_by']
-    list_display_links = ['meas_season']
-    list_filter = ['meas_season', 'last_update', 'modified_by']
-
-    class Meta:
-        model = MeasurementSeason
+# class MeasurementSeasonModelAdmin(admin.ModelAdmin):
+#     """
+#     Measurement season model admin settings
+#     """
+#     list_display = ['meas_season', 'last_update', 'modified_by']
+#     list_display_links = ['meas_season']
+#     list_filter = ['meas_season', 'last_update', 'modified_by']
+#
+#     class Meta:
+#         model = MeasurementSeason
 
 
 class SpeciesModelAdmin(admin.ModelAdmin):
@@ -127,8 +127,8 @@ class ResearchObjectModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Research, ResearchModelAdmin)
 admin.site.register(Author, AuthorModelAdmin)
-admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
-admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
+# admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
+# admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Species, SpeciesModelAdmin)
 admin.site.register(ObjectCategory, ObjectCategoryModelAdmin)
 admin.site.register(ExperimentObject, ExperimentObjectModelAdmin)

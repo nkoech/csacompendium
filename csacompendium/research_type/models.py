@@ -12,6 +12,8 @@ from csacompendium.utils.modelmanagers import (
     model_foreign_key_qs,
     model_type_filter,
     create_model_type,
+    get_year_choices,
+    get_datetime_now,
 )
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -226,6 +228,148 @@ class ExperimentDuration(AuthUserDetail, CreateUpdateTime):
         instance = self
         qs = TreatmentResearch.objects.filter_by_model_type(instance)
         return qs
+
+
+# class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
+#     """
+#     Measurement season model
+#     """
+#     RAIN_SEASONS = (
+#         ('Long Rains', 'Long Rains'),
+#         ('Short Rains', 'Short Rains'),
+#     )
+#
+#     slug = models.SlugField(unique=True, blank=True)
+#     meas_season = models.CharField(max_length=22, choices=RAIN_SEASONS, unique=True, verbose_name='Measurement season')
+#
+#     def __unicode__(self):
+#         return self.meas_season
+#
+#     def __str__(self):
+#         return self.meas_season
+#
+#     def get_api_url(self):
+#         """
+#         Get measurement season URL as a reverse from model
+#         :return: URL
+#         :rtype: String
+#         """
+#         return reverse('research_type_api:measurement_season_detail', kwargs={'slug': self.slug})
+#
+#     class Meta:
+#         ordering = ['-time_created', '-last_update']
+#         verbose_name_plural = 'Measurement Seasons'
+#
+#     @property
+#     def measurement_year_relation(self):
+#         """
+#         Get related measurement year properties
+#         :return: Query result from the measurement year model
+#         :rtye: object/record
+#         """
+#         instance = self
+#         qs = MeasurementYear.objects.filter_by_model_type(instance)
+#         return qs
+#
+#
+# @receiver(pre_save, sender=MeasurementSeason)
+# def pre_save_measurement_season_receiver(sender, instance, *args, **kwargs):
+#     """
+#     Create a slug before save.
+#     :param sender: Signal sending object
+#     :param instance: Object instance
+#     :param args: Any other argument
+#     :param kwargs: Keyword arguments
+#     :return: None
+#     :rtype: None
+#     """
+#     if not instance.slug:
+#         instance.slug = create_slug(instance, MeasurementSeason, instance.meas_season)
+#
+#
+# class MeasurementYearManager(models.Manager):
+#     """
+#     Measurement year model manager
+#     """
+#     def filter_by_model_type(self, instance):
+#         """
+#         Query related objects/model type
+#         :param instance: Object instance
+#         :return: Matching object else none
+#         :rtype: Object/record
+#         """
+#         obj_qs = model_foreign_key_qs(instance, self, MeasurementYearManager)
+#         if obj_qs.exists():
+#             return model_type_filter(self, obj_qs, MeasurementYearManager)
+#
+#
+# class MeasurementYear(AuthUserDetail, CreateUpdateTime):
+#     """
+#     Creates measurement year entity.
+#     """
+#     slug = models.SlugField(unique=True, blank=True)
+#     meas_year = models.SmallIntegerField(
+#         choices=get_year_choices(), default=get_datetime_now(), verbose_name='Measurement Year'
+#     )
+#     measurementseason = models.ForeignKey(
+#         MeasurementSeason, on_delete=models.PROTECT, verbose_name='Measurement season'
+#     )
+#     objects = MeasurementYearManager()
+#
+#     def __unicode__(self):
+#         return str(self.meas_year)
+#
+#     def __str__(self):
+#         return str(self.meas_year)
+#
+#     def get_api_url(self):
+#         """
+#         Get measurement year URL as a reverse from model
+#         :return: URL
+#         :rtype: String
+#         """
+#         return reverse('research_type_api:measurement_year_detail', kwargs={'slug': self.slug})
+#
+#     class Meta:
+#         ordering = ['-time_created', '-last_update']
+#         verbose_name_plural = 'Measurement Years'
+#
+#     @property
+#     def control_research_relation(self):
+#         """
+#         Get related control research properties
+#         :return: Query result from the control research model
+#         :rtype: object/record
+#         """
+#         instance = self
+#         qs = ControlResearch.objects.filter_by_model_type(instance)
+#         return qs
+#
+#     @property
+#     def treatment_research_relation(self):
+#         """
+#         Get related treatment research properties
+#         :return: Query result from the treatment research model
+#         :rtype: object/record
+#         """
+#         instance = self
+#         qs = TreatmentResearch.objects.filter_by_model_type(instance)
+#         return qs
+#
+#
+# @receiver(pre_save, sender=MeasurementYear)
+# def pre_save_indicator_receiver(sender, instance, *args, **kwargs):
+#     """
+#     Create a slug before save.
+#     :param sender: Signal sending object
+#     :param instance: Object instance
+#     :param args: Any other argument
+#     :param kwargs: Keyword arguments
+#     :return: None
+#     :rtype: None
+#     """
+#     if not instance.slug:
+#         instance.slug = create_slug(instance, MeasurementYear, instance.meas_year)
 
 
 class ControlResearchManager(models.Manager):
