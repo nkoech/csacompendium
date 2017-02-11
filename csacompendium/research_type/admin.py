@@ -7,6 +7,7 @@ from .models import (
     ExperimentRep,
     NitrogenApplied,
     ExperimentDetails,
+    ExperimentDuration,
     ControlResearch,
     TreatmentResearch,
 )
@@ -16,9 +17,9 @@ class TreatmentResearchModelAdmin(admin.ModelAdmin):
     """
     Treatment research model admin settings
     """
-    list_display = ['experimentdetails', 'experimentrep', 'nitrogenapplied', 'last_update', 'modified_by']
+    list_display = ['experimentdetails', 'experimentrep', 'nitrogenapplied', 'experimentduration', 'last_update', 'modified_by']
     list_display_links = ['experimentdetails']
-    list_filter = ['experimentrep', 'nitrogenapplied', 'last_update', 'modified_by']
+    list_filter = ['experimentrep', 'nitrogenapplied', 'experimentduration', 'last_update', 'modified_by']
 
     class Meta:
         model = TreatmentResearch
@@ -28,9 +29,9 @@ class ControlResearchModelAdmin(admin.ModelAdmin):
     """
     Control research model admin settings
     """
-    list_display = ['experimentdetails', 'experimentrep', 'nitrogenapplied', 'last_update', 'modified_by']
+    list_display = ['experimentdetails', 'experimentrep', 'nitrogenapplied', 'experimentduration', 'last_update', 'modified_by']
     list_display_links = ['experimentdetails']
-    list_filter = ['experimentrep', 'nitrogenapplied', 'last_update', 'modified_by']
+    list_filter = ['experimentrep', 'nitrogenapplied', 'experimentduration', 'last_update', 'modified_by']
 
     class Meta:
         model = ControlResearch
@@ -71,8 +72,21 @@ class ExperimentRepModelAdmin(admin.ModelAdmin):
     class Meta:
         model = ExperimentRep
 
+
+class ExperimentDurationModelAdmin(admin.ModelAdmin):
+    """
+    Experiment details model admin settings
+    """
+    list_display = ['exp_duration', 'last_update', 'modified_by']
+    list_display_links = ['exp_duration']
+    list_filter = ['exp_duration', 'last_update', 'modified_by']
+
+    class Meta:
+        model = ExperimentDuration
+
 admin.site.register(TreatmentResearch, TreatmentResearchModelAdmin)
 admin.site.register(ControlResearch, ControlResearchModelAdmin)
 admin.site.register(ExperimentDetails, ExperimentDetailsModelAdmin)
 admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
 admin.site.register(ExperimentRep, ExperimentRepModelAdmin)
+admin.site.register(ExperimentDuration, ExperimentDurationModelAdmin)

@@ -268,7 +268,6 @@ class ControlResearch(AuthUserDetail, CreateUpdateTime):
     """
     Creates control research entity.
     """
-
     limit = models.Q(app_label='research', model='research')
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -339,7 +338,6 @@ class TreatmentResearch(AuthUserDetail, CreateUpdateTime):
     """
     Creates treatment research entity.
     """
-
     limit = models.Q(app_label='research', model='research')
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
