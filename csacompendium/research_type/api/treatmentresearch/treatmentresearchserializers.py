@@ -4,6 +4,7 @@ from csacompendium.research_type.models import (
     ExperimentRep,
     NitrogenApplied,
     ExperimentDetails,
+    ExperimentDuration,
 )
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
@@ -43,7 +44,7 @@ def treatment_research_serializers():
             class Meta:
                 model = TreatmentResearch
                 fields = ['id', 'csapractice', 'experimentrep', 'experimentdetails',
-                          'nitrogenapplied', 'last_update', 'time_created', ]
+                          'nitrogenapplied', 'experimentduration', 'last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
                 super(TreatmentResearchCreateSerializer, self).__init__(*args, **kwargs)
@@ -67,6 +68,7 @@ def treatment_research_serializers():
                 experimentrep = validated_data.get('experimentrep')
                 experimentdetails = validated_data.get('experimentdetails')
                 nitrogenapplied = validated_data.get('nitrogenapplied')
+                experimentduration = validated_data.get('experimentduration')
                 treatment_research = TreatmentResearch.objects.create_by_model_type(
                     self.model_type,
                     self.key,
@@ -74,6 +76,7 @@ def treatment_research_serializers():
                     experimentrep=experimentrep,
                     experimentdetails=experimentdetails,
                     nitrogenapplied=nitrogenapplied,
+                    experimentduration=experimentduration,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )
@@ -102,6 +105,7 @@ def treatment_research_serializers():
         experiment_replications_url = SerializerMethodField()
         experiment_details_url = SerializerMethodField()
         nitrogen_applied_url = SerializerMethodField()
+        experiment_duration_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
@@ -115,7 +119,8 @@ def treatment_research_serializers():
             ]
             model = TreatmentResearch
             fields = ['id', 'csa_practice_url', 'experiment_replications_url',
-                      'experiment_details_url', 'nitrogen_applied_url', 'user'] + common_fields
+                      'experiment_details_url', 'nitrogen_applied_url', 'experiment_duration_url',
+                      'user'] + common_fields
             read_only_fields = ['id', ] + common_fields
 
         def get_csa_practice_url(self, obj):
@@ -153,6 +158,15 @@ def treatment_research_serializers():
             :rtype: String
             """
             return get_related_content_url(NitrogenApplied, obj.nitrogenapplied.id)
+
+        def get_experiment_duration_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            return get_related_content_url(ExperimentDuration, obj.experimentduration.id)
 
     return {
         'create_treatment_research_serializer': create_treatment_research_serializer,
