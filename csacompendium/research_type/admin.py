@@ -8,6 +8,8 @@ from .models import (
     NitrogenApplied,
     ExperimentDetails,
     ExperimentDuration,
+    MeasurementSeason,
+    MeasurementYear,
     ControlResearch,
     TreatmentResearch,
 )
@@ -84,9 +86,35 @@ class ExperimentDurationModelAdmin(admin.ModelAdmin):
     class Meta:
         model = ExperimentDuration
 
+
+class MeasurementYearModelAdmin(admin.ModelAdmin):
+    """
+    Measurement year model admin settings
+    """
+    list_display = ['meas_year', 'measurementseason', 'last_update', 'modified_by']
+    list_display_links = ['meas_year']
+    list_filter = ['measurementseason', 'last_update', 'modified_by', 'meas_year']
+
+    class Meta:
+        model = MeasurementYear
+
+
+class MeasurementSeasonModelAdmin(admin.ModelAdmin):
+    """
+    Measurement season model admin settings
+    """
+    list_display = ['meas_season', 'last_update', 'modified_by']
+    list_display_links = ['meas_season']
+    list_filter = ['meas_season', 'last_update', 'modified_by']
+
+    class Meta:
+        model = MeasurementSeason
+
 admin.site.register(TreatmentResearch, TreatmentResearchModelAdmin)
 admin.site.register(ControlResearch, ControlResearchModelAdmin)
 admin.site.register(ExperimentDetails, ExperimentDetailsModelAdmin)
 admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
 admin.site.register(ExperimentRep, ExperimentRepModelAdmin)
 admin.site.register(ExperimentDuration, ExperimentDurationModelAdmin)
+admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
+admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
