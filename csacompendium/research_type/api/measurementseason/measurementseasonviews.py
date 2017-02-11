@@ -6,7 +6,7 @@ from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import MeasurementSeasonListFilter
-from csacompendium.research.api.measurementseason.measurementseasonserializers import measurement_season_serializers
+from csacompendium.research_type.api.measurementseason.measurementseasonserializers import measurement_season_serializers
 
 
 def measurement_season_views():
