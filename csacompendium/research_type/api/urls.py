@@ -5,7 +5,7 @@ from .views import (
     experiment_details_views,
     experiment_duration_views,
     measurement_season_views,
-    # measurement_year_views,
+    measurement_year_views,
     control_research_views,
     treatment_research_views,
 )
@@ -105,24 +105,24 @@ urlpatterns += [
     ),
 ]
 
-# # Measurement Year URLs
-# urlpatterns += [
-#     url(
-#         r'^measurementyear/$',
-#         measurement_year_views['MeasurementYearListAPIView'].as_view(),
-#         name='measurement_year_list'
-#     ),
-#     url(
-#         r'^measurementyear/create/$',
-#         measurement_year_views['MeasurementYearCreateAPIView'].as_view(),
-#         name='measurement_year_create'
-#     ),
-#     url(
-#         r'^measurementyear/(?P<pk>[\w-]+)/$',
-#         measurement_year_views['MeasurementYearDetailAPIView'].as_view(),
-#         name='measurement_year_detail'
-#     ),
-# ]
+# Measurement Year URLs
+urlpatterns += [
+    url(
+        r'^measurementyear/$',
+        measurement_year_views['MeasurementYearListAPIView'].as_view(),
+        name='measurement_year_list'
+    ),
+    url(
+        r'^measurementyear/create/$',
+        measurement_year_views['MeasurementYearCreateAPIView'].as_view(),
+        name='measurement_year_create'
+    ),
+    url(
+        r'^measurementyear/(?P<slug>[\w-]+)/$',
+        measurement_year_views['MeasurementYearDetailAPIView'].as_view(),
+        name='measurement_year_detail'
+    ),
+]
 
 # Control research URLs
 urlpatterns += [
