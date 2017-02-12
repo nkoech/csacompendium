@@ -6,6 +6,8 @@ from .views import (
     experiment_duration_views,
     measurement_season_views,
     measurement_year_views,
+    # Research author
+    author_views,
     control_research_views,
     treatment_research_views,
 )
@@ -121,6 +123,44 @@ urlpatterns += [
         r'^measurementyear/(?P<slug>[\w-]+)/$',
         measurement_year_views['MeasurementYearDetailAPIView'].as_view(),
         name='measurement_year_detail'
+    ),
+]
+
+# Research author URLs
+# urlpatterns += [
+#     url(
+#         r'^measurementyear/$',
+#         measurement_year_views['MeasurementYearListAPIView'].as_view(),
+#         name='measurement_year_list'
+#     ),
+#     url(
+#         r'^measurementyear/create/$',
+#         measurement_year_views['MeasurementYearCreateAPIView'].as_view(),
+#         name='measurement_year_create'
+#     ),
+#     url(
+#         r'^measurementyear/(?P<slug>[\w-]+)/$',
+#         measurement_year_views['MeasurementYearDetailAPIView'].as_view(),
+#         name='measurement_year_detail'
+#     ),
+# ]
+
+# Author URLs
+urlpatterns += [
+    url(
+        r'^author/$',
+        author_views['AuthorListAPIView'].as_view(),
+        name='author_list'
+    ),
+    url(
+        r'^author/create/$',
+        author_views['AuthorCreateAPIView'].as_view(),
+        name='author_create'
+    ),
+    url(
+        r'^author/(?P<slug>[\w-]+)/$',
+        author_views['AuthorDetailAPIView'].as_view(),
+        name='author_detail'
     ),
 ]
 
