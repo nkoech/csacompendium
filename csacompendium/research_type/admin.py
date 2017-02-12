@@ -12,6 +12,8 @@ from .models import (
     MeasurementYear,
     Author,
     ResearchAuthor,
+    Species,
+    ResearchSpecies,
     ControlResearch,
     TreatmentResearch,
 )
@@ -122,7 +124,7 @@ class ResearchAuthorInline(admin.TabularInline):
 
 class AuthorModelAdmin(admin.ModelAdmin):
     """
-    Temperature model admin settings
+    Author model admin settings
     """
     list_display = ['author_code', 'first_name', 'middle_name', 'last_name', 'author_bio', 'last_update', 'modified_by']
     list_display_links = ['first_name']
@@ -131,6 +133,26 @@ class AuthorModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Author
+
+
+class ResearchSpeciesInline(admin.TabularInline):
+    """
+    Easy editing of research species entry relations from the species entry page
+    """
+    model = ResearchSpecies
+
+
+class SpeciesModelAdmin(admin.ModelAdmin):
+    """
+    Species model admin settings
+    """
+    list_display = ['species', 'last_update', 'modified_by']
+    list_display_links = ['species']
+    list_filter = ['species', 'last_update', 'modified_by']
+    inlines = [ResearchSpeciesInline, ]
+
+    class Meta:
+        model = Species
 
 admin.site.register(TreatmentResearch, TreatmentResearchModelAdmin)
 admin.site.register(ControlResearch, ControlResearchModelAdmin)
@@ -141,3 +163,4 @@ admin.site.register(ExperimentDuration, ExperimentDurationModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Author, AuthorModelAdmin)
+admin.site.register(Species, SpeciesModelAdmin)
