@@ -7,8 +7,10 @@ from csacompendium.research_type.models import (
     ExperimentDuration,
     MeasurementYear,
 )
+from csacompendium.research_type.api.researchauthor.researchauthorserializer import research_author_serializers
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
+    get_related_content,
     get_related_content_url,
     valid_integer,
     CreateSerializerUtil,
@@ -110,9 +112,11 @@ def treatment_research_serializers():
         nitrogen_applied_url = SerializerMethodField()
         experiment_duration_url = SerializerMethodField()
         measurement_year_url = SerializerMethodField()
+        research_author_serializers = research_author_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
+        authors = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -120,6 +124,7 @@ def treatment_research_serializers():
                 'last_update',
                 'time_created',
                 'content_type_url',
+                'authors',
             ]
             model = TreatmentResearch
             fields = ['id', 'csa_practice_url', 'experiment_replications_url',
@@ -180,6 +185,17 @@ def treatment_research_serializers():
             :rtype: String
             """
             return get_related_content_url(MeasurementYear, obj.measurementyear.id)
+
+        def get_authors(self, obj):
+            """
+            :param obj: Current record object
+            :return: :return: Related author details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchAuthorSerializer = self.research_author_serializers['ResearchAuthorSerializer']
+            related_content = get_related_content(obj, ResearchAuthorSerializer, obj.research_author, request)
+            return related_content
 
     return {
         'create_treatment_research_serializer': create_treatment_research_serializer,

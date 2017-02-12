@@ -189,7 +189,7 @@ def control_research_serializers():
         def get_authors(self, obj):
             """
             :param obj: Current record object
-            :return: Locations related to the temperature
+            :return: Related author details
             :rtype: Object/record
             """
             request = self.context['request']
