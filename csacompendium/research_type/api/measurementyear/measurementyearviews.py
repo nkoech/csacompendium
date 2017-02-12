@@ -9,43 +9,43 @@ from .filters import MeasurementYearListFilter
 from csacompendium.research_type.api.measurementyear.measurementyearserializers import measurement_year_serializers
 
 
-def nitrogen_applied_views():
+def measurement_year_views():
     """
-    Nitrogen applied views
+    Measurement year views
     :return: All nitrogen applied views
     :rtype: Object
     """
-    nitrogen_applied_serializer = nitrogen_applied_serializers()
+    measurement_year_serializer = measurement_year_serializers()
 
-    class NitrogenAppliedCreateAPIView(CreateAPIViewHook):
+    class MeasurementYearCreateAPIView(CreateAPIViewHook):
         """
         Creates a single record.
         """
-        queryset = NitrogenApplied.objects.all()
-        serializer_class = nitrogen_applied_serializer['NitrogenAppliedDetailSerializer']
+        queryset = MeasurementYear.objects.all()
+        serializer_class = measurement_year_serializer['MeasurementYearDetailSerializer']
         permission_classes = [IsAuthenticated]
 
-    class NitrogenAppliedListAPIView(ListAPIView):
+    class MeasurementYearListAPIView(ListAPIView):
         """
         API list view. Gets all records API.
         """
-        queryset = NitrogenApplied.objects.all()
-        serializer_class = nitrogen_applied_serializer['NitrogenAppliedListSerializer']
+        queryset = MeasurementYear.objects.all()
+        serializer_class = measurement_year_serializer['MeasurementYearListSerializer']
         filter_backends = (DjangoFilterBackend,)
-        filter_class = NitrogenAppliedListFilter
+        filter_class = MeasurementYearListFilter
         pagination_class = APILimitOffsetPagination
 
-    class NitrogenAppliedDetailAPIView(DetailViewUpdateDelete):
+    class MeasurementYearDetailAPIView(DetailViewUpdateDelete):
         """
         Updates a record.
         """
-        queryset = NitrogenApplied.objects.all()
-        serializer_class = nitrogen_applied_serializer['NitrogenAppliedDetailSerializer']
+        queryset = MeasurementYear.objects.all()
+        serializer_class = measurement_year_serializer['MeasurementYearDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
-        lookup_field = 'pk'
+        lookup_field = 'slug'
 
     return {
-        'NitrogenAppliedListAPIView': NitrogenAppliedListAPIView,
-        'NitrogenAppliedDetailAPIView': NitrogenAppliedDetailAPIView,
-        'NitrogenAppliedCreateAPIView': NitrogenAppliedCreateAPIView
+        'MeasurementYearListAPIView': MeasurementYearListAPIView,
+        'MeasurementYearDetailAPIView': MeasurementYearDetailAPIView,
+        'MeasurementYearCreateAPIView': MeasurementYearCreateAPIView
     }
