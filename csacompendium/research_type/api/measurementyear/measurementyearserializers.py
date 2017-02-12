@@ -29,7 +29,7 @@ def measurement_year_serializers():
         class Meta:
             model = MeasurementYear
             fields = [
-                'nmeas_year',
+                'meas_year',
                 'url',
             ]
 
