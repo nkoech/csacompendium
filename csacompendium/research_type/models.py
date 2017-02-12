@@ -409,7 +409,7 @@ class Author(AuthUserDetail, CreateUpdateTime):
         :rtype: object/record
         """
         instance = self
-        qs = ResearchAuthor.objects.filter_by_instance(instance)
+        qs = ResearchAuthor.objects.filter_by_model_type(instance)
         return qs
 
 
@@ -559,10 +559,10 @@ class ControlResearch(AuthUserDetail, CreateUpdateTime):
         """
         Get related research author object/record
         :return: Query result from the research author model
-        :rtye: object/record
+        :rtype: object/record
         """
         instance = self
-        qs = ResearchAuthor.objects.filter_by_model_type(instance)
+        qs = ResearchAuthor.objects.filter_by_instance(instance)
         return qs
 
 
@@ -643,8 +643,8 @@ class TreatmentResearch(AuthUserDetail, CreateUpdateTime):
         """
         Get related research author object/record
         :return: Query result from the research author model
-        :rtye: object/record
+        :rtype: object/record
         """
         instance = self
-        qs = ResearchAuthor.objects.filter_by_model_type(instance)
+        qs = ResearchAuthor.objects.filter_by_instance(instance)
         return qs

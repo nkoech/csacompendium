@@ -127,7 +127,7 @@ def location_serializers():
             """
             Get related object type data
             :param obj: Current record object
-            :return: Locations in a country
+            :return: Related content type
             :rtype: Object/record
             """
             request = self.context['request']

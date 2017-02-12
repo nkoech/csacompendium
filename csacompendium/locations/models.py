@@ -86,7 +86,7 @@ class Location(AuthUserDetail, CreateUpdateTime):
         """
         Get related LocationRelation object/record
         :return: Query result from the LocationRelation model
-        :rtye: object/record
+        :rtype: object/record
         """
         instance = self
         qs = LocationRelation.objects.filter_by_model_type(instance)

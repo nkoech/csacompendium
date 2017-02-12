@@ -45,7 +45,7 @@ def author_serializers():
         research_author_serializers = research_author_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        research = SerializerMethodField()
+        research_relation = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -53,21 +53,25 @@ def author_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'research',
+                'research_relation',
             ]
             model = Author
             fields = ['id', ] + AuthorBaseSerializer.Meta.fields + ['author_bio', ] + common_fields
             read_only_fields = ['id', ] + common_fields
 
-        def get_research(self, obj):
+        def get_research_relation(self, obj):
             """
             :param obj: Current record object
-            :return: Locations in a country
+            :return: Related research
             :rtype: Object/record
             """
             request = self.context['request']
-            ResearchAuthorSerializer = self.research_author_serializers['ResearchAuthorSerializer']
-            related_content = get_related_content(obj, ResearchAuthorSerializer, obj.research_author, request)
+            ResearchAuthorContentTypeSerializer = self.research_author_serializers[
+                'ResearchAuthorContentTypeSerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchAuthorContentTypeSerializer, obj.research_author, request
+            )
             return related_content
 
     return {
