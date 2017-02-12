@@ -64,7 +64,7 @@ def research_author_serializers():
                 author_relation = ResearchAuthor.objects.create_by_model_type(
                     self.model_type,
                     self.key,
-                    location=author,
+                    author=author,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )
