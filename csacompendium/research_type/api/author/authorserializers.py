@@ -70,7 +70,7 @@ def author_serializers():
                 'ResearchAuthorContentTypeSerializer'
             ]
             related_content = get_related_content(
-                obj, ResearchAuthorContentTypeSerializer, obj.research_author, request
+                obj, ResearchAuthorContentTypeSerializer, obj.research_author_relation, request
             )
             return related_content
 
