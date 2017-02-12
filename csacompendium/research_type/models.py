@@ -372,72 +372,114 @@ def pre_save_indicator_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance, MeasurementYear, instance.meas_year)
 
 
-# class Author(AuthUserDetail, CreateUpdateTime):
-#     """
-#     Research author model
-#     """
-#     slug = models.SlugField(max_length=120, unique=True, blank=True)
-#     author_code = models.CharField(max_length=6, unique=True)
-#     first_name = models.CharField(max_length=40)
-#     middle_name = models.CharField(max_length=40, null=True, blank=True)
-#     last_name = models.CharField(max_length=40)
-#     author_bio = models.TextField(null=True, blank=True)
-#
-#     def __unicode__(self):
-#         return self.first_name
-#
-#     def __str__(self):
-#         return self.first_name
-#
-#     def get_api_url(self):
-#         """
-#         Get author URL as a reverse from model
-#         :return: URL
-#         :rtype: String
-#         """
-#         return reverse('research_type_api:author_detail', kwargs={'slug': self.slug})
-#
-#     class Meta:
-#         ordering = ['-time_created', '-last_update']
-#         verbose_name_plural = 'Authors'
-#
-#     @property
-#     def control_research_relation(self):
-#         """
-#         Get related control research properties
-#         :return: Query result from the control research model
-#         :rtype: object/record
-#         """
-#         instance = self
-#         qs = ControlResearch.objects.filter_by_model_type(instance)
-#         return qs
-#
-#     @property
-#     def treatment_research_relation(self):
-#         """
-#         Get related treatment research properties
-#         :return: Query result from the treatment research model
-#         :rtype: object/record
-#         """
-#         instance = self
-#         qs = TreatmentResearch.objects.filter_by_model_type(instance)
-#         return qs
-#
-#
-# @receiver(pre_save, sender=Author)
-# def pre_save_author_receiver(sender, instance, *args, **kwargs):
-#     """
-#     Create a slug before save.
-#     :param sender: Signal sending object
-#     :param instance: Object instance
-#     :param args: Any other argument
-#     :param kwargs: Keyword arguments
-#     :return: None
-#     :rtype: None
-#     """
-#     if not instance.slug:
-#         instance_fields = [instance.first_name, instance.last_name]
-#         instance.slug = create_slug(instance, Author, instance_fields)
+class Author(AuthUserDetail, CreateUpdateTime):
+    """
+    Research author model
+    """
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
+    author_code = models.CharField(max_length=6, unique=True)
+    first_name = models.CharField(max_length=40)
+    middle_name = models.CharField(max_length=40, null=True, blank=True)
+    last_name = models.CharField(max_length=40)
+    author_bio = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.first_name
+
+    def __str__(self):
+        return self.first_name
+
+    def get_api_url(self):
+        """
+        Get author URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_type_api:author_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Authors'
+
+    @property
+    def research_author(self):
+        """
+        Get related research author object/record
+        :return: Query result from the research author model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchAuthor.objects.filter_by_instance(instance)
+        return qs
+
+
+@receiver(pre_save, sender=Author)
+def pre_save_author_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance_fields = [instance.first_name, instance.last_name]
+        instance.slug = create_slug(instance, Author, instance_fields)
+
+
+class ResearchAuthorManager(models.Manager):
+    """
+    Research author model manager
+    """
+    def filter_by_instance(self, instance):
+        """
+        Query a related research author object/record from another model's object
+        :param instance: Object instance
+        :return: Query result from content type/model
+        :rtye: object/record
+        """
+        return model_instance_filter(instance, self, ResearchAuthorManager)
+
+    def filter_by_model_type(self, instance):
+        """
+        Query related objects/model type
+        :param instance: Object instance
+        :return: Matching object else none
+        :rtype: Object/record
+        """
+        obj_qs = model_foreign_key_qs(instance, self, ResearchAuthorManager)
+        if obj_qs.exists():
+            return model_type_filter(self, obj_qs, ResearchAuthorManager)
+
+    def create_by_model_type(self, model_type, pk, **kwargs):
+        """
+        Create object by model type
+        :param model_type: Content/model type
+        :param pk: Primary key
+        :param kwargs: Fields to be created
+        :return: Data object
+        :rtype: Object
+        """
+        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+
+
+class ResearchAuthor(AuthUserDetail, CreateUpdateTime):
+    """
+    Research author entry relationship model. A many to many bridge table between research and other models
+    """
+    limit = models.Q(app_label='research_type', model='controlresearch') | \
+            models.Q(app_label='research_type', model='treatmentresearch')
+    author = models.ForeignKey(Author, on_delete=models.PROTECT)
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    objects = ResearchAuthorManager()
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Research Authors'
 
 
 class ControlResearchManager(models.Manager):

@@ -10,6 +10,8 @@ from .models import (
     ExperimentDuration,
     MeasurementSeason,
     MeasurementYear,
+    Author,
+    ResearchAuthor,
     ControlResearch,
     TreatmentResearch,
 )
@@ -110,6 +112,26 @@ class MeasurementSeasonModelAdmin(admin.ModelAdmin):
     class Meta:
         model = MeasurementSeason
 
+
+class ResearchAuthorInline(admin.TabularInline):
+    """
+    Easy editing of research author entry relations from the author entry page
+    """
+    model = ResearchAuthor
+
+
+class AuthorModelAdmin(admin.ModelAdmin):
+    """
+    Temperature model admin settings
+    """
+    list_display = ['author_code', 'first_name', 'middle_name', 'last_name', 'author_bio', 'last_update', 'modified_by']
+    list_display_links = ['first_name']
+    list_filter = ['author_code', 'first_name', 'last_name', 'last_update', 'modified_by']
+    inlines = [ResearchAuthorInline, ]
+
+    class Meta:
+        model = Author
+
 admin.site.register(TreatmentResearch, TreatmentResearchModelAdmin)
 admin.site.register(ControlResearch, ControlResearchModelAdmin)
 admin.site.register(ExperimentDetails, ExperimentDetailsModelAdmin)
@@ -118,3 +140,4 @@ admin.site.register(ExperimentRep, ExperimentRepModelAdmin)
 admin.site.register(ExperimentDuration, ExperimentDurationModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
+admin.site.register(Author, AuthorModelAdmin)
