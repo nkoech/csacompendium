@@ -58,7 +58,7 @@ def temperature_serializers():
         def get_locations(self, obj):
             """
             :param obj: Current record object
-            :return: Locations in a country
+            :return: Locations related to the temperature
             :rtype: Object/record
             """
             request = self.context['request']
