@@ -550,6 +550,14 @@ class ControlResearch(AuthUserDetail, CreateUpdateTime):
     def __str__(self):
         return str(self.experimentdetails)
 
+    def get_api_url(self):
+        """
+        Get control research URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_type_api:control_research_detail', kwargs={'pk': self.pk})
+
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Control Research'
@@ -633,6 +641,14 @@ class TreatmentResearch(AuthUserDetail, CreateUpdateTime):
 
     def __str__(self):
         return str(self.experimentdetails)
+
+    def get_api_url(self):
+        """
+        Get treatment research URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_type_api:treatment_research_detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
