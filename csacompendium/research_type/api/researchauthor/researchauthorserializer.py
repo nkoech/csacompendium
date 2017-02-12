@@ -150,7 +150,7 @@ def research_author_serializers():
                 'relation_id',
                 'object_id',
                 'content_type_url',
-                'location_relation_url',
+                'research_author_url',
             ]
 
         def get_relation_id (self, obj):

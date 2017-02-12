@@ -6,7 +6,7 @@ from .views import (
     experiment_duration_views,
     measurement_season_views,
     measurement_year_views,
-    # Research author
+    research_author_views,
     author_views,
     control_research_views,
     treatment_research_views,
@@ -127,23 +127,23 @@ urlpatterns += [
 ]
 
 # Research author URLs
-# urlpatterns += [
-#     url(
-#         r'^measurementyear/$',
-#         measurement_year_views['MeasurementYearListAPIView'].as_view(),
-#         name='measurement_year_list'
-#     ),
-#     url(
-#         r'^measurementyear/create/$',
-#         measurement_year_views['MeasurementYearCreateAPIView'].as_view(),
-#         name='measurement_year_create'
-#     ),
-#     url(
-#         r'^measurementyear/(?P<slug>[\w-]+)/$',
-#         measurement_year_views['MeasurementYearDetailAPIView'].as_view(),
-#         name='measurement_year_detail'
-#     ),
-# ]
+urlpatterns += [
+    url(
+        r'^researchauthor/$',
+        research_author_views['ResearchAuthorListAPIView'].as_view(),
+        name='research_author_list'
+    ),
+    url(
+        r'^researchauthor/create/$',
+        research_author_views['ResearchAuthorCreateAPIView'].as_view(),
+        name='mresearch_author_create'
+    ),
+    url(
+        r'^researchauthor/(?P<slug>[\w-]+)/$',
+        research_author_views['ResearchAuthorDetailAPIView'].as_view(),
+        name='research_author_detail'
+    ),
+]
 
 # Author URLs
 urlpatterns += [
