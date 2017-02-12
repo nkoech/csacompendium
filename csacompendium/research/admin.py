@@ -6,8 +6,8 @@ from .models import (
     ExperimentObject,
     ResearchObject,
     ResearchOutcomeIndicator,
-    Species,
-    ResearchSpecies,
+    # Species,
+    # ResearchSpecies,
     # MeasurementSeason,
     # MeasurementYear,
     Research,
@@ -22,11 +22,11 @@ class ResearchOutcomeIndicatorInline(admin.TabularInline):
     model = ResearchOutcomeIndicator
 
 
-class ResearchSpeciesInline(admin.TabularInline):
-    """
-    Easy editing of research species entry relations from the research entry page
-    """
-    model = ResearchSpecies
+# class ResearchSpeciesInline(admin.TabularInline):
+#     """
+#     Easy editing of research species entry relations from the research entry page
+#     """
+#     model = ResearchSpecies
 
 
 class ResearchModelAdmin(admin.ModelAdmin):
@@ -39,7 +39,8 @@ class ResearchModelAdmin(admin.ModelAdmin):
     list_display_links = ['research_year']
     # list_filter = ['author', 'last_update', 'modified_by', 'research_year']
     list_filter = ['last_update', 'modified_by', 'research_year']
-    inlines = [ResearchSpeciesInline, ResearchOutcomeIndicatorInline, ]
+    # inlines = [ResearchSpeciesInline, ResearchOutcomeIndicatorInline, ]
+    inlines = [ResearchOutcomeIndicatorInline, ]
 
     class Meta:
         model = Research
@@ -81,16 +82,16 @@ class ResearchModelAdmin(admin.ModelAdmin):
 #         model = MeasurementSeason
 
 
-class SpeciesModelAdmin(admin.ModelAdmin):
-    """
-    Species model admin settings
-    """
-    list_display = ['species', 'last_update', 'modified_by']
-    list_display_links = ['species']
-    list_filter = ['species', 'last_update', 'modified_by']
-
-    class Meta:
-        model = Species
+# class SpeciesModelAdmin(admin.ModelAdmin):
+#     """
+#     Species model admin settings
+#     """
+#     list_display = ['species', 'last_update', 'modified_by']
+#     list_display_links = ['species']
+#     list_filter = ['species', 'last_update', 'modified_by']
+#
+#     class Meta:
+#         model = Species
 
 
 class ObjectCategoryModelAdmin(admin.ModelAdmin):
@@ -132,7 +133,7 @@ admin.site.register(Research, ResearchModelAdmin)
 # admin.site.register(Author, AuthorModelAdmin)
 # admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 # admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
-admin.site.register(Species, SpeciesModelAdmin)
+# admin.site.register(Species, SpeciesModelAdmin)
 admin.site.register(ObjectCategory, ObjectCategoryModelAdmin)
 admin.site.register(ExperimentObject, ExperimentObjectModelAdmin)
 admin.site.register(ResearchObject, ResearchObjectModelAdmin)
