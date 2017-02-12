@@ -2,7 +2,7 @@ from django.conf.urls import url
 from .views import (
     # measurement_season_views,
     # measurement_year_views,
-    author_views,
+    # author_views,
     object_category_views,
     experiment_object_views,
     research_object_views,
@@ -50,15 +50,15 @@ from .views import (
 #     ),
 # ]
 
-# Author URLs
-urlpatterns = [
-    url(r'^author/$', author_views['AuthorListAPIView'].as_view(), name='author_list'),
-    url(r'^author/create/$', author_views['AuthorCreateAPIView'].as_view(), name='author_create'),
-    url(r'^author/(?P<slug>[\w-]+)/$', author_views['AuthorDetailAPIView'].as_view(), name='author_detail'),
-]
+# # Author URLs
+# urlpatterns = [
+#     url(r'^author/$', author_views['AuthorListAPIView'].as_view(), name='author_list'),
+#     url(r'^author/create/$', author_views['AuthorCreateAPIView'].as_view(), name='author_create'),
+#     url(r'^author/(?P<slug>[\w-]+)/$', author_views['AuthorDetailAPIView'].as_view(), name='author_detail'),
+# ]
 
 # Object category URLs
-urlpatterns += [
+urlpatterns = [
     url(
         r'^objectcategory/$',
         object_category_views['ObjectCategoryListAPIView'].as_view(),

@@ -11,7 +11,7 @@ from .models import (
     # MeasurementSeason,
     # MeasurementYear,
     Research,
-    Author,
+    # Author,
 )
 
 
@@ -33,25 +33,28 @@ class ResearchModelAdmin(admin.ModelAdmin):
     """
     Location model admin settings
     """
-    list_display = ['author', 'research_year', 'last_update', 'modified_by']
-    list_display_links = ['author']
-    list_filter = ['author', 'last_update', 'modified_by', 'research_year']
+    # list_display = ['author', 'research_year', 'last_update', 'modified_by']
+    list_display = ['research_year', 'last_update', 'modified_by']
+    # list_display_links = ['author']
+    list_display_links = ['research_year']
+    # list_filter = ['author', 'last_update', 'modified_by', 'research_year']
+    list_filter = ['last_update', 'modified_by', 'research_year']
     inlines = [ResearchSpeciesInline, ResearchOutcomeIndicatorInline, ]
 
     class Meta:
         model = Research
 
 
-class AuthorModelAdmin(admin.ModelAdmin):
-    """
-    Temperature model admin settings
-    """
-    list_display = ['author_code', 'first_name', 'middle_name', 'last_name', 'author_bio', 'last_update', 'modified_by']
-    list_display_links = ['first_name']
-    list_filter = ['author_code', 'first_name', 'last_name', 'last_update', 'modified_by']
-
-    class Meta:
-        model = Author
+# class AuthorModelAdmin(admin.ModelAdmin):
+#     """
+#     Temperature model admin settings
+#     """
+#     list_display = ['author_code', 'first_name', 'middle_name', 'last_name', 'author_bio', 'last_update', 'modified_by']
+#     list_display_links = ['first_name']
+#     list_filter = ['author_code', 'first_name', 'last_name', 'last_update', 'modified_by']
+#
+#     class Meta:
+#         model = Author
 
 
 # class MeasurementYearModelAdmin(admin.ModelAdmin):
@@ -126,7 +129,7 @@ class ResearchObjectModelAdmin(admin.ModelAdmin):
         model = ResearchObject
 
 admin.site.register(Research, ResearchModelAdmin)
-admin.site.register(Author, AuthorModelAdmin)
+# admin.site.register(Author, AuthorModelAdmin)
 # admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 # admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Species, SpeciesModelAdmin)

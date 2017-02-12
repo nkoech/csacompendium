@@ -26,61 +26,61 @@ from django.dispatch import receiver
 from django.core.urlresolvers import reverse
 
 
-class Author(AuthUserDetail, CreateUpdateTime):
-    """
-    Research author model
-    """
-    slug = models.SlugField(unique=True, blank=True)
-    author_code = models.CharField(max_length=6, unique=True)
-    first_name = models.CharField(max_length=64)
-    middle_name = models.CharField(max_length=64, null=True, blank=True)
-    last_name = models.CharField(max_length=64)
-    author_bio = models.TextField(null=True, blank=True)
-
-    def __unicode__(self):
-        return self.first_name
-
-    def __str__(self):
-        return self.first_name
-
-    def get_api_url(self):
-        """
-        Get author URL as a reverse from model
-        :return: URL
-        :rtype: String
-        """
-        return reverse('research_api:author_detail', kwargs={'slug': self.slug})
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Authors'
-
-    @property
-    def research_relation(self):
-        """
-        Get related research properties
-        :return: Query result from the research model
-        :rtye: object/record
-        """
-        instance = self
-        qs = Research.objects.filter_by_model_type(instance)
-        return qs
-
-
-@receiver(pre_save, sender=Author)
-def pre_save_author_receiver(sender, instance, *args, **kwargs):
-    """
-    Create a slug before save.
-    :param sender: Signal sending object
-    :param instance: Object instance
-    :param args: Any other argument
-    :param kwargs: Keyword arguments
-    :return: None
-    :rtype: None
-    """
-    if not instance.slug:
-        instance_fields = [instance.first_name, instance.last_name]
-        instance.slug = create_slug(instance, Author, instance_fields)
+# class Author(AuthUserDetail, CreateUpdateTime):
+#     """
+#     Research author model
+#     """
+#     slug = models.SlugField(unique=True, blank=True)
+#     author_code = models.CharField(max_length=6, unique=True)
+#     first_name = models.CharField(max_length=64)
+#     middle_name = models.CharField(max_length=64, null=True, blank=True)
+#     last_name = models.CharField(max_length=64)
+#     author_bio = models.TextField(null=True, blank=True)
+#
+#     def __unicode__(self):
+#         return self.first_name
+#
+#     def __str__(self):
+#         return self.first_name
+#
+#     def get_api_url(self):
+#         """
+#         Get author URL as a reverse from model
+#         :return: URL
+#         :rtype: String
+#         """
+#         return reverse('research_api:author_detail', kwargs={'slug': self.slug})
+#
+#     class Meta:
+#         ordering = ['-time_created', '-last_update']
+#         verbose_name_plural = 'Authors'
+#
+#     @property
+#     def research_relation(self):
+#         """
+#         Get related research properties
+#         :return: Query result from the research model
+#         :rtye: object/record
+#         """
+#         instance = self
+#         qs = Research.objects.filter_by_model_type(instance)
+#         return qs
+#
+#
+# @receiver(pre_save, sender=Author)
+# def pre_save_author_receiver(sender, instance, *args, **kwargs):
+#     """
+#     Create a slug before save.
+#     :param sender: Signal sending object
+#     :param instance: Object instance
+#     :param args: Any other argument
+#     :param kwargs: Keyword arguments
+#     :return: None
+#     :rtype: None
+#     """
+#     if not instance.slug:
+#         instance_fields = [instance.first_name, instance.last_name]
+#         instance.slug = create_slug(instance, Author, instance_fields)
 
 
 class ResearchManager(models.Manager):
@@ -128,7 +128,7 @@ class Research(AuthUserDetail, CreateUpdateTime):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     research_year = models.SmallIntegerField(choices=get_year_choices(), default=get_datetime_now())
-    author = models.ForeignKey(Author, on_delete=models.PROTECT)
+    # author = models.ForeignKey(Author, on_delete=models.PROTECT)
     research_type = models.CharField(max_length=120, blank=True, null=True)
     objects = ResearchManager()
 
