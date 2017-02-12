@@ -61,8 +61,9 @@ def author_serializers():
 
         def get_research_relation(self, obj):
             """
+            Gets control/treatment research record
             :param obj: Current record object
-            :return: Related research
+            :return: Related research object/record
             :rtype: Object/record
             """
             request = self.context['request']

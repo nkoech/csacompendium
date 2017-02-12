@@ -8,6 +8,8 @@ from .measurementyear.measurementyearserializers import measurement_year_seriali
 from .measurementseason.measurementseasonserializers import measurement_season_serializers
 from .researchauthor.researchauthorserializer import research_author_serializers
 from .author.authorserializers import author_serializers
+#research species
+from .species.speciesserializers import species_serializers
 
 
 treatment_research_serializers = treatment_research_serializers()
@@ -20,3 +22,5 @@ measurement_year_serializers = measurement_year_serializers()
 measurement_season_serializers = measurement_season_serializers()
 research_author_serializers = research_author_serializers()
 author_serializers = author_serializers()
+#research species
+species_serializers = species_serializers()
