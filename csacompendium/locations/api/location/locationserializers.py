@@ -1,5 +1,9 @@
 from csacompendium.soils.api.serializers import soil_serializers
 from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
+from csacompendium.research_type.api.serializers import (
+    control_research_serializers,
+    treatment_research_serializers,
+)
 from csacompendium.locations.models import Location
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
@@ -109,6 +113,8 @@ def location_serializers():
         content_type_url = SerializerMethodField()
         relation_details = SerializerMethodField()
         soils = SerializerMethodField()
+        control_research = SerializerMethodField()
+        treatment_research = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -118,6 +124,8 @@ def location_serializers():
                 'content_type_url',
                 'relation_details',
                 'soils',
+                'control_research',
+                'treatment_research',
             ]
             model = Location
             fields = ['id', ] + LocationBaseSerializer.Meta.fields + ['user', ] + common_fields
@@ -149,6 +157,32 @@ def location_serializers():
             request = self.context['request']
             SoilListSerializer = soil_serializers['SoilListSerializer']
             related_content = get_related_content(obj, SoilListSerializer, obj.soils, request)
+            return related_content
+
+        def get_control_research(self, obj):
+            """
+            :param obj: Current record object
+            :return: Control research object/record
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ControlResearchListSerializer = control_research_serializers['ControlResearchListSerializer']
+            related_content = get_related_content(
+                obj, ControlResearchListSerializer, obj.control_research, request
+            )
+            return related_content
+
+        def get_treatment_research(self, obj):
+            """
+            :param obj: Current record object
+            :return: Control research object/record
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            TreatmentResearchListSerializer = treatment_research_serializers['TreatmentResearchListSerializer']
+            related_content = get_related_content(
+                obj, TreatmentResearchListSerializer, obj.treatment_research, request
+            )
             return related_content
 
     return {
