@@ -309,7 +309,7 @@ class MeasurementYear(AuthUserDetail, CreateUpdateTime):
     """
     slug = models.SlugField(unique=True, blank=True)
     meas_year = models.SmallIntegerField(
-        choices=get_year_choices(), default=get_datetime_now(), verbose_name='Measurement Year'
+        choices=get_year_choices(), default=get_datetime_now(), verbose_name='Measurement year'
     )
     measurementseason = models.ForeignKey(
         MeasurementSeason, on_delete=models.PROTECT, verbose_name='Measurement season'
