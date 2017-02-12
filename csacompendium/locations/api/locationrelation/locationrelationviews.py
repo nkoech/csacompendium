@@ -11,7 +11,7 @@ from csacompendium.locations.api.serializers import location_relation_serializer
 
 def location_relation_views():
     """
-    Location views
+    Location relation views
     :return: All location views
     :rtype: Object
     """

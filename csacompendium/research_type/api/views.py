@@ -6,7 +6,7 @@ from .experimentdetails.experimentdetailsviews import experiment_details_views
 from .experimentduration.experimentdurationviews import experiment_duration_views
 from .measurementyear.measurementyearviews import measurement_year_views
 from .measurementseason.measurementseasonviews import measurement_season_views
-#research author
+from .researchauthor.researchauthorviews import research_author_views
 from .author.authorviews import author_views
 
 
@@ -18,5 +18,5 @@ experiment_details_views = experiment_details_views()
 experiment_duration_views = experiment_duration_views()
 measurement_year_views = measurement_year_views()
 measurement_season_views = measurement_season_views()
-#research author
+research_author_views = research_author_views()
 author_views = author_views()

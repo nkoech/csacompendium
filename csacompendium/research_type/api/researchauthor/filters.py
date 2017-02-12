@@ -1,17 +1,17 @@
-# from rest_framework.filters import (
-#     FilterSet
-# )
-# from csacompendium.locations.models import LocationRelation
-#
-#
-# class LocationRelationListFilter(FilterSet):
-#     """
-#     Filter query list from location relation database table
-#     """
-#     class Meta:
-#         model = LocationRelation
-#         fields = {'location': ['exact'],
-#                   'object_id': ['exact'],
-#                   'content_type': ['exact'],
-#                   }
-#         order_by = ['location']
+from rest_framework.filters import (
+    FilterSet
+)
+from csacompendium.research_type.models import ResearchAuthor
+
+
+class ResearchAuthorListFilter(FilterSet):
+    """
+    Filter query list from research author database table
+    """
+    class Meta:
+        model = ResearchAuthor
+        fields = {'author': ['exact'],
+                  'object_id': ['exact'],
+                  'content_type': ['exact'],
+                  }
+        order_by = ['author']
