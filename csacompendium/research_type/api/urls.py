@@ -139,7 +139,7 @@ urlpatterns += [
         name='mresearch_author_create'
     ),
     url(
-        r'^researchauthor/(?P<slug>[\w-]+)/$',
+        r'^researchauthor/(?P<pk>[\w-]+)/$',
         research_author_views['ResearchAuthorDetailAPIView'].as_view(),
         name='research_author_detail'
     ),
