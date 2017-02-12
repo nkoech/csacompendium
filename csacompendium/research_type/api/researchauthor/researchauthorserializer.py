@@ -1,7 +1,5 @@
 from csacompendium.research_type.models import (
     Author,
-    ControlResearch,
-    TreatmentResearch,
     ResearchAuthor,
 )
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
