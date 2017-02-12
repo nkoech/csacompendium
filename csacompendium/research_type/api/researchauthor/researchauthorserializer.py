@@ -12,7 +12,7 @@ from rest_framework.serializers import (
 )
 
 
-def location_relation_serializers():
+def research_author_serializers():
     """
     LocationsRelation serializers
     :return: All location relation serializers
