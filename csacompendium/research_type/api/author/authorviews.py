@@ -17,36 +17,36 @@ def author_views():
     """
     author_serializer = author_serializers()
 
-    class TemperatureCreateAPIView(CreateAPIViewHook):
+    class AuthorCreateAPIView(CreateAPIViewHook):
         """
         Creates a single record.
         """
-        queryset = Temperature.objects.all()
-        serializer_class = temperature_serializer['TemperatureDetailSerializer']
+        queryset = Author.objects.all()
+        serializer_class = author_serializer['AuthorDetailSerializer']
         permission_classes = [IsAuthenticated]
 
-    class TemperatureListAPIView(ListAPIView):
+    class AuthorListAPIView(ListAPIView):
         """
         API list view. Gets all records API.
         """
-        queryset = Temperature.objects.all()
-        serializer_class = temperature_serializer['TemperatureListSerializer']
+        queryset = Author.objects.all()
+        serializer_class = author_serializer['AuthorListSerializer']
         filter_backends = (DjangoFilterBackend,)
-        filter_class = TemperatureListFilter
+        filter_class = AuthorListFilter
         pagination_class = APILimitOffsetPagination
 
-    class TemperatureDetailAPIView(DetailViewUpdateDelete):
+    class AuthorDetailAPIView(DetailViewUpdateDelete):
         """
         Updates a record.
         """
-        queryset = Temperature.objects.all()
-        serializer_class = temperature_serializer['TemperatureDetailSerializer']
+        queryset = Author.objects.all()
+        serializer_class = author_serializer['AuthorDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
-        lookup_field = 'pk'
+        lookup_field = 'slug'
 
     return {
-        'TemperatureListAPIView': TemperatureListAPIView,
-        'TemperatureDetailAPIView': TemperatureDetailAPIView,
-        'TemperatureCreateAPIView': TemperatureCreateAPIView
+        'AuthorListAPIView': AuthorListAPIView,
+        'AuthorDetailAPIView': AuthorDetailAPIView,
+        'AuthorCreateAPIView': AuthorCreateAPIView
     }
 
