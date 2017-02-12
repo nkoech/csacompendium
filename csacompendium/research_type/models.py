@@ -554,6 +554,17 @@ class ControlResearch(AuthUserDetail, CreateUpdateTime):
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Control Research'
 
+    @property
+    def research_author_relation(self):
+        """
+        Get related research author object/record
+        :return: Query result from the research author model
+        :rtye: object/record
+        """
+        instance = self
+        qs = ResearchAuthor.objects.filter_by_model_type(instance)
+        return qs
+
 
 class TreatmentResearchManager(models.Manager):
     """
@@ -626,3 +637,14 @@ class TreatmentResearch(AuthUserDetail, CreateUpdateTime):
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Treatment Research'
+
+    @property
+    def research_author_relation(self):
+        """
+        Get related research author object/record
+        :return: Query result from the research author model
+        :rtye: object/record
+        """
+        instance = self
+        qs = ResearchAuthor.objects.filter_by_model_type(instance)
+        return qs
