@@ -2,7 +2,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField
 )
-from csacompendium.research_type.api.measurementyearserializers import measurement_year_serializers
+from csacompendium.research_type.api.measurementyear.measurementyearserializers import measurement_year_serializers
 from  csacompendium.research_type.models import MeasurementSeason
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
