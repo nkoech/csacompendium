@@ -2,13 +2,32 @@ from django.conf.urls import url
 from .views import (
     outcome_indicator_views,
     research_outcome_indicator_views,
-    subpillar_views,
-    indicator_views,
     indicator_type_views,
+    indicator_views,
+    subpillar_views,
 )
 
-# Subpillar URLs
+# Indicator type URLs
 urlpatterns = [
+    url(
+        r'^indicatortype/$',
+        indicator_type_views['IndicatorTypeListAPIView'].as_view(),
+        name='indicator_type_list'
+    ),
+    url(
+        r'^indicatortype/create/$',
+        indicator_type_views['IndicatorTypeCreateAPIView'].as_view(),
+        name='indicator_type_create'
+    ),
+    url(
+        r'^indicatortype/(?P<slug>[\w-]+)/$',
+        indicator_type_views['IndicatorTypeDetailAPIView'].as_view(),
+        name='indicator_type_detail'
+    ),
+]
+
+# Subpillar URLs
+urlpatterns += [
     url(
         r'^subpillar/$',
         subpillar_views['SubpillarListAPIView'].as_view(),
@@ -42,25 +61,6 @@ urlpatterns += [
         r'^indicator/(?P<slug>[\w-]+)/$',
         indicator_views['IndicatorDetailAPIView'].as_view(),
         name='indicator_detail'
-    ),
-]
-
-# Indicator type URLs
-urlpatterns += [
-    url(
-        r'^indicatortype/$',
-        indicator_type_views['IndicatorTypeListAPIView'].as_view(),
-        name='indicator_type_list'
-    ),
-    url(
-        r'^indicatortype/create/$',
-        indicator_type_views['IndicatorTypeCreateAPIView'].as_view(),
-        name='indicator_type_create'
-    ),
-    url(
-        r'^indicatortype/(?P<slug>[\w-]+)/$',
-        indicator_type_views['IndicatorTypeDetailAPIView'].as_view(),
-        name='indicator_type_detail'
     ),
 ]
 
