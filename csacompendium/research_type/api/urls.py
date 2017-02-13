@@ -8,6 +8,8 @@ from .views import (
     measurement_year_views,
     research_author_views,
     author_views,
+    # Research species
+    species_views,
     control_research_views,
     treatment_research_views,
 )
@@ -161,6 +163,44 @@ urlpatterns += [
         r'^author/(?P<slug>[\w-]+)/$',
         author_views['AuthorDetailAPIView'].as_view(),
         name='author_detail'
+    ),
+]
+
+# # Research species URLs
+# urlpatterns += [
+#     url(
+#         r'^researchauthor/$',
+#         research_author_views['ResearchAuthorListAPIView'].as_view(),
+#         name='research_author_list'
+#     ),
+#     url(
+#         r'^researchauthor/create/$',
+#         research_author_views['ResearchAuthorCreateAPIView'].as_view(),
+#         name='mresearch_author_create'
+#     ),
+#     url(
+#         r'^researchauthor/(?P<pk>[\w-]+)/$',
+#         research_author_views['ResearchAuthorDetailAPIView'].as_view(),
+#         name='research_author_detail'
+#     ),
+# ]
+
+# Species URLs
+urlpatterns += [
+    url(
+        r'^species/$',
+        species_views['SpeciesListAPIView'].as_view(),
+        name='species_list'
+    ),
+    url(
+        r'^species/create/$',
+        species_views['SpeciesCreateAPIView'].as_view(),
+        name='species_create'
+    ),
+    url(
+        r'^species/(?P<slug>[\w-]+)/$',
+        species_views['SpeciesDetailAPIView'].as_view(),
+        name='species_detail'
     ),
 ]
 
