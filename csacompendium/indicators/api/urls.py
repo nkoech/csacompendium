@@ -1,9 +1,10 @@
 from django.conf.urls import url
 from .views import (
+    outcome_indicator_views,
+    research_outcome_indicator_views,
     subpillar_views,
     indicator_views,
     indicator_type_views,
-    outcome_indicator_views,
 )
 
 # Subpillar URLs
@@ -60,6 +61,25 @@ urlpatterns += [
         r'^indicatortype/(?P<slug>[\w-]+)/$',
         indicator_type_views['IndicatorTypeDetailAPIView'].as_view(),
         name='indicator_type_detail'
+    ),
+]
+
+# Research outcome indicator URLs
+urlpatterns += [
+    url(
+        r'^researchoutcomeindicator/$',
+        research_outcome_indicator_views['ResearchOutcomeIndicatorListAPIView'].as_view(),
+        name='research_outcome_indicator_list'
+    ),
+    url(
+        r'^researchoutcomeindicator/create/$',
+        research_outcome_indicator_views['ResearchOutcomeIndicatorCreateAPIView'].as_view(),
+        name='research_outcome_indicator_create'
+    ),
+    url(
+        r'^researchoutcomeindicator/(?P<pk>[\w-]+)/$',
+        research_outcome_indicator_views['ResearchOutcomeIndicatorDetailAPIView'].as_view(),
+        name='research_outcome_indicator_detail'
     ),
 ]
 
