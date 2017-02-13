@@ -118,7 +118,7 @@ def research_outcome_indicator_serializers():
             model = ResearchOutcomeIndicator
             fields = [
                 'relation_id',
-                'outcome_indicator_id',
+                'outcomeindicator_id',
                 'outcome_indicator_url',
                 'research_outcome_indicator_url',
             ]
