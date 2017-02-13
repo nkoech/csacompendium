@@ -217,7 +217,7 @@ class OutcomeIndicator(AuthUserDetail, CreateUpdateTime):
     slug = models.SlugField(unique=True, blank=True)
     indicator_code = models.PositiveSmallIntegerField(help_text='User defined indicator code')
     indicator = models.ForeignKey(Indicator, on_delete=models.PROTECT)
-    subindicator = models.CharField(max_length=150, blank=True, null=True)
+    subindicator = models.CharField(max_length=150, blank=True, null=True, verbose_name='Sub indicator')
     definition = models.TextField(blank=True, null=True)
     common_uom = models.CharField(max_length=450, blank=True, null=True)
     indicatortype = models.ForeignKey(IndicatorType, on_delete=models.PROTECT, verbose_name='Indicator Type')
@@ -310,7 +310,7 @@ class ResearchOutcomeIndicator(AuthUserDetail, CreateUpdateTime):
     """
     limit = models.Q(app_label='research_type', model='controlresearch') | \
             models.Q(app_label='research_type', model='treatmentresearch')
-    outcomeindicator = models.ForeignKey(OutcomeIndicator, on_delete=models.PROTECT)
+    outcomeindicator = models.ForeignKey(OutcomeIndicator, on_delete=models.PROTECT,  verbose_name='Outcome indicator')
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
