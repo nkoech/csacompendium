@@ -114,6 +114,7 @@ def treatment_research_serializers():
         experiment_duration_url = SerializerMethodField()
         measurement_year_url = SerializerMethodField()
         research_author_serializers = research_author_serializers()
+        research_species_serializers = research_species_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
