@@ -8,6 +8,7 @@ from csacompendium.research_type.models import (
     MeasurementYear,
 )
 from csacompendium.research_type.api.researchauthor.researchauthorserializer import research_author_serializers
+from csacompendium.research_type.api.researchspecies.researchspeciesserializers import research_species_serializers
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
     get_related_content,
@@ -117,6 +118,7 @@ def treatment_research_serializers():
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
         authors = SerializerMethodField()
+        species = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -125,6 +127,7 @@ def treatment_research_serializers():
                 'time_created',
                 'content_type_url',
                 'authors',
+                'species',
             ]
             model = TreatmentResearch
             fields = ['id', 'csa_practice_url', 'experiment_replications_url',
@@ -195,6 +198,17 @@ def treatment_research_serializers():
             request = self.context['request']
             ResearchAuthorSerializer = self.research_author_serializers['ResearchAuthorSerializer']
             related_content = get_related_content(obj, ResearchAuthorSerializer, obj.research_author, request)
+            return related_content
+
+        def get_species(self, obj):
+            """
+            :param obj: Current record object
+            :return: Related species details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchSpeciesSerializer = self.research_species_serializers['ResearchSpeciesSerializer']
+            related_content = get_related_content(obj, ResearchSpeciesSerializer, obj.research_species, request)
             return related_content
 
     return {
