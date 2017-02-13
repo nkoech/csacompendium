@@ -5,7 +5,8 @@ from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )
-from csacompendium.research.models import ResearchOutcomeIndicator
+# from csacompendium.research.models import ResearchOutcomeIndicator
+# from csacompendium.research_type.models import ResearchOutcomeIndicator
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
     model_foreign_key_qs,
@@ -239,16 +240,27 @@ class OutcomeIndicator(AuthUserDetail, CreateUpdateTime):
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Outcome Indicators'
 
-    @property
-    def research_outcome_indicator(self):
-        """
-        Get related ResearchOutcomeIndicator object/record
-        :return: Query result from the ResearchOutcomeIndicator model
-        :rtype: object/record
-        """
-        instance = self
-        qs = ResearchOutcomeIndicator.objects.filter_by_instance(instance)
-        return qs
+    # @property
+    # def research_outcome_indicator(self):
+    #     """
+    #     Get related ResearchOutcomeIndicator object/record
+    #     :return: Query result from the ResearchOutcomeIndicator model
+    #     :rtype: object/record
+    #     """
+    #     instance = self
+    #     qs = ResearchOutcomeIndicator.objects.filter_by_instance(instance)
+    #     return qs
+
+    # @property
+    # def research_author_relation(self):
+    #     """
+    #     Get related research outcome indicator object/record
+    #     :return: Query result from the research outcome indicator model
+    #     :rtype: object/record
+    #     """
+    #     instance = self
+    #     qs = ResearchOutcomeIndicator.objects.filter_by_model_type(instance)
+    #     return qs
 
 
 @receiver(pre_save, sender=OutcomeIndicator)

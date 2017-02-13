@@ -173,16 +173,16 @@ class Research(AuthUserDetail, CreateUpdateTime):
     #     return qs
 
 
-    @property
-    def research_outcome_indicator_relation(self):
-        """
-        Get related research outcome object/record
-        :return: Query result from the research outcome model
-        :rtye: object/record
-        """
-        instance = self
-        qs = ResearchOutcomeIndicator.objects.filter_by_model_type(instance)
-        return qs
+    # @property
+    # def research_outcome_indicator_relation(self):
+    #     """
+    #     Get related research outcome object/record
+    #     :return: Query result from the research outcome model
+    #     :rtye: object/record
+    #     """
+    #     instance = self
+    #     qs = ResearchOutcomeIndicator.objects.filter_by_model_type(instance)
+    #     return qs
 
     @property
     def research_object(self):
@@ -444,57 +444,57 @@ class Research(AuthUserDetail, CreateUpdateTime):
 #         verbose_name_plural = 'Research Species'
 
 
-class ResearchOutcomeIndicatorManager(models.Manager):
-    """
-    Research outcome model manager
-    """
-    def filter_by_instance(self, instance):
-        """
-        Query a related research outcome object/record from another model's object
-        :param instance: Object instance
-        :return: Query result from content type/model
-        :rtye: object/record
-        """
-        return model_instance_filter(instance, self, ResearchOutcomeIndicatorManager)
-
-    def filter_by_model_type(self, instance):
-        """
-        Query related objects/model type
-        :param instance: Object instance
-        :return: Matching object else none
-        :rtype: Object/record
-        """
-        obj_qs = model_foreign_key_qs(instance, self, ResearchOutcomeIndicatorManager)
-        if obj_qs.exists():
-            return model_type_filter(self, obj_qs, ResearchOutcomeIndicatorManager)
-
-    def create_by_model_type(self, model_type, pk, **kwargs):
-        """
-        Create object by model type
-        :param model_type: Content/model type
-        :param pk: Primary Key
-        :param kwargs: Fields to be created
-        :return: Data object
-        :rtype: Object
-        """
-        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
-
-
-class ResearchOutcomeIndicator(AuthUserDetail, CreateUpdateTime):
-    """
-    Research outcome entry relationship model. A many to many bridge table between research and other models
-    """
-    # limit = models.Q(app_label='indicators', model='outcomeindicator')
-    research = models.ForeignKey(Research, on_delete=models.PROTECT)
-    # content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
-    objects = ResearchOutcomeIndicatorManager()
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Research Outcome Indicators'
+# class ResearchOutcomeIndicatorManager(models.Manager):
+#     """
+#     Research outcome model manager
+#     """
+#     def filter_by_instance(self, instance):
+#         """
+#         Query a related research outcome object/record from another model's object
+#         :param instance: Object instance
+#         :return: Query result from content type/model
+#         :rtye: object/record
+#         """
+#         return model_instance_filter(instance, self, ResearchOutcomeIndicatorManager)
+#
+#     def filter_by_model_type(self, instance):
+#         """
+#         Query related objects/model type
+#         :param instance: Object instance
+#         :return: Matching object else none
+#         :rtype: Object/record
+#         """
+#         obj_qs = model_foreign_key_qs(instance, self, ResearchOutcomeIndicatorManager)
+#         if obj_qs.exists():
+#             return model_type_filter(self, obj_qs, ResearchOutcomeIndicatorManager)
+#
+#     def create_by_model_type(self, model_type, pk, **kwargs):
+#         """
+#         Create object by model type
+#         :param model_type: Content/model type
+#         :param pk: Primary Key
+#         :param kwargs: Fields to be created
+#         :return: Data object
+#         :rtype: Object
+#         """
+#         return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+#
+#
+# class ResearchOutcomeIndicator(AuthUserDetail, CreateUpdateTime):
+#     """
+#     Research outcome entry relationship model. A many to many bridge table between research and other models
+#     """
+#     # limit = models.Q(app_label='indicators', model='outcomeindicator')
+#     research = models.ForeignKey(Research, on_delete=models.PROTECT)
+#     # content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+#     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
+#     object_id = models.PositiveIntegerField()
+#     content_object = GenericForeignKey('content_type', 'object_id')
+#     objects = ResearchOutcomeIndicatorManager()
+#
+#     class Meta:
+#         ordering = ['-time_created', '-last_update']
+#         verbose_name_plural = 'Research Outcome Indicators'
 
 
 class ObjectCategory(AuthUserDetail, CreateUpdateTime):

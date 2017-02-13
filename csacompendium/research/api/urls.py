@@ -8,7 +8,7 @@ from .views import (
     research_object_views,
     # species_views,
     # research_species_views,
-    research_outcome_indicator_views,
+    # research_outcome_indicator_views,
     # soil_views,
 )
 
@@ -141,21 +141,21 @@ urlpatterns += [
 #
 # ]
 
-# Research outcome indicator URLs
-urlpatterns += [
-    url(
-        r'^researchoutcomeindicator/$',
-        research_outcome_indicator_views['ResearchOutcomeIndicatorListAPIView'].as_view(),
-        name='research_outcome_indicator_list'
-    ),
-    url(
-        r'^researchoutcomeindicator/create/$',
-        research_outcome_indicator_views['ResearchOutcomeIndicatorCreateAPIView'].as_view(),
-        name='research_outcome_indicator_create'
-    ),
-    url(
-        r'^researchoutcomeindicator/(?P<pk>[\w-]+)/$',
-        research_outcome_indicator_views['ResearchOutcomeIndicatorDetailAPIView'].as_view(),
-        name='research_outcome_indicator_detail'
-    ),
-]
+# # Research outcome indicator URLs
+# urlpatterns += [
+#     url(
+#         r'^researchoutcomeindicator/$',
+#         research_outcome_indicator_views['ResearchOutcomeIndicatorListAPIView'].as_view(),
+#         name='research_outcome_indicator_list'
+#     ),
+#     url(
+#         r'^researchoutcomeindicator/create/$',
+#         research_outcome_indicator_views['ResearchOutcomeIndicatorCreateAPIView'].as_view(),
+#         name='research_outcome_indicator_create'
+#     ),
+#     url(
+#         r'^researchoutcomeindicator/(?P<pk>[\w-]+)/$',
+#         research_outcome_indicator_views['ResearchOutcomeIndicatorDetailAPIView'].as_view(),
+#         name='research_outcome_indicator_detail'
+#     ),
+# ]

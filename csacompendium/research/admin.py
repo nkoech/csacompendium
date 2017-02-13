@@ -5,7 +5,7 @@ from .models import (
     ObjectCategory,
     ExperimentObject,
     ResearchObject,
-    ResearchOutcomeIndicator,
+    # ResearchOutcomeIndicator,
     # Species,
     # ResearchSpecies,
     # MeasurementSeason,
@@ -15,11 +15,11 @@ from .models import (
 )
 
 
-class ResearchOutcomeIndicatorInline(admin.TabularInline):
-    """
-    Easy editing of research outcome indicator entry relations from the research entry page
-    """
-    model = ResearchOutcomeIndicator
+# class ResearchOutcomeIndicatorInline(admin.TabularInline):
+#     """
+#     Easy editing of research outcome indicator entry relations from the research entry page
+#     """
+#     model = ResearchOutcomeIndicator
 
 
 # class ResearchSpeciesInline(admin.TabularInline):
@@ -40,7 +40,7 @@ class ResearchModelAdmin(admin.ModelAdmin):
     # list_filter = ['author', 'last_update', 'modified_by', 'research_year']
     list_filter = ['last_update', 'modified_by', 'research_year']
     # inlines = [ResearchSpeciesInline, ResearchOutcomeIndicatorInline, ]
-    inlines = [ResearchOutcomeIndicatorInline, ]
+    # inlines = [ResearchOutcomeIndicatorInline, ]
 
     class Meta:
         model = Research
