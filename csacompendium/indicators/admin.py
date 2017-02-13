@@ -3,10 +3,18 @@ from django.contrib import admin
 # Register your models here.
 from .models import (
     OutcomeIndicator,
+    ResearchOutcomeIndicator,
     IndicatorType,
     Indicator,
     Subpillar,
 )
+
+
+class ResearchOutcomeIndicatorInline(admin.TabularInline):
+    """
+    Inline for easy editing of in the admin in relation to the outcome indicator admin
+    """
+    model = ResearchOutcomeIndicator
 
 
 class OutcomeIndicatorModelAdmin(admin.ModelAdmin):
@@ -19,6 +27,7 @@ class OutcomeIndicatorModelAdmin(admin.ModelAdmin):
     ]
     list_display_links = ['indicator_code']
     list_filter = ['indicator', 'subindicator', 'indicatortype', 'last_update', 'modified_by']
+    inlines = [ResearchOutcomeIndicatorInline, ]
 
     class Meta:
         model = OutcomeIndicator
