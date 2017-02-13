@@ -2,7 +2,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField
 )
-from csacompendium.research_type.api.researchspecies.researchspeciesserializer import research_species_serializers
+from csacompendium.research_type.api.researchspecies.researchspeciesserializers import research_species_serializers
 from csacompendium.research_type.models import Species
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content

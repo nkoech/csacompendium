@@ -156,7 +156,7 @@ def research_author_serializers():
         def get_relation_id (self, obj):
             """
             :param obj: Current record object
-            :return: Research species id
+            :return: Research author id
             :rtype: String
             """
             return obj.id
