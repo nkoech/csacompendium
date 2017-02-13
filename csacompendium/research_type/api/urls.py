@@ -8,7 +8,7 @@ from .views import (
     measurement_year_views,
     research_author_views,
     author_views,
-    # Research species
+    research_species_views,
     species_views,
     control_research_views,
     treatment_research_views,
@@ -138,7 +138,7 @@ urlpatterns += [
     url(
         r'^researchauthor/create/$',
         research_author_views['ResearchAuthorCreateAPIView'].as_view(),
-        name='mresearch_author_create'
+        name='research_author_create'
     ),
     url(
         r'^researchauthor/(?P<pk>[\w-]+)/$',
@@ -166,24 +166,24 @@ urlpatterns += [
     ),
 ]
 
-# # Research species URLs
-# urlpatterns += [
-#     url(
-#         r'^researchauthor/$',
-#         research_author_views['ResearchAuthorListAPIView'].as_view(),
-#         name='research_author_list'
-#     ),
-#     url(
-#         r'^researchauthor/create/$',
-#         research_author_views['ResearchAuthorCreateAPIView'].as_view(),
-#         name='mresearch_author_create'
-#     ),
-#     url(
-#         r'^researchauthor/(?P<pk>[\w-]+)/$',
-#         research_author_views['ResearchAuthorDetailAPIView'].as_view(),
-#         name='research_author_detail'
-#     ),
-# ]
+# Research species URLs
+urlpatterns += [
+    url(
+        r'^researchspecies/$',
+        research_species_views['ResearchSpeciesListAPIView'].as_view(),
+        name='research_species_list'
+    ),
+    url(
+        r'^researchspecies/create/$',
+        research_species_views['ResearchSpeciesCreateAPIView'].as_view(),
+        name='research_species_create'
+    ),
+    url(
+        r'^researchspecies/(?P<pk>[\w-]+)/$',
+        research_species_views['ResearchSpeciesDetailAPIView'].as_view(),
+        name='research_species_detail'
+    ),
+]
 
 # Species URLs
 urlpatterns += [
