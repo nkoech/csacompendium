@@ -8,6 +8,8 @@ from .measurementyear.measurementyearviews import measurement_year_views
 from .measurementseason.measurementseasonviews import measurement_season_views
 from .researchauthor.researchauthorviews import research_author_views
 from .author.authorviews import author_views
+# research species views
+from .species.speciesviews import species_views
 
 
 treatment_research_views = treatment_research_views()
@@ -20,3 +22,5 @@ measurement_year_views = measurement_year_views()
 measurement_season_views = measurement_season_views()
 research_author_views = research_author_views()
 author_views = author_views()
+# research species views
+species_views = species_views()

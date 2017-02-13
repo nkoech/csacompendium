@@ -9,44 +9,44 @@ from .filters import SpeciesListFilter
 from  csacompendium.research_type.api.species.speciesserializers import species_serializers
 
 
-def author_views():
+def species_views():
     """
-    Author views
-    :return: All author views
+    Species views
+    :return: All species views
     :rtype: Object
     """
-    author_serializer = author_serializers()
+    species_serializer = species_serializers()
 
-    class AuthorCreateAPIView(CreateAPIViewHook):
+    class SpeciesCreateAPIView(CreateAPIViewHook):
         """
         Creates a single record.
         """
-        queryset = Author.objects.all()
-        serializer_class = author_serializer['AuthorDetailSerializer']
+        queryset = Species.objects.all()
+        serializer_class = species_serializer['SpeciesDetailSerializer']
         permission_classes = [IsAuthenticated]
 
-    class AuthorListAPIView(ListAPIView):
+    class SpeciesListAPIView(ListAPIView):
         """
         API list view. Gets all records API.
         """
-        queryset = Author.objects.all()
-        serializer_class = author_serializer['AuthorListSerializer']
+        queryset = Species.objects.all()
+        serializer_class = species_serializer['SpeciesListSerializer']
         filter_backends = (DjangoFilterBackend,)
-        filter_class = AuthorListFilter
+        filter_class = SpeciesListFilter
         pagination_class = APILimitOffsetPagination
 
-    class AuthorDetailAPIView(DetailViewUpdateDelete):
+    class SpeciesDetailAPIView(DetailViewUpdateDelete):
         """
         Updates a record.
         """
-        queryset = Author.objects.all()
-        serializer_class = author_serializer['AuthorDetailSerializer']
+        queryset = Species.objects.all()
+        serializer_class = species_serializer['SpeciesDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 
     return {
-        'AuthorListAPIView': AuthorListAPIView,
-        'AuthorDetailAPIView': AuthorDetailAPIView,
-        'AuthorCreateAPIView': AuthorCreateAPIView
+        'SpeciesListAPIView': SpeciesListAPIView,
+        'SpeciesDetailAPIView': SpeciesDetailAPIView,
+        'SpeciesCreateAPIView': SpeciesCreateAPIView
     }
 
