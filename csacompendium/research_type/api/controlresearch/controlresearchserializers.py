@@ -9,6 +9,8 @@ from csacompendium.research_type.models import (
 )
 from csacompendium.research_type.api.researchauthor.researchauthorserializer import research_author_serializers
 from csacompendium.research_type.api.researchspecies.researchspeciesserializers import research_species_serializers
+from csacompendium.indicators.api.researchoutcomeindicator.researchoutcomeindicatorserializers \
+    import research_outcome_indicator_serializers
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
     get_related_content,
@@ -115,11 +117,13 @@ def control_research_serializers():
         measurement_year_url = SerializerMethodField()
         research_author_serializers = research_author_serializers()
         research_species_serializers = research_species_serializers()
+        research_outcome_indicator_serializers = research_outcome_indicator_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
         authors = SerializerMethodField()
         species = SerializerMethodField()
+        outcome_indicator = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -129,6 +133,7 @@ def control_research_serializers():
                 'content_type_url',
                 'authors',
                 'species',
+                'outcome_indicator',
             ]
             model = ControlResearch
             fields = ['id', 'csa_practice_url', 'experiment_replications_url',
@@ -210,6 +215,21 @@ def control_research_serializers():
             request = self.context['request']
             ResearchSpeciesSerializer = self.research_species_serializers['ResearchSpeciesSerializer']
             related_content = get_related_content(obj, ResearchSpeciesSerializer, obj.research_species, request)
+            return related_content
+
+        def get_outcome_indicator(self, obj):
+            """
+            :param obj: Current record object
+            :return: Related outcome indicator details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchOutcomeIndicatorSerializer = self.research_outcome_indicator_serializers[
+                'ResearchOutcomeIndicatorSerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchOutcomeIndicatorSerializer, obj.research_outcome_indicator, request
+            )
             return related_content
 
     return {
