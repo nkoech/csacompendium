@@ -146,7 +146,7 @@ class Indicator(AuthUserDetail, CreateUpdateTime):
     """
     slug = models.SlugField(max_length=120, unique=True, blank=True)
     subpillar = models.ForeignKey(Subpillar, on_delete=models.PROTECT, verbose_name='Indicator subpillar')
-    indicator = models.CharField(max_length=120)
+    indicator = models.CharField(max_length=120, unique=True)
     objects = IndicatorManager()
 
     def __unicode__(self):
@@ -254,7 +254,7 @@ class OutcomeIndicator(AuthUserDetail, CreateUpdateTime):
 
 
 @receiver(pre_save, sender=OutcomeIndicator)
-def pre_save_indicator_receiver(sender, instance, *args, **kwargs):
+def pre_save_outcome_indicator_receiver(sender, instance, *args, **kwargs):
     """
     Create a slug before save.
     :param sender: Signal sending object
