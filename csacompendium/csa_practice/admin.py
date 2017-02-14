@@ -3,10 +3,18 @@ from django.contrib import admin
 # Register your models here.
 from .models import (
     CsaPractice,
+    ResearchCsaPractice,
     CsaTheme,
     PracticeLevel,
     PracticeType,
 )
+
+
+class ResearchCsaPracticeInline(admin.TabularInline):
+    """
+    Inline for easy editing of in the admin in relation to the CSA practices admin
+    """
+    model = ResearchCsaPractice
 
 
 class CsaPracticeModelAdmin(admin.ModelAdmin):
@@ -16,6 +24,7 @@ class CsaPracticeModelAdmin(admin.ModelAdmin):
     list_display = ['practice_code', 'csatheme', 'practicelevel', 'sub_practice_level', 'last_update', 'modified_by']
     list_display_links = ['practice_code']
     list_filter = ['csatheme', 'practicelevel', 'sub_practice_level', 'last_update', 'modified_by']
+    inlines = [ResearchCsaPracticeInline, ]
 
     class Meta:
         model = CsaPractice
