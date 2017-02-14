@@ -10,6 +10,8 @@ from csacompendium.research_type.api.researchauthor.researchauthorserializer imp
 from csacompendium.research_type.api.researchspecies.researchspeciesserializers import research_species_serializers
 from csacompendium.indicators.api.researchoutcomeindicator.researchoutcomeindicatorserializers \
     import research_outcome_indicator_serializers
+from csacompendium.csa_practice.api.researchcsapractice.researchcsapracticeserializers \
+    import research_csa_practice_serializers
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
     get_related_content,
@@ -116,12 +118,14 @@ def control_research_serializers():
         research_author_serializers = research_author_serializers()
         research_species_serializers = research_species_serializers()
         research_outcome_indicator_serializers = research_outcome_indicator_serializers()
+        research_csa_practice_serializers = research_csa_practice_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
         authors = SerializerMethodField()
         species = SerializerMethodField()
         outcome_indicator = SerializerMethodField()
+        csa_practice = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -132,6 +136,7 @@ def control_research_serializers():
                 'authors',
                 'species',
                 'outcome_indicator',
+                'csa_practice',
             ]
             model = ControlResearch
             fields = ['id', 'experiment_replications_url',
@@ -218,6 +223,21 @@ def control_research_serializers():
             ]
             related_content = get_related_content(
                 obj, ResearchOutcomeIndicatorSerializer, obj.research_outcome_indicator, request
+            )
+            return related_content
+
+        def get_csa_practice(self, obj):
+            """
+            :param obj: Current record object
+            :return: Related CSA practice details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchCsaPracticeSerializer = self.research_csa_practice_serializers[
+                'ResearchCsaPracticeSerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchCsaPracticeSerializer, obj.research_csa_practice, request
             )
             return related_content
 

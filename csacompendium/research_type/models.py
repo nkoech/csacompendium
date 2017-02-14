@@ -712,7 +712,6 @@ class ControlResearch(AuthUserDetail, CreateUpdateTime):
         return qs
 
 
-
 class TreatmentResearchManager(models.Manager):
     """
     Treatment research model manager

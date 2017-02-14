@@ -12,7 +12,6 @@ class TreatmentResearchListFilter(FilterSet):
     class Meta:
         model = TreatmentResearch
         fields = {
-            'csapractice': ['exact'],
             'experimentrep': ['exact'],
             'experimentdetails': ['exact'],
             'nitrogenapplied': ['exact'],
