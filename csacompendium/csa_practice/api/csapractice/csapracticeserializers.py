@@ -1,9 +1,3 @@
-from csacompendium.research_type.api.serializers import control_research_serializers
-from csacompendium.research_type.api.serializers import treatment_research_serializers
-from csacompendium.research_type.models import (
-    ControlResearch,
-    TreatmentResearch,
-)
 from csacompendium.csa_practice.models import (
     CsaPractice,
     CsaTheme,
@@ -18,8 +12,10 @@ from csacompendium.utils.serializersutils import (
 )
 from rest_framework.serializers import (
     ModelSerializer,
-    SerializerMethodField,
+    SerializerMethodField
 )
+from csacompendium.csa_practice.api.researchcsapractice.researchcsapracticeserializers import \
+    research_csa_practice_serializers
 
 
 def csa_practice_serializers():
@@ -40,25 +36,6 @@ def csa_practice_serializers():
                 'definition',
             ]
 
-    class CsaPracticeCreateSerializer(CsaPracticeBaseSerializer, FieldMethodSerializer):
-        """
-        Create a record
-        """
-        user = SerializerMethodField()
-        modified_by = SerializerMethodField()
-
-        class Meta:
-            common_fields = [
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-            ]
-            model = CsaPractice
-            fields = ['id', 'practice_code', 'csatheme', 'practicelevel', ] + \
-                     CsaPracticeBaseSerializer.Meta.fields + ['practicetype', ] + common_fields
-            read_only_fields = ['id', ] + common_fields
-
     class CsaPracticeListSerializer(CsaPracticeBaseSerializer):
         """
         Serialize all records in given fields into an API
@@ -76,24 +53,32 @@ def csa_practice_serializers():
         csa_theme_url = SerializerMethodField()
         practice_level_url = SerializerMethodField()
         practice_type_url = SerializerMethodField()
+        research_csa_practice_serializers = research_csa_practice_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        control_research = SerializerMethodField()
-        treatment_research = SerializerMethodField()
+        research_relation = SerializerMethodField()
 
         class Meta:
             common_fields = [
+                'csa_theme_url',
+                'practice_level_url',
+                'practice_type_url',
                 'user',
                 'modified_by',
                 'last_update',
                 'time_created',
-                'control_research',
-                'treatment_research',
+                'research_relation',
             ]
             model = CsaPractice
-            fields = ['id', 'practice_code', 'csa_theme_url', 'practice_level_url', ] + \
-                     CsaPracticeBaseSerializer.Meta.fields + ['practice_type_url', ] + common_fields
-            read_only_fields = ['id', 'csa_theme_url', 'practice_level_url', 'practice_type_url', ] + common_fields
+            fields = [
+                'id',
+                'practice_code',
+                'csatheme',
+                'practicelevel', ] + \
+                CsaPracticeBaseSerializer.Meta.fields + \
+                ['practicetype', ] + \
+                common_fields
+            read_only_fields = ['id', ] + common_fields
 
         def get_csa_theme_url(self, obj):
             """
@@ -122,36 +107,23 @@ def csa_practice_serializers():
             """
             return get_related_content_url(PracticeType, obj.practicetype.id)
 
-        def get_control_research(self, obj):
+        def get_research_relation(self, obj):
             """
+            Gets control/treatment research record
             :param obj: Current record object
-            :return: Control research object
+            :return: Related research object/record
             :rtype: Object/record
             """
-            qs = ControlResearch.objects.filter_by_model_type(obj)
             request = self.context['request']
-            ControlResearchListSerializer = control_research_serializers['ControlResearchListSerializer']
+            ResearchCsaPracticeContentTypeSerializer = self.research_csa_practice_serializers[
+                'ResearchCsaPracticeContentTypeSerializer'
+            ]
             related_content = get_related_content(
-                obj, ControlResearchListSerializer,  qs, request
-            )
-            return related_content
-
-        def get_treatment_research(self, obj):
-            """
-            :param obj: Current record object
-            :return: Treatment research object
-            :rtype: Object/record
-            """
-            qs = TreatmentResearch.objects.filter_by_model_type(obj)
-            request = self.context['request']
-            TreatmentResearchListSerializer = treatment_research_serializers['TreatmentResearchListSerializer']
-            related_content = get_related_content(
-                obj, TreatmentResearchListSerializer, qs, request
+                obj, ResearchCsaPracticeContentTypeSerializer, obj.research_csa_practice, request
             )
             return related_content
 
     return {
-        'CsaPracticeCreateSerializer': CsaPracticeCreateSerializer,
         'CsaPracticeListSerializer': CsaPracticeListSerializer,
         'CsaPracticeDetailSerializer': CsaPracticeDetailSerializer
     }
