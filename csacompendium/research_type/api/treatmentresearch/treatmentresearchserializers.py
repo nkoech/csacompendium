@@ -1,4 +1,3 @@
-from csacompendium.csa_practice.models import CsaPractice
 from csacompendium.research_type.models import (
     TreatmentResearch,
     ExperimentRep,
@@ -109,7 +108,6 @@ def treatment_research_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        csa_practice_url = SerializerMethodField()
         experiment_replications_url = SerializerMethodField()
         experiment_details_url = SerializerMethodField()
         nitrogen_applied_url = SerializerMethodField()
@@ -136,19 +134,10 @@ def treatment_research_serializers():
                 'outcome_indicator',
             ]
             model = TreatmentResearch
-            fields = ['id', 'csa_practice_url', 'experiment_replications_url',
+            fields = ['id', 'experiment_replications_url',
                       'experiment_details_url', 'nitrogen_applied_url', 'experiment_duration_url',
                       'measurement_year_url', 'user'] + common_fields
             read_only_fields = ['id', ] + common_fields
-
-        def get_csa_practice_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(CsaPractice, obj.csapractice.id)
 
         def get_experiment_details_url(self, obj):
             """

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from csacompendium.csa_practice.models import CsaPractice
 from csacompendium.indicators.models import ResearchOutcomeIndicator
 from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
@@ -632,7 +631,6 @@ class ControlResearch(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    csapractice = models.ForeignKey(CsaPractice, on_delete=models.PROTECT, verbose_name='CSA Practice')
     experimentrep = models.ForeignKey(
         ExperimentRep, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Experiment Replications'
     )
@@ -746,7 +744,6 @@ class TreatmentResearch(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    csapractice = models.ForeignKey(CsaPractice, on_delete=models.PROTECT, verbose_name='CSA Practice')
     experimentrep = models.ForeignKey(
         ExperimentRep, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Experiment Replications'
     )
