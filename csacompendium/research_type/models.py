@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from csacompendium.indicators.models import ResearchOutcomeIndicator
+from csacompendium.csa_practice.models import ResearchCsaPractice
 from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
@@ -699,6 +700,18 @@ class ControlResearch(AuthUserDetail, CreateUpdateTime):
         qs = ResearchOutcomeIndicator.objects.filter_by_instance(instance)
         return qs
 
+    @property
+    def research_csa_practice(self):
+        """
+        Get related research CSA practice object/record
+        :return: Query result from the research CSA practice model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchCsaPractice.objects.filter_by_instance(instance)
+        return qs
+
+
 
 class TreatmentResearchManager(models.Manager):
     """
@@ -810,4 +823,15 @@ class TreatmentResearch(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = ResearchOutcomeIndicator.objects.filter_by_instance(instance)
+        return qs
+
+    @property
+    def research_csa_practice(self):
+        """
+        Get related research CSA practice object/record
+        :return: Query result from the research CSA practice model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchCsaPractice.objects.filter_by_instance(instance)
         return qs
