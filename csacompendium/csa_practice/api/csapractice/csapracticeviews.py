@@ -3,7 +3,7 @@ from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
 from csacompendium.utils.viewsutils import DetailViewUpdateDelete, CreateAPIViewHook
 from rest_framework.filters import DjangoFilterBackend
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import CsaPracticeListFilter
 from csacompendium.csa_practice.api.csapractice.csapracticeserializers import csa_practice_serializers
@@ -22,7 +22,7 @@ def csa_practice_views():
         Creates a single record.
         """
         queryset = CsaPractice.objects.all()
-        serializer_class = csa_practice_serializer['CsaPracticeCreateSerializer']
+        serializer_class = csa_practice_serializer['CsaPracticeDetailSerializer']
         permission_classes = [IsAuthenticated]
 
     class CsaPracticeListAPIView(ListAPIView):
