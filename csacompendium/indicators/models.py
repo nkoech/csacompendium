@@ -306,7 +306,8 @@ class ResearchOutcomeIndicatorManager(models.Manager):
 
 class ResearchOutcomeIndicator(AuthUserDetail, CreateUpdateTime):
     """
-    Research outcome entry relationship model. A many to many bridge table between research and other models
+    Research outcome indicator entry relationship model. A many to many bridge
+    table between control/treatment research and other models
     """
     limit = models.Q(app_label='research_type', model='controlresearch') | \
             models.Q(app_label='research_type', model='treatmentresearch')

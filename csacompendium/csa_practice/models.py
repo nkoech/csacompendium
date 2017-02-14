@@ -7,9 +7,12 @@ from csacompendium.utils.abstractmodels import (
 )
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
+    model_instance_filter,
     model_foreign_key_qs,
     model_type_filter,
+    create_model_type,
 )
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import pre_save
@@ -19,7 +22,7 @@ from django.core.urlresolvers import reverse
 
 class CsaTheme(AuthUserDetail, CreateUpdateTime):
     """
-    CSA theme model.  Creates CSA theme entity.
+    CSA theme model. Creates CSA theme entity.
     """
     slug = models.SlugField(max_length=120, unique=True, blank=True)
     csa_theme = models.CharField(max_length=80, unique=True, verbose_name='CSA theme')
@@ -220,6 +223,17 @@ class CsaPractice(AuthUserDetail, CreateUpdateTime):
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'CSA Practices'
 
+    @property
+    def research_csa_practice(self):
+        """
+        Get related research CSA practice object/record
+        :return: Query result from the research CSA practice model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchCsaPractice.objects.filter_by_model_type(instance)
+        return qs
+
 
 @receiver(pre_save, sender=CsaPractice)
 def pre_save_csa_practice_receiver(sender, instance, *args, **kwargs):
@@ -234,6 +248,61 @@ def pre_save_csa_practice_receiver(sender, instance, *args, **kwargs):
     """
     if not instance.slug:
         instance.slug = create_slug(instance, CsaPractice, instance.practice_code)
+
+
+class ResearchCsaPracticeManager(models.Manager):
+    """
+    Research CSA practice model manager
+    """
+    def filter_by_instance(self, instance):
+        """
+        Query a related research CSA practice object/record from another model's object
+        :param instance: Object instance
+        :return: Query result from content type/model
+        :rtye: object/record
+        """
+        return model_instance_filter(instance, self, ResearchCsaPracticeManager)
+
+    def filter_by_model_type(self, instance):
+        """
+        Query related objects/model type
+        :param instance: Object instance
+        :return: Matching object else none
+        :rtype: Object/record
+        """
+        obj_qs = model_foreign_key_qs(instance, self, ResearchCsaPracticeManager)
+        if obj_qs.exists():
+            return model_type_filter(self, obj_qs, ResearchCsaPracticeManager)
+
+    def create_by_model_type(self, model_type, pk, **kwargs):
+        """
+        Create object by model type
+        :param model_type: Content/model type
+        :param pk: Primary key
+        :param kwargs: Fields to be created
+        :return: Data object
+        :rtype: Object
+        """
+        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+
+
+class ResearchCsaPractice(AuthUserDetail, CreateUpdateTime):
+    """
+    Research CSA practice entry relationship model. A many to many bridge
+    table between control/treatment research and other models
+    """
+    limit = models.Q(app_label='research_type', model='controlresearch') | \
+            models.Q(app_label='research_type', model='treatmentresearch')
+    csapractice = models.ForeignKey(CsaPractice, on_delete=models.PROTECT,  verbose_name='CSA practice')
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    objects = ResearchCsaPracticeManager()
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Research CSA Practices'
+
 
 
 
