@@ -1,12 +1,13 @@
-from csacompendium.indicators.models import ResearchOutcomeIndicator
+from csacompendium.csa_practice.models import ResearchCsaPractice
 from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
 from csacompendium.utils.viewsutils import DetailViewUpdateDelete, get_http_request
 from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .filters import ResearchOutcomeIndicatorListFilter
+from .filters import ResearchCsaPracticeListFilter
 from csacompendium.indicators.api.serializers import research_outcome_indicator_serializers
+from csacompendium.csa_practice.api.serializers import
 
 
 def research_csa_practice_views():
