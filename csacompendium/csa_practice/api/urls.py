@@ -4,6 +4,7 @@ from .views import (
     practice_level_views,
     practice_type_views,
     csa_practice_views,
+    research_csa_practice_views,
 )
 
 # CSA theme URLs
@@ -60,6 +61,25 @@ urlpatterns += [
         r'^practicetype/(?P<slug>[\w-]+)/$',
         practice_type_views['PracticeTypeDetailAPIView'].as_view(),
         name='practice_type_detail'
+    ),
+]
+
+# Research CSA practice URLs
+urlpatterns += [
+    url(
+        r'^researchcsapractice/$',
+        research_csa_practice_views['ResearchCsaPracticeListAPIView'].as_view(),
+        name='research_csa_practice_list'
+    ),
+    url(
+        r'^researchcsapractice/create/$',
+        research_csa_practice_views['ResearchCsaPracticeCreateAPIView'].as_view(),
+        name='research_csa_practice_create'
+    ),
+    url(
+        r'^researchcsapractice/(?P<pk>[\w-]+)/$',
+        research_csa_practice_views['ResearchCsaPracticeDetailAPIView'].as_view(),
+        name='research_csa_practice_detail'
     ),
 ]
 
