@@ -1,17 +1,17 @@
 from rest_framework.filters import (
     FilterSet
 )
-from csacompendium.indicators.models import ResearchOutcomeIndicator
+from csacompendium.csa_practice.models import ResearchCsaPractice
 
 
-class ResearchOutcomeIndicatorListFilter(FilterSet):
+class ResearchCsaPracticeListFilter(FilterSet):
     """
-    Filter query list from research outcome indicator database table
+    Filter query list from research CSA practice database table
     """
     class Meta:
-        model = ResearchOutcomeIndicator
-        fields = {'outcomeindicator': ['exact'],
+        model = ResearchCsaPractice
+        fields = {'csapractice': ['exact'],
                   'object_id': ['exact'],
                   'content_type': ['exact'],
                   }
-        order_by = ['outcomeindicator']
+        order_by = ['csapractice']
