@@ -50,8 +50,8 @@ def treatment_research_serializers():
             """
             class Meta:
                 model = TreatmentResearch
-                fields = ['id', 'csapractice', 'experimentrep', 'experimentdetails',
-                          'nitrogenapplied', 'experimentduration', 'measurementyear', 'last_update', 'time_created', ]
+                fields = ['id', 'experimentrep', 'experimentdetails', 'nitrogenapplied', 'experimentduration',
+                          'measurementyear', 'last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
                 super(TreatmentResearchCreateSerializer, self).__init__(*args, **kwargs)
@@ -71,7 +71,6 @@ def treatment_research_serializers():
                 :return: Treatment research object
                 :rtype: Object
                 """
-                csapractice = validated_data.get('csapractice')
                 experimentrep = validated_data.get('experimentrep')
                 experimentdetails = validated_data.get('experimentdetails')
                 nitrogenapplied = validated_data.get('nitrogenapplied')
@@ -80,7 +79,6 @@ def treatment_research_serializers():
                 treatment_research = TreatmentResearch.objects.create_by_model_type(
                     self.model_type,
                     self.key,
-                    csapractice=csapractice,
                     experimentrep=experimentrep,
                     experimentdetails=experimentdetails,
                     nitrogenapplied=nitrogenapplied,
