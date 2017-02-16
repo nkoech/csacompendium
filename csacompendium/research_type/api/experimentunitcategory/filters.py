@@ -1,16 +1,16 @@
 from rest_framework.filters import (
     FilterSet
 )
-from csacompendium.research.models import ObjectCategory
+from csacompendium.research_type.models import ExperimentUnitCategory
 
 
-class ObjectCategoryListFilter(FilterSet):
+class ExperimentUnitCategoryListFilter(FilterSet):
     """
-    Filter query list from object category database table
+    Filter query list from experiment unit category database table
     """
     class Meta:
-        model = ObjectCategory
+        model = ExperimentUnitCategory
         fields = {
-            'object_category': ['iexact', 'icontains'],
+            'unit_category': ['iexact', 'icontains'],
         }
-        order_by = ['object_category']
+        order_by = ['unit_category']

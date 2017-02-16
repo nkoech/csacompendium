@@ -10,6 +10,9 @@ from .researchauthor.researchauthorviews import research_author_views
 from .author.authorviews import author_views
 from .researchspecies.researchspeciesviews import research_species_views
 from .species.speciesviews import species_views
+# Experiment unit
+# Research experiment unit
+from .experimentunitcategory.experimentunitcategoryviews import experiment_unit_category_views
 
 
 treatment_research_views = treatment_research_views()
@@ -24,3 +27,6 @@ research_author_views = research_author_views()
 author_views = author_views()
 research_species_views = research_species_views()
 species_views = species_views()
+# Experiment unit
+# Research experiment unit
+experiment_unit_category_views = experiment_unit_category_views()
