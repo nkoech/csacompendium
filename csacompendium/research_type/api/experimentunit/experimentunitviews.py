@@ -1,51 +1,52 @@
-from csacompendium.research.models import ExperimentObject
+from  csacompendium.research_type.models import ExperimentUnit
 from csacompendium.utils.pagination import APILimitOffsetPagination
 from csacompendium.utils.permissions import IsOwnerOrReadOnly
 from csacompendium.utils.viewsutils import DetailViewUpdateDelete, CreateAPIViewHook
 from rest_framework.filters import DjangoFilterBackend
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .filters import ExperimentObjectListFilter
-from csacompendium.research.api.experimentobject.experimentobjectserializers import experiment_object_serializers
+from .filters import ExperimentUnitListFilter
+from csacompendium.research_type.api.experimentunit.experimentunitserializers import experiment_unit_serializers
 
 
-def experiment_object_views():
+def outcome_indicator_views():
     """
-    Experiment object views
-    :return: All experiment object views
+    Outcome indicator views
+    :return: All outcome indicator views
     :rtype: Object
     """
-    experiment_object_serializer = experiment_object_serializers()
+    outcome_indicator_serializer = outcome_indicator_serializers()
 
-    class ExperimentObjectCreateAPIView(CreateAPIViewHook):
+    class OutcomeIndicatorCreateAPIView(CreateAPIViewHook):
         """
         Creates a single record.
         """
-        queryset = ExperimentObject.objects.all()
-        serializer_class = experiment_object_serializer['ExperimentObjectDetailSerializer']
+        queryset = OutcomeIndicator.objects.all()
+        serializer_class = outcome_indicator_serializer['OutcomeIndicatorDetailSerializer']
         permission_classes = [IsAuthenticated]
 
-    class ExperimentObjectListAPIView(ListAPIView):
+    class OutcomeIndicatorListAPIView(ListAPIView):
         """
         API list view. Gets all records API.
         """
-        queryset = ExperimentObject.objects.all()
-        serializer_class = experiment_object_serializer['ExperimentObjectListSerializer']
+        queryset = OutcomeIndicator.objects.all()
+        serializer_class = outcome_indicator_serializer['OutcomeIndicatorListSerializer']
         filter_backends = (DjangoFilterBackend,)
-        filter_class = ExperimentObjectListFilter
+        filter_class = OutcomeIndicatorListFilter
         pagination_class = APILimitOffsetPagination
 
-    class ExperimentObjectDetailAPIView(DetailViewUpdateDelete):
+    class OutcomeIndicatorDetailAPIView(DetailViewUpdateDelete):
         """
         Updates a record.
         """
-        queryset = ExperimentObject.objects.all()
-        serializer_class = experiment_object_serializer['ExperimentObjectDetailSerializer']
+        queryset = OutcomeIndicator.objects.all()
+        serializer_class = outcome_indicator_serializer['OutcomeIndicatorDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 
     return {
-        'ExperimentObjectListAPIView': ExperimentObjectListAPIView,
-        'ExperimentObjectDetailAPIView': ExperimentObjectDetailAPIView,
-        'ExperimentObjectCreateAPIView': ExperimentObjectCreateAPIView
+        'OutcomeIndicatorListAPIView': OutcomeIndicatorListAPIView,
+        'OutcomeIndicatorDetailAPIView': OutcomeIndicatorDetailAPIView,
+        'OutcomeIndicatorCreateAPIView': OutcomeIndicatorCreateAPIView
     }
+

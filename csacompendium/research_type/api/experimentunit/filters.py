@@ -1,16 +1,18 @@
 from rest_framework.filters import FilterSet
-from csacompendium.research.models import ExperimentObject
+from csacompendium.research_type.models import ExperimentUnit
 
 
-class ExperimentObjectListFilter(FilterSet):
+class ExperimentUnitListFilter(FilterSet):
     """
-    Filter query list from experiment object database table
+    Filter query list from experiment unit database table
     """
     class Meta:
-        model = ExperimentObject
-        fields = {'exp_object_code': ['iexact', 'icontains'],
-                  'objectcategory': ['exact'],
-                  'object_name': ['iexact', 'icontains'],
+        model = ExperimentUnit
+        fields = {'exp_unit_code': ['iexact', 'icontains'],
+                  'experimentunitcategory': ['exact'],
+                  'common_name': ['iexact', 'icontains'],
                   'latin_name': ['iexact', 'icontains'],
                   }
-        order_by = ['exp_object_code']
+        order_by = ['exp_unit_code']
+
+
