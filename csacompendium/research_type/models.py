@@ -588,6 +588,197 @@ class ResearchSpecies(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Research Species'
 
 
+# class ExperimentUnitCategory(AuthUserDetail, CreateUpdateTime):
+#     """
+#     Experiment unit category model. Creates experiment unit category entity.
+#     """
+#     slug = models.SlugField(max_length=200, unique=True, blank=True)
+#     unit_category = models.CharField(max_length=200, unique=True)
+#
+#     def __unicode__(self):
+#         return self.unit_category
+#
+#     def __str__(self):
+#         return self.unit_category
+#
+#     def get_api_url(self):
+#         """
+#         Get experiment unit category URL as a reverse from model
+#         :return: URL
+#         :rtype: String
+#         """
+#         reverse('research_type_api:experiment_unit_category_detail', kwargs={'slug': self.slug})
+#
+#     class Meta:
+#         ordering = ['-time_created', '-last_update']
+#         verbose_name_plural = 'Experiment Unit Categories'
+#
+#     @property
+#     def experiment_unit_relation(self):
+#         """
+#         Get related experiment unit properties
+#         :return: Query result from the experiment unit model
+#         :rtype: object/record
+#         """
+#         instance = self
+#         qs = ExperimentUnit.objects.filter_by_model_type(instance)
+#         return qs
+#
+#
+# @receiver(pre_save, sender=ExperimentUnitCategory)
+# def pre_save_experiment_unit_category_receiver(sender, instance, *args, **kwargs):
+#     """
+#     Create a slug before save.
+#     :param sender: Signal sending object
+#     :param instance: Object instance
+#     :param args: Any other argument
+#     :param kwargs: Keyword arguments
+#     :return: None
+#     :rtype: None
+#     """
+#     if not instance.slug:
+#         instance.slug = create_slug(instance, ExperimentUnitCategory, instance.unit_category)
+#
+#
+# class ExperimentUnitManager(models.Manager):
+#     """
+#     Experiment unit model manager
+#     """
+#     def filter_by_model_type(self, instance):
+#         """
+#         Query related objects/model type
+#         :param instance: Object instance
+#         :return: Matching object else none
+#         :rtype: Object/record
+#         """
+#         obj_qs = model_foreign_key_qs(instance, self, ExperimentUnitManager)
+#         if obj_qs.exists():
+#             return model_type_filter(self, obj_qs, ExperimentUnitManager)
+#
+#
+# class ExperimentUnit(AuthUserDetail, CreateUpdateTime):
+#     """
+#     Experiment unit model. Creates experiment unit entity.
+#     """
+#     slug = models.SlugField(max_length=250, unique=True, blank=True)
+#     exp_unit_code = models.CharField(max_length=20, unique=True, verbose_name='Experiment unit code')
+#     experimentunitcategory = models.ForeignKey(
+#         ExperimentUnitCategory, on_delete=models.PROTECT, verbose_name='Unit categories'
+#     )
+#     common_name = models.CharField(max_length=250)
+#     latin_name = models.CharField(max_length=250, blank=True, null=True)
+#     objects = ExperimentUnitManager()
+#
+#     def __unicode__(self):
+#         return self.common_name
+#
+#     def __str__(self):
+#         return self.common_name
+#
+#     def get_api_url(self):
+#         """
+#         Get experiment unit model URL as a reverse from model
+#         :return: URL
+#         :rtype: String
+#         """
+#         reverse('research_type_api:experiment_unit_detail', kwargs={'slug': self.slug})
+#
+#     class Meta:
+#         ordering = ['-time_created', '-last_update']
+#         verbose_name_plural = 'Experiment Units'
+#
+#     @property
+#     def research_experiment_unit_relation(self):
+#         """
+#         Get related experiment unit object/record
+#         :return: Query result from the research experiment unit model
+#         :rtype: object/record
+#         """
+#         instance = self
+#         qs = ResearchExperimentUnit.objects.filter_by_model_type(instance)
+#         return qs
+#
+#
+# @receiver(pre_save, sender=ExperimentUnit)
+# def pre_save_experiment_unit_receiver(sender, instance, *args, **kwargs):
+#     """
+#     Create a slug before save.
+#     :param sender: Signal sending object
+#     :param instance: Object instance
+#     :param args: Any other argument
+#     :param kwargs: Keyword arguments
+#     :return: None
+#     :rtype: None
+#     """
+#     if not instance.slug:
+#         instance.slug = create_slug(instance, ExperimentUnit, instance.common_name)
+#
+#
+# class ResearchExperimentUnitManager(models.Manager):
+#     """
+#     Research experiment unit model manager
+#     """
+#     def filter_by_instance(self, instance):
+#         """
+#         Query a related research experiment unit object/record from another model's object
+#         :param instance: Object instance
+#         :return: Query result from content type/model
+#         :rtype: object/record
+#         """
+#         return model_instance_filter(instance, self, ResearchExperimentUnitManager)
+#
+#     def filter_by_model_type(self, instance):
+#         """
+#         Query related objects/model type
+#         :param instance: Object instance
+#         :return: Matching object else none
+#         :rtype: Object/record
+#         """
+#         obj_qs = model_foreign_key_qs(instance, self, ResearchExperimentUnitManager)
+#         if obj_qs.exists():
+#             return model_type_filter(self, obj_qs, ResearchExperimentUnitManager)
+#
+#     def create_by_model_type(self, model_type, pk, **kwargs):
+#         """
+#         Create object by model type
+#         :param model_type: Content/model type
+#         :param pk: Primary key
+#         :param kwargs: Fields to be created
+#         :return: Data object
+#         :rtype: Object
+#         """
+#         return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+#
+#
+# class ResearchExperimentUnit(AuthUserDetail, CreateUpdateTime):
+#     """
+#     Research experiment unit entry relationship model. A many to many bridge table
+#     between research and other models
+#     """
+#     limit = models.Q(app_label='research_type', model='controlresearch') | \
+#             models.Q(app_label='research_type', model='treatmentresearch')
+#     experimentunit = models.ForeignKey(ExperimentUnit, on_delete=models.PROTECT, verbose_name='Experiment Unit')
+#     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+#     object_id = models.PositiveIntegerField()
+#     content_object = GenericForeignKey('content_type', 'object_id')
+#     upper_soil_depth = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+#     lower_soil_depth = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+#     incubation_days = models.DecimalField(
+#         max_digits=4, decimal_places=2, blank=True, null=True, verbose_name='Incubation Days'
+#     )
+#     objects = ResearchSpeciesManager()
+#
+#     # def __unicode__(self):
+#     #     return str(self.upper_soil_depth)
+#     #
+#     # def __str__(self):
+#     #     return str(self.upper_soil_depth)
+#
+#     class Meta:
+#         ordering = ['-time_created', '-last_update']
+#         verbose_name_plural = 'Research Experiment Units'
+#
+
 class ControlResearchManager(models.Manager):
     """
     Control research model manager
@@ -710,6 +901,17 @@ class ControlResearch(AuthUserDetail, CreateUpdateTime):
         instance = self
         qs = ResearchCsaPractice.objects.filter_by_instance(instance)
         return qs
+
+    # @property
+    # def research_experiment_unit(self):
+    #     """
+    #     Get related research experiment unit object/record
+    #     :return: Query result from the research experiment unit model
+    #     :rtype: object/record
+    #     """
+    #     instance = self
+    #     qs = ResearchExperimentUnit.objects.filter_by_instance(instance)
+    #     return qs
 
 
 class TreatmentResearchManager(models.Manager):
@@ -834,3 +1036,14 @@ class TreatmentResearch(AuthUserDetail, CreateUpdateTime):
         instance = self
         qs = ResearchCsaPractice.objects.filter_by_instance(instance)
         return qs
+    #
+    # @property
+    # def research_experiment_unit(self):
+    #     """
+    #     Get related research experiment unit object/record
+    #     :return: Query result from the research experiment unit model
+    #     :rtype: object/record
+    #     """
+    #     instance = self
+    #     qs = ResearchExperimentUnit.objects.filter_by_instance(instance)
+    #     return qs

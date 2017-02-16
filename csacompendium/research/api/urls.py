@@ -1,16 +1,16 @@
 from django.conf.urls import url
-from .views import (
-    # measurement_season_views,
-    # measurement_year_views,
-    # author_views,
-    object_category_views,
-    experiment_object_views,
-    research_object_views,
-    # species_views,
-    # research_species_views,
-    # research_outcome_indicator_views,
-    # soil_views,
-)
+# from .views import (
+#     # measurement_season_views,
+#     # measurement_year_views,
+#     # author_views,
+#     object_category_views,
+#     experiment_object_views,
+#     research_object_views,
+#     # species_views,
+#     # research_species_views,
+#     # research_outcome_indicator_views,
+#     # soil_views,
+# )
 
 # # Measurement Season URLs
 # urlpatterns = [
@@ -58,61 +58,61 @@ from .views import (
 # ]
 
 # Object category URLs
-urlpatterns = [
-    url(
-        r'^objectcategory/$',
-        object_category_views['ObjectCategoryListAPIView'].as_view(),
-        name='object_category_list'
-    ),
-    url(
-        r'^objectcategory/create/$',
-        object_category_views['ObjectCategoryCreateAPIView'].as_view(),
-        name='object_category_create'
-    ),
-    url(
-        r'^objectcategory/(?P<slug>[\w-]+)/$',
-        object_category_views['ObjectCategoryDetailAPIView'].as_view(),
-        name='object_category_detail'
-    ),
-]
+# urlpatterns = [
+#     url(
+#         r'^objectcategory/$',
+#         object_category_views['ObjectCategoryListAPIView'].as_view(),
+#         name='object_category_list'
+#     ),
+#     url(
+#         r'^objectcategory/create/$',
+#         object_category_views['ObjectCategoryCreateAPIView'].as_view(),
+#         name='object_category_create'
+#     ),
+#     url(
+#         r'^objectcategory/(?P<slug>[\w-]+)/$',
+#         object_category_views['ObjectCategoryDetailAPIView'].as_view(),
+#         name='object_category_detail'
+#     ),
+# ]
 
 # Experiment object URLs
-urlpatterns += [
-    url(
-        r'^experimentobject/$',
-        experiment_object_views['ExperimentObjectListAPIView'].as_view(),
-        name='experiment_object_list'
-    ),
-    url(
-        r'^experimentobject/create/$',
-        experiment_object_views['ExperimentObjectCreateAPIView'].as_view(),
-        name='experiment_object_create'
-    ),
-    url(
-        r'^experimentobject/(?P<slug>[\w-]+)/$',
-        experiment_object_views['ExperimentObjectDetailAPIView'].as_view(),
-        name='experiment_object_detail'
-    ),
-]
+# urlpatterns += [
+#     url(
+#         r'^experimentobject/$',
+#         experiment_object_views['ExperimentObjectListAPIView'].as_view(),
+#         name='experiment_object_list'
+#     ),
+#     url(
+#         r'^experimentobject/create/$',
+#         experiment_object_views['ExperimentObjectCreateAPIView'].as_view(),
+#         name='experiment_object_create'
+#     ),
+#     url(
+#         r'^experimentobject/(?P<slug>[\w-]+)/$',
+#         experiment_object_views['ExperimentObjectDetailAPIView'].as_view(),
+#         name='experiment_object_detail'
+#     ),
+# ]
 
 # Research object URLs
-urlpatterns += [
-    url(
-        r'^researchobject/$',
-        research_object_views['ResearchObjectListAPIView'].as_view(),
-        name='research_object_list'
-    ),
-    url(
-        r'^researchobject/create/$',
-        research_object_views['ResearchObjectCreateAPIView'].as_view(),
-        name='research_object_create'
-    ),
-    url(
-        r'^researchobject/(?P<pk>[\w-]+)/$',
-        research_object_views['ResearchObjectDetailAPIView'].as_view(),
-        name='research_object_detail'
-    ),
-]
+# urlpatterns += [
+#     url(
+#         r'^researchobject/$',
+#         research_object_views['ResearchObjectListAPIView'].as_view(),
+#         name='research_object_list'
+#     ),
+#     url(
+#         r'^researchobject/create/$',
+#         research_object_views['ResearchObjectCreateAPIView'].as_view(),
+#         name='research_object_create'
+#     ),
+#     url(
+#         r'^researchobject/(?P<pk>[\w-]+)/$',
+#         research_object_views['ResearchObjectDetailAPIView'].as_view(),
+#         name='research_object_detail'
+#     ),
+# ]
 
 # # Species object URLs
 # urlpatterns += [

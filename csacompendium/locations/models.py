@@ -5,7 +5,6 @@ from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )
-from csacompendium.research.models import Research
 from csacompendium.research_type.models import ControlResearch, TreatmentResearch
 from csacompendium.soils.models import Soil
 from csacompendium.utils.createslug import create_slug
@@ -91,18 +90,6 @@ class Location(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = LocationRelation.objects.filter_by_model_type(instance)
-        return qs
-
-
-    @property
-    def research(self):
-        """
-        Get related research object/record
-        :return: Query result from the research model
-        :rtye: object/record
-        """
-        instance = self
-        qs = Research.objects.filter_by_instance(instance)
         return qs
 
     @property
