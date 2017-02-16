@@ -9,44 +9,44 @@ from .filters import ExperimentUnitListFilter
 from csacompendium.research_type.api.experimentunit.experimentunitserializers import experiment_unit_serializers
 
 
-def outcome_indicator_views():
+def experiment_unit_views():
     """
-    Outcome indicator views
-    :return: All outcome indicator views
+    Experiment unit views
+    :return: All experiment unit views
     :rtype: Object
     """
-    outcome_indicator_serializer = outcome_indicator_serializers()
+    experiment_unit_serializer = experiment_unit_serializers()
 
-    class OutcomeIndicatorCreateAPIView(CreateAPIViewHook):
+    class ExperimentUnitCreateAPIView(CreateAPIViewHook):
         """
         Creates a single record.
         """
-        queryset = OutcomeIndicator.objects.all()
-        serializer_class = outcome_indicator_serializer['OutcomeIndicatorDetailSerializer']
+        queryset = ExperimentUnit.objects.all()
+        serializer_class = experiment_unit_serializer['ExperimentUnitDetailSerializer']
         permission_classes = [IsAuthenticated]
 
-    class OutcomeIndicatorListAPIView(ListAPIView):
+    class ExperimentUnitListAPIView(ListAPIView):
         """
         API list view. Gets all records API.
         """
-        queryset = OutcomeIndicator.objects.all()
-        serializer_class = outcome_indicator_serializer['OutcomeIndicatorListSerializer']
+        queryset = ExperimentUnit.objects.all()
+        serializer_class = experiment_unit_serializer['ExperimentUnitListSerializer']
         filter_backends = (DjangoFilterBackend,)
-        filter_class = OutcomeIndicatorListFilter
+        filter_class = ExperimentUnitListFilter
         pagination_class = APILimitOffsetPagination
 
-    class OutcomeIndicatorDetailAPIView(DetailViewUpdateDelete):
+    class ExperimentUnitDetailAPIView(DetailViewUpdateDelete):
         """
         Updates a record.
         """
-        queryset = OutcomeIndicator.objects.all()
-        serializer_class = outcome_indicator_serializer['OutcomeIndicatorDetailSerializer']
+        queryset = ExperimentUnit.objects.all()
+        serializer_class = experiment_unit_serializer['ExperimentUnitDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'slug'
 
     return {
-        'OutcomeIndicatorListAPIView': OutcomeIndicatorListAPIView,
-        'OutcomeIndicatorDetailAPIView': OutcomeIndicatorDetailAPIView,
-        'OutcomeIndicatorCreateAPIView': OutcomeIndicatorCreateAPIView
+        'ExperimentUnitListAPIView': ExperimentUnitListAPIView,
+        'ExperimentUnitDetailAPIView': ExperimentUnitDetailAPIView,
+        'ExperimentUnitCreateAPIView': ExperimentUnitCreateAPIView
     }
 
