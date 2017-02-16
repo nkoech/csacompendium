@@ -170,7 +170,7 @@ class ExperimentUnitCategoryModelAdmin(admin.ModelAdmin):
 
 class ExperimentUnitModelAdmin(admin.ModelAdmin):
     """
-    Experiment object model admin settings
+    Experiment unit model admin settings
     """
     list_display = [
         'exp_object_code', 'experimentunitcategory', 'common_name', 'latin_name', 'last_update', 'modified_by'
@@ -182,9 +182,9 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
         model = ExperimentUnit
 
 
-class ResearchObjectModelAdmin(admin.ModelAdmin):
+class ResearchExperimentUnitModelAdmin(admin.ModelAdmin):
     """
-    Research object model admin settings
+    Research experiment unit model admin settings
     """
     list_display = [
         'experimentunit', 'upper_soil_depth', 'upper_soil_depth', 'incubation_days', 'last_update', 'modified_by'
