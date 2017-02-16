@@ -10,6 +10,9 @@ from .researchauthor.researchauthorserializer import research_author_serializers
 from .author.authorserializers import author_serializers
 from .researchspecies.researchspeciesserializers import research_species_serializers
 from .species.speciesserializers import species_serializers
+# Experiment unit
+# Research experiment unit
+from .experimentunitcategory.experimentunitcategoryserializers import experiment_unit_category_serializers
 
 
 treatment_research_serializers = treatment_research_serializers()
@@ -24,3 +27,6 @@ research_author_serializers = research_author_serializers()
 author_serializers = author_serializers()
 research_species_serializers = research_species_serializers()
 species_serializers = species_serializers()
+# Experiment unit
+# Research experiment unit
+experiment_unit_category_serializers = experiment_unit_category_serializers()
