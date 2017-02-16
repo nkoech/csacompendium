@@ -1,7 +1,5 @@
 from django.contrib import admin
 
-from django.contrib import admin
-
 # Register your models here.
 from .models import (
     ExperimentRep,
@@ -16,6 +14,9 @@ from .models import (
     ResearchSpecies,
     ControlResearch,
     TreatmentResearch,
+    ExperimentUnitCategory,
+    ExperimentUnit,
+    ResearchExperimentUnit,
 )
 
 
@@ -154,6 +155,47 @@ class SpeciesModelAdmin(admin.ModelAdmin):
     class Meta:
         model = Species
 
+
+class ExperimentUnitCategoryModelAdmin(admin.ModelAdmin):
+    """
+    Experiment unit category model admin settings
+    """
+    list_display = ['unit_category', 'last_update', 'modified_by']
+    list_display_links = ['unit_category']
+    list_filter = ['unit_category', 'last_update', 'modified_by']
+
+    class Meta:
+        model = ExperimentUnitCategory
+
+
+class ExperimentUnitModelAdmin(admin.ModelAdmin):
+    """
+    Experiment object model admin settings
+    """
+    list_display = [
+        'exp_object_code', 'experimentunitcategory', 'common_name', 'latin_name', 'last_update', 'modified_by'
+    ]
+    list_display_links = ['common_name']
+    list_filter = ['common_name', 'exp_object_code', 'experimentunitcategory', 'last_update', 'modified_by']
+
+    class Meta:
+        model = ExperimentUnit
+
+
+class ResearchObjectModelAdmin(admin.ModelAdmin):
+    """
+    Research object model admin settings
+    """
+    list_display = [
+        'experimentunit', 'upper_soil_depth', 'upper_soil_depth', 'incubation_days', 'last_update', 'modified_by'
+    ]
+    list_display_links = ['experimentunit']
+    list_filter = ['experimentunit', 'upper_soil_depth', 'upper_soil_depth', 'last_update', 'modified_by']
+
+    class Meta:
+        model = ResearchExperimentUnit
+
+
 admin.site.register(TreatmentResearch, TreatmentResearchModelAdmin)
 admin.site.register(ControlResearch, ControlResearchModelAdmin)
 admin.site.register(ExperimentDetails, ExperimentDetailsModelAdmin)
@@ -164,3 +206,6 @@ admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Author, AuthorModelAdmin)
 admin.site.register(Species, SpeciesModelAdmin)
+admin.site.register(ExperimentUnitCategory, ExperimentUnitCategoryModelAdmin)
+admin.site.register(ExperimentUnit, ExperimentUnitModelAdmin)
+admin.site.register(ResearchExperimentUnit, ResearchExperimentUnitModelAdmin)
