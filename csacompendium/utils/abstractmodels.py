@@ -24,7 +24,7 @@ class ResearchOutcome(models.Model):
         max_digits=8, decimal_places=2, default=Decimal('0.0'), verbose_name='Mean outcome'
     )
     std_outcome = models.DecimalField(
-        max_digits=8, decimal_places=2, default=Decimal('0.0'),  verbose_name='Mean outcome'
+        max_digits=8, decimal_places=2, default=Decimal('0.0'),  verbose_name='Standard outcome'
     )
     outcome_uom = models.CharField(max_length=200, default='kg/ha')
 
