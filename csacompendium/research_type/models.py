@@ -5,6 +5,7 @@ from csacompendium.indicators.models import ResearchOutcomeIndicator
 from csacompendium.csa_practice.models import ResearchCsaPractice
 from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
+    ResearchOutcome,
     CreateUpdateTime,
 )
 from csacompendium.utils.createslug import create_slug
@@ -761,18 +762,12 @@ class ResearchExperimentUnit(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    upper_soil_depth = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
-    lower_soil_depth = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    upper_soil_depth = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    lower_soil_depth = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     incubation_days = models.DecimalField(
         max_digits=4, decimal_places=2, blank=True, null=True, verbose_name='Incubation Days'
     )
     objects = ResearchSpeciesManager()
-
-    # def __unicode__(self):
-    #     return str(self.upper_soil_depth)
-    #
-    # def __str__(self):
-    #     return str(self.upper_soil_depth)
 
     class Meta:
         ordering = ['-time_created', '-last_update']
