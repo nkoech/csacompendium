@@ -9,52 +9,52 @@ from .filters import ResearchExperimentUnitListFilter
 from csacompendium.research_type.api.serializers import research_experiment_unit_serializers
 
 
-def research_outcome_indicator_views():
+def research_experiment_unit_views():
     """
-    Research outcome indicator views
-    :return: All research outcome indicator views
+    Research experiment unit views
+    :return: All research experiment unit views
     :rtype: Object
     """
-    class ResearchOutcomeIndicatorCreateAPIView(CreateAPIView):
+    class ResearchExperimentUnitCreateAPIView(CreateAPIView):
         """
         Creates a single record.
         """
-        queryset = ResearchOutcomeIndicator.objects.all()
+        queryset = ResearchExperimentUnit.objects.all()
         permission_classes = [IsAuthenticated]
 
         def get_serializer_class(self):
             """
             Gets serializer class
-            :return: Research outcome indicator object
+            :return: Research experiment unit views
             :rtype: Object
             """
             model_type, url_parameter, user = get_http_request(self.request, slug=False)
-            create_research_outcome_indicator_serializer = research_outcome_indicator_serializers[
-                'create_research_outcome_indicator_serializer'
+            create_research_experiment_unit_serializer = research_experiment_unit_serializers[
+                'create_research_experiment_unit_serializer'
             ]
-            return create_research_outcome_indicator_serializer(model_type, url_parameter, user)
+            return create_research_experiment_unit_serializer(model_type, url_parameter, user)
 
-    class ResearchOutcomeIndicatorListAPIView(ListAPIView):
+    class ResearchExperimentUnitListAPIView(ListAPIView):
         """
         API list view. Gets all records API.
         """
-        queryset = ResearchOutcomeIndicator.objects.all()
-        serializer_class = research_outcome_indicator_serializers['ResearchOutcomeIndicatorListSerializer']
+        queryset = ResearchExperimentUnit.objects.all()
+        serializer_class = research_experiment_unit_serializers['ResearchExperimentUnitListSerializer']
         filter_backends = (DjangoFilterBackend,)
-        filter_class = ResearchOutcomeIndicatorListFilter
+        filter_class = ResearchExperimentUnitListFilter
         pagination_class = APILimitOffsetPagination
 
-    class ResearchOutcomeIndicatorDetailAPIView(DetailViewUpdateDelete):
+    class ResearchExperimentUnitDetailAPIView(DetailViewUpdateDelete):
         """
         Creates, deletes and updates a record.
         """
-        queryset = ResearchOutcomeIndicator.objects.all()
-        serializer_class = research_outcome_indicator_serializers['ResearchOutcomeIndicatorDetailSerializer']
+        queryset = ResearchExperimentUnit.objects.all()
+        serializer_class = research_experiment_unit_serializers['ResearchExperimentUnitDetailSerializer']
         permission_classes = [IsAuthenticated, IsAdminUser]
         lookup_field = 'pk'
 
     return {
-        'ResearchOutcomeIndicatorCreateAPIView': ResearchOutcomeIndicatorCreateAPIView,
-        'ResearchOutcomeIndicatorListAPIView': ResearchOutcomeIndicatorListAPIView,
-        'ResearchOutcomeIndicatorDetailAPIView': ResearchOutcomeIndicatorDetailAPIView
+        'ResearchExperimentUnitCreateAPIView': ResearchExperimentUnitCreateAPIView,
+        'ResearchExperimentUnitListAPIView': ResearchExperimentUnitListAPIView,
+        'ResearchExperimentUnitDetailAPIView': ResearchExperimentUnitDetailAPIView
     }
