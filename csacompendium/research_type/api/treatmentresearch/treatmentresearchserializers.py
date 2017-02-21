@@ -52,8 +52,9 @@ def treatment_research_serializers():
             """
             class Meta:
                 model = TreatmentResearch
-                fields = ['id', 'experimentrep', 'experimentdetails', 'nitrogenapplied', 'experimentduration',
-                          'measurementyear', 'last_update', 'time_created', ]
+                fields = ['id', 'experimentrep', 'experimentdetails', 'nitrogenapplied',
+                          'experimentduration', 'measurementyear', 'mean_outcome',
+                          'std_outcome', 'outcome_uom', 'last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
                 super(TreatmentResearchCreateSerializer, self).__init__(*args, **kwargs)
@@ -78,6 +79,9 @@ def treatment_research_serializers():
                 nitrogenapplied = validated_data.get('nitrogenapplied')
                 experimentduration = validated_data.get('experimentduration')
                 measurementyear = validated_data.get('measurementyear')
+                mean_outcome = validated_data.get('mean_outcome')
+                std_outcome = validated_data.get('std_outcome')
+                outcome_uom = validated_data.get('outcome_uom')
                 treatment_research = TreatmentResearch.objects.create_by_model_type(
                     self.model_type,
                     self.key,
@@ -86,6 +90,9 @@ def treatment_research_serializers():
                     nitrogenapplied=nitrogenapplied,
                     experimentduration=experimentduration,
                     measurementyear=measurementyear,
+                    mean_outcome=mean_outcome,
+                    std_outcome=std_outcome,
+                    outcome_uom=outcome_uom,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )
@@ -104,7 +111,7 @@ def treatment_research_serializers():
 
         class Meta:
             model = TreatmentResearch
-            fields = ['id', 'url', ]
+            fields = ['id', 'mean_outcome', 'std_outcome', 'outcome_uom', 'url', ]
 
     class TreatmentResearchDetailSerializer(ModelSerializer, FieldMethodSerializer):
         """
@@ -142,9 +149,11 @@ def treatment_research_serializers():
                 'experiment_unit',
             ]
             model = TreatmentResearch
-            fields = ['id', 'experiment_replications_url',
-                      'experiment_details_url', 'nitrogen_applied_url', 'experiment_duration_url',
-                      'measurement_year_url', 'user'] + common_fields
+            fields = [
+                'id', 'experiment_replications_url', 'experiment_details_url', 'nitrogen_applied_url',
+                'experiment_duration_url', 'measurement_year_url', 'mean_outcome', 'std_outcome',
+                'outcome_uom', 'user',
+            ] + common_fields
             read_only_fields = ['id', ] + common_fields
 
         def get_experiment_details_url(self, obj):
