@@ -168,6 +168,13 @@ class ExperimentUnitCategoryModelAdmin(admin.ModelAdmin):
         model = ExperimentUnitCategory
 
 
+class ResearchExperimentUnitInline(admin.TabularInline):
+    """
+    Easy editing of research experiment unit entry relations from the experiment unit entry page
+    """
+    model = ResearchExperimentUnit
+
+
 class ExperimentUnitModelAdmin(admin.ModelAdmin):
     """
     Experiment unit model admin settings
@@ -177,24 +184,10 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
     ]
     list_display_links = ['common_name']
     list_filter = ['common_name', 'exp_unit_code', 'experimentunitcategory', 'last_update', 'modified_by']
+    inlines = [ResearchExperimentUnitInline, ]
 
     class Meta:
         model = ExperimentUnit
-
-
-class ResearchExperimentUnitModelAdmin(admin.ModelAdmin):
-    """
-    Research experiment unit model admin settings
-    """
-    list_display = [
-        'experimentunit', 'upper_soil_depth', 'upper_soil_depth', 'incubation_days', 'last_update', 'modified_by'
-    ]
-    list_display_links = ['experimentunit']
-    list_filter = ['experimentunit', 'upper_soil_depth', 'upper_soil_depth', 'last_update', 'modified_by']
-
-    class Meta:
-        model = ResearchExperimentUnit
-
 
 admin.site.register(TreatmentResearch, TreatmentResearchModelAdmin)
 admin.site.register(ControlResearch, ControlResearchModelAdmin)
@@ -208,4 +201,3 @@ admin.site.register(Author, AuthorModelAdmin)
 admin.site.register(Species, SpeciesModelAdmin)
 admin.site.register(ExperimentUnitCategory, ExperimentUnitCategoryModelAdmin)
 admin.site.register(ExperimentUnit, ExperimentUnitModelAdmin)
-admin.site.register(ResearchExperimentUnit, ResearchExperimentUnitModelAdmin)
