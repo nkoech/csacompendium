@@ -11,7 +11,7 @@ from .views import (
     research_species_views,
     species_views,
     experiment_unit_views,
-    # research experiment unit
+    research_experiment_unit_views,
     experiment_unit_category_views,
     control_research_views,
     treatment_research_views,
@@ -223,6 +223,25 @@ urlpatterns += [
         r'^experimentunitcategory/(?P<slug>[\w-]+)/$',
         experiment_unit_category_views['ExperimentUnitCategoryDetailAPIView'].as_view(),
         name='experiment_unit_category_detail'
+    ),
+]
+
+# Research experiment unit  URLs
+urlpatterns += [
+    url(
+        r'^researchexperimentunit/$',
+        research_experiment_unit_views['ResearchExperimentUnitListAPIView'].as_view(),
+        name='research_experiment_unit_list'
+    ),
+    url(
+        r'^researchexperimentunit/create/$',
+        research_experiment_unit_views['ResearchExperimentUnitCreateAPIView'].as_view(),
+        name='research_experiment_unit_create'
+    ),
+    url(
+        r'^researchexperimentunit/(?P<pk>[\w-]+)/$',
+        research_experiment_unit_views['ResearchExperimentUnitDetailAPIView'].as_view(),
+        name='research_experiment_unit_detail'
     ),
 ]
 
