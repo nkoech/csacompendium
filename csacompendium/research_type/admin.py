@@ -173,10 +173,10 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
     Experiment unit model admin settings
     """
     list_display = [
-        'exp_object_code', 'experimentunitcategory', 'common_name', 'latin_name', 'last_update', 'modified_by'
+        'exp_unit_code', 'experimentunitcategory', 'common_name', 'latin_name', 'last_update', 'modified_by'
     ]
     list_display_links = ['common_name']
-    list_filter = ['common_name', 'exp_object_code', 'experimentunitcategory', 'last_update', 'modified_by']
+    list_filter = ['common_name', 'exp_unit_code', 'experimentunitcategory', 'last_update', 'modified_by']
 
     class Meta:
         model = ExperimentUnit
