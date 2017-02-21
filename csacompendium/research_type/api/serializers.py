@@ -11,7 +11,7 @@ from .author.authorserializers import author_serializers
 from .researchspecies.researchspeciesserializers import research_species_serializers
 from .species.speciesserializers import species_serializers
 from .experimentunit.experimentunitserializers import experiment_unit_serializers
-# Research experiment unit
+from .researchexperimentunit.researchexperimentunitserializers import research_experiment_unit_serializers
 from .experimentunitcategory.experimentunitcategoryserializers import experiment_unit_category_serializers
 
 
@@ -28,5 +28,5 @@ author_serializers = author_serializers()
 research_species_serializers = research_species_serializers()
 species_serializers = species_serializers()
 experiment_unit_serializers = experiment_unit_serializers()
-# Research experiment unit
+research_experiment_unit_serializers = research_experiment_unit_serializers()
 experiment_unit_category_serializers = experiment_unit_category_serializers()

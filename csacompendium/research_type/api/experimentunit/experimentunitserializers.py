@@ -85,11 +85,11 @@ def experiment_unit_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            ExperimentUnitCategoryContentTypeSerializer = self.research_experiment_unit_serializers[
-                'ExperimentUnitCategoryContentTypeSerializer'
+            ResearchExperimentUnitContentTypeSerializer = self.research_experiment_unit_serializers[
+                'ResearchExperimentUnitContentTypeSerializer'
             ]
             related_content = get_related_content(
-                obj, ExperimentUnitCategoryContentTypeSerializer, obj.research_experiment_unit_relation, request
+                obj, ResearchExperimentUnitContentTypeSerializer, obj.research_experiment_unit_relation, request
             )
             return related_content
 
