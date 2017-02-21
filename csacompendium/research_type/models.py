@@ -810,7 +810,7 @@ class ControlResearchManager(models.Manager):
         return create_model_type(self, model_type, pk, slugify=False, **kwargs)
 
 
-class ControlResearch(AuthUserDetail, CreateUpdateTime):
+class ControlResearch(AuthUserDetail, ResearchOutcome, CreateUpdateTime):
     """
     Creates control research entity.
     """
@@ -945,7 +945,7 @@ class TreatmentResearchManager(models.Manager):
         return create_model_type(self, model_type, pk, slugify=False, **kwargs)
 
 
-class TreatmentResearch(AuthUserDetail, CreateUpdateTime):
+class TreatmentResearch(AuthUserDetail, ResearchOutcome, CreateUpdateTime):
     """
     Creates treatment research entity.
     """
