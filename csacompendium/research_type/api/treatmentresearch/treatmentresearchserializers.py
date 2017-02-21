@@ -12,6 +12,8 @@ from csacompendium.indicators.api.researchoutcomeindicator.researchoutcomeindica
     import research_outcome_indicator_serializers
 from csacompendium.csa_practice.api.researchcsapractice.researchcsapracticeserializers \
     import research_csa_practice_serializers
+from csacompendium.research_type.api.researchexperimentunit.researchexperimentunitserializers import \
+    research_experiment_unit_serializers
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
     get_related_content,
@@ -117,6 +119,7 @@ def treatment_research_serializers():
         research_species_serializers = research_species_serializers()
         research_outcome_indicator_serializers = research_outcome_indicator_serializers()
         research_csa_practice_serializers = research_csa_practice_serializers()
+        research_experiment_unit_serializers = research_experiment_unit_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         content_type_url = SerializerMethodField()
@@ -124,6 +127,7 @@ def treatment_research_serializers():
         species = SerializerMethodField()
         outcome_indicator = SerializerMethodField()
         csa_practice = SerializerMethodField()
+        experiment_unit = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -135,6 +139,7 @@ def treatment_research_serializers():
                 'species',
                 'outcome_indicator',
                 'csa_practice',
+                'experiment_unit',
             ]
             model = TreatmentResearch
             fields = ['id', 'experiment_replications_url',
@@ -236,6 +241,21 @@ def treatment_research_serializers():
             ]
             related_content = get_related_content(
                 obj, ResearchCsaPracticeSerializer, obj.research_csa_practice, request
+            )
+            return related_content
+
+        def get_experiment_unit(self, obj):
+            """
+            :param obj: Current record object
+            :return: Related experiment unit details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchExperimentUnitSerializer = self.research_experiment_unit_serializers[
+                'ResearchExperimentUnitSerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchExperimentUnitSerializer, obj.research_experiment_unit, request
             )
             return related_content
 
