@@ -19,7 +19,7 @@ def experiment_details_serializers():
     :rtype: Object
     """
 
-    class AuthorFieldMethodSerializer:
+    class ExperimentDetailsFieldMethodSerializer:
         """
         Serialize an object based on a provided field
         """
@@ -49,7 +49,7 @@ def experiment_details_serializers():
             )
             return related_content
 
-    class ExperimentDetailsListSerializer(ModelSerializer, AuthorFieldMethodSerializer):
+    class ExperimentDetailsListSerializer(ModelSerializer, ExperimentDetailsFieldMethodSerializer):
         """
         Serialize all records in given fields into an API
         """
@@ -66,7 +66,9 @@ def experiment_details_serializers():
                 'treatment_research',
             ]
 
-    class ExperimentDetailsDetailSerializer(ModelSerializer, FieldMethodSerializer, AuthorFieldMethodSerializer):
+    class ExperimentDetailsDetailSerializer(
+        ModelSerializer, FieldMethodSerializer, ExperimentDetailsFieldMethodSerializer
+    ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
