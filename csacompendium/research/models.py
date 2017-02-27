@@ -611,7 +611,7 @@ class ExperimentUnitCategory(AuthUserDetail, CreateUpdateTime):
         :return: URL
         :rtype: String
         """
-        reverse('research_api:experiment_unit_category_detail', kwargs={'slug': self.slug})
+        return reverse('research_api:experiment_unit_category_detail', kwargs={'slug': self.slug})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
