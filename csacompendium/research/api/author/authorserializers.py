@@ -6,6 +6,7 @@ from csacompendium.research.api.researchauthor.researchauthorserializer import r
 from csacompendium.research.models import Author
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
+
 research_author_serializers = research_author_serializers()
 
 

@@ -8,6 +8,9 @@ from csacompendium.research.models import ExperimentDetails
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
 
+control_research_serializers = control_research_serializers()
+treatment_research_serializers = treatment_research_serializers()
+
 
 def experiment_details_serializers():
     """
@@ -16,10 +19,42 @@ def experiment_details_serializers():
     :rtype: Object
     """
 
-    class ExperimentDetailsListSerializer(ModelSerializer):
+    class AuthorFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
+        def get_control_research(self, obj):
+            """
+            :param obj: Current record object
+            :return: Control research object
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ControlResearchListSerializer = control_research_serializers['ControlResearchListSerializer']
+            related_content = get_related_content(
+                obj, ControlResearchListSerializer, obj.control_research_relation, request
+            )
+            return related_content
+
+        def get_treatment_research(self, obj):
+            """
+            :param obj: Current record object
+            :return: Treatment research object
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            TreatmentResearchListSerializer = treatment_research_serializers['TreatmentResearchListSerializer']
+            related_content = get_related_content(
+                obj, TreatmentResearchListSerializer, obj.treatment_research_relation, request
+            )
+            return related_content
+
+    class ExperimentDetailsListSerializer(ModelSerializer, AuthorFieldMethodSerializer):
         """
         Serialize all records in given fields into an API
         """
+        control_research = SerializerMethodField()
+        treatment_research = SerializerMethodField()
         url = hyperlinked_identity('research_api:experiment_details_detail', 'slug')
 
         class Meta:
@@ -27,14 +62,14 @@ def experiment_details_serializers():
             fields = [
                 'exp_detail',
                 'url',
+                'control_research',
+                'treatment_research',
             ]
 
-    class ExperimentDetailsDetailSerializer(ModelSerializer, FieldMethodSerializer):
+    class ExperimentDetailsDetailSerializer(ModelSerializer, FieldMethodSerializer, AuthorFieldMethodSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        control_research_serializers = control_research_serializers()
-        treatment_research_serializers = treatment_research_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         control_research = SerializerMethodField()
@@ -55,32 +90,6 @@ def experiment_details_serializers():
                 'exp_detail',
             ] + common_fields
             read_only_fields = ['id', ] + common_fields
-
-        def get_control_research(self, obj):
-            """
-            :param obj: Current record object
-            :return: Control research object
-            :rtype: Object/record
-            """
-            request = self.context['request']
-            ControlResearchListSerializer = self.control_research_serializers['ControlResearchListSerializer']
-            related_content = get_related_content(
-                obj, ControlResearchListSerializer, obj.control_research_relation, request
-            )
-            return related_content
-
-        def get_treatment_research(self, obj):
-            """
-            :param obj: Current record object
-            :return: Treatment research object
-            :rtype: Object/record
-            """
-            request = self.context['request']
-            TreatmentResearchListSerializer = self.treatment_research_serializers['TreatmentResearchListSerializer']
-            related_content = get_related_content(
-                obj, TreatmentResearchListSerializer, obj.treatment_research_relation, request
-            )
-            return related_content
 
     return {
         'ExperimentDetailsListSerializer': ExperimentDetailsListSerializer,
