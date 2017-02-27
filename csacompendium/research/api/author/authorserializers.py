@@ -64,7 +64,6 @@ def author_serializers():
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        # research_author_serializers = research_author_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         research_relation = SerializerMethodField()
@@ -80,23 +79,6 @@ def author_serializers():
             model = Author
             fields = ['id', ] + AuthorBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
-
-        # def get_research_relation(self, obj):
-        #     """
-        #     Gets control/treatment research record
-        #     :param obj: Current record object
-        #     :return: Related research object/record
-        #     :rtype: Object/record
-        #     """
-        #     request = self.context['request']
-        #     ResearchAuthorContentTypeSerializer = self.research_author_serializers[
-        #         'ResearchAuthorContentTypeSerializer'
-        #     ]
-        #     related_content = get_related_content(
-        #         obj, ResearchAuthorContentTypeSerializer, obj.research_author_relation, request
-        #     )
-        #     return related_content
-
     return {
         'AuthorListSerializer': AuthorListSerializer,
         'AuthorDetailSerializer': AuthorDetailSerializer
