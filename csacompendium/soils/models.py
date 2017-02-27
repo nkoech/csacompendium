@@ -20,6 +20,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
+from decimal import Decimal
 
 
 class SoilType(AuthUserDetail, CreateUpdateTime):
@@ -173,12 +174,19 @@ class Soil(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    som = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True, verbose_name='Soil Organic Matter-SOM')
-    som_uom = models.CharField(max_length=6, blank=True, null=True, verbose_name='SOM UOM')
-    initial_soc = models.DecimalField(
-        max_digits=6, decimal_places=4, blank=True, null=True, verbose_name='Initial SOM'
+    som = models.DecimalField(
+        max_digits=6,
+        decimal_places=4,
+        blank=True,
+        null=True,
+        default=Decimal('0.0'),
+        verbose_name='Soil Organic Matter-SOM'
     )
-    soil_ph = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True)
+    som_uom = models.CharField(max_length=6, blank=True, null=True, default='%', verbose_name='SOM UOM')
+    initial_soc = models.DecimalField(
+        max_digits=6, decimal_places=4, blank=True, null=True, default=Decimal('0.0'), verbose_name='Initial SOM'
+    )
+    soil_ph = models.DecimalField(max_digits=6, decimal_places=4, blank=True, null=True, default=Decimal('0.0'))
     soil_years = models.SmallIntegerField(
         choices=get_year_choices(), blank=True, null=True, default=get_datetime_now()
     )

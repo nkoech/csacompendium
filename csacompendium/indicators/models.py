@@ -224,10 +224,14 @@ class OutcomeIndicator(AuthUserDetail, CreateUpdateTime):
     objects = OutcomeIndicatorManager()
 
     def __unicode__(self):
-        return str(self.indicator_code)
+        str_format = '{0} - {1}'.format(self.indicator_code, self.subindicator)
+        return str(str_format)
+        # return str(self.indicator_code)
 
     def __str__(self):
-        return str(self.indicator_code)
+        str_format = '{0} - {1}'.format(self.indicator_code, self.subindicator)
+        return str(str_format)
+        # return str(self.indicator_code)
 
     def get_api_url(self):
         """
@@ -309,8 +313,8 @@ class ResearchOutcomeIndicator(AuthUserDetail, CreateUpdateTime):
     Research outcome indicator entry relationship model. A many to many bridge
     table between control/treatment research and other models
     """
-    limit = models.Q(app_label='research_type', model='controlresearch') | \
-            models.Q(app_label='research_type', model='treatmentresearch')
+    limit = models.Q(app_label='research', model='controlresearch') | \
+            models.Q(app_label='research', model='treatmentresearch')
     outcomeindicator = models.ForeignKey(OutcomeIndicator, on_delete=models.PROTECT,  verbose_name='Outcome indicator')
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()

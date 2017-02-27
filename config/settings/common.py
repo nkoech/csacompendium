@@ -51,7 +51,7 @@ LOCAL_APPS = [
     'csacompendium.countries',
     'csacompendium.locations',
     'csacompendium.soils',
-    'csacompendium.research_type',
+    'csacompendium.research',
     'csacompendium.csa_practice',
     'csacompendium.indicators',
 ]

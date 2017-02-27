@@ -1,6 +1,6 @@
 from csacompendium.soils.api.serializers import soil_serializers
 from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
-from csacompendium.research_type.api.serializers import (
+from csacompendium.research.api.serializers import (
     control_research_serializers,
     treatment_research_serializers,
 )

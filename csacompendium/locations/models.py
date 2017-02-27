@@ -5,7 +5,7 @@ from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )
-from csacompendium.research_type.models import ControlResearch, TreatmentResearch
+from csacompendium.research.models import ControlResearch, TreatmentResearch
 from csacompendium.soils.models import Soil
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
@@ -20,6 +20,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.core.urlresolvers import reverse
+from decimal import Decimal
 
 
 class LocationManager(models.Manager):
@@ -57,8 +58,8 @@ class Location(AuthUserDetail, CreateUpdateTime):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     location_name = models.CharField(max_length=256, blank=True, null=True)
-    latitude = models.DecimalField(max_digits=8, decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    latitude = models.DecimalField(max_digits=8, decimal_places=6, default=Decimal('0.0'))
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, default=Decimal('0.0'))
     elevation = models.FloatField(blank=True, null=True)
     objects = LocationManager()
 
@@ -198,7 +199,7 @@ class Temperature(AuthUserDetail, CreateUpdateTime):
     """
     Temperature model. Creates temperature entity
     """
-    temperature = models.DecimalField(max_digits=5, decimal_places=2, unique=True)
+    temperature = models.DecimalField(max_digits=5, decimal_places=2, unique=True, default=Decimal('0.0'))
     temperature_uom = models.CharField(max_length=5, default='°C', verbose_name='Temperature UOM')
 
     def __unicode__(self):
@@ -235,7 +236,7 @@ class Precipitation(AuthUserDetail, CreateUpdateTime):
     """
     Precipitation model. Creates precipitation entity
     """
-    precipitation = models.DecimalField(max_digits=7, decimal_places=2,  unique=True)
+    precipitation = models.DecimalField(max_digits=7, decimal_places=2,  unique=True, default=Decimal('0.0'))
     precipitation_uom = models.CharField(max_length=5, default='mm', verbose_name='Precipitation UOM')
     precipitation_desc = models.TextField(blank=True, null=True, verbose_name='Description')
 
