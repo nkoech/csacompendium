@@ -15,6 +15,8 @@ from rest_framework.serializers import (
 from csacompendium.research.api.researchexperimentunit.researchexperimentunitserializers \
     import research_experiment_unit_serializers
 
+research_experiment_unit_serializers = research_experiment_unit_serializers()
+
 
 def experiment_unit_serializers():
     """
@@ -23,41 +25,11 @@ def experiment_unit_serializers():
     :rtype: Object
     """
 
-    class ExperimentUnitListSerializer(ModelSerializer):
+    class ExperimentUnitBaseSerializer(ModelSerializer):
         """
-        Serialize all records in given fields into an API
+        Base serializer for DRY implementation.
         """
-        url = hyperlinked_identity('research_api:experiment_unit_detail', 'slug')
-
         class Meta:
-            model = ExperimentUnit
-            fields = [
-                'id',
-                'exp_unit_code',
-                'common_name',
-                'latin_name',
-                'url',
-            ]
-
-    class ExperimentUnitDetailSerializer(ModelSerializer, FieldMethodSerializer):
-        """
-        Serialize single record into an API. This is dependent on fields given.
-        """
-        experiment_unit_category_url = SerializerMethodField()
-        research_experiment_unit_serializers = research_experiment_unit_serializers()
-        user = SerializerMethodField()
-        modified_by = SerializerMethodField()
-        research_relation = SerializerMethodField()
-
-        class Meta:
-            common_fields = [
-                'experiment_unit_category_url',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'research_relation',
-            ]
             model = ExperimentUnit
             fields = [
                 'id',
@@ -65,9 +37,12 @@ def experiment_unit_serializers():
                 'experimentunitcategory',
                 'common_name',
                 'latin_name',
-            ] + common_fields
-            read_only_fields = ['id', ] + common_fields
+            ]
 
+    class ExperimentUnitFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
         def get_experiment_unit_category_url(self, obj):
             """
             Get related content type/object url
@@ -85,7 +60,7 @@ def experiment_unit_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            ResearchExperimentUnitContentTypeSerializer = self.research_experiment_unit_serializers[
+            ResearchExperimentUnitContentTypeSerializer = research_experiment_unit_serializers[
                 'ResearchExperimentUnitContentTypeSerializer'
             ]
             related_content = get_related_content(
@@ -93,6 +68,45 @@ def experiment_unit_serializers():
             )
             return related_content
 
+    class ExperimentUnitListSerializer(ExperimentUnitBaseSerializer, ExperimentUnitFieldMethodSerializer):
+        """
+        Serialize all records in given fields into an API
+        """
+        experiment_unit_category_url = SerializerMethodField()
+        research_relation = SerializerMethodField()
+        url = hyperlinked_identity('research_api:experiment_unit_detail', 'slug')
+
+        class Meta:
+            model = ExperimentUnit
+            fields = ExperimentUnitBaseSerializer.Meta.fields + [
+                'experiment_unit_category_url',
+                'url',
+                'research_relation',
+            ]
+
+    class ExperimentUnitDetailSerializer(
+        ExperimentUnitBaseSerializer, FieldMethodSerializer, ExperimentUnitFieldMethodSerializer
+    ):
+        """
+        Serialize single record into an API. This is dependent on fields given.
+        """
+        experiment_unit_category_url = SerializerMethodField()
+        user = SerializerMethodField()
+        modified_by = SerializerMethodField()
+        research_relation = SerializerMethodField()
+
+        class Meta:
+            common_fields = [
+                'experiment_unit_category_url',
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+                'research_relation',
+            ]
+            model = ExperimentUnit
+            fields = ExperimentUnitBaseSerializer.Meta.fields + common_fields
+            read_only_fields = ['id', ] + common_fields
     return {
         'ExperimentUnitListSerializer': ExperimentUnitListSerializer,
         'ExperimentUnitDetailSerializer': ExperimentUnitDetailSerializer
