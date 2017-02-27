@@ -6,6 +6,7 @@ from csacompendium.research.api.researchauthor.researchauthorserializer import r
 from csacompendium.research.models import Author
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
+research_author_serializers = research_author_serializers()
 
 
 def author_serializers():
@@ -14,7 +15,6 @@ def author_serializers():
     :return: All author serializers
     :rtype: Object
     """
-
     class AuthorBaseSerializer(ModelSerializer):
         """
         Base serializer for DRY implementation.
@@ -26,23 +26,45 @@ def author_serializers():
                 'first_name',
                 'middle_name',
                 'last_name',
+                'author_bio',
             ]
 
-    class AuthorListSerializer(AuthorBaseSerializer):
+    class AuthorFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
+        def get_research_relation(self, obj):
+            """
+            Gets control/treatment research record
+            :param obj: Current record object
+            :return: Related research object/record
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchAuthorContentTypeSerializer = research_author_serializers[
+                'ResearchAuthorContentTypeSerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchAuthorContentTypeSerializer, obj.research_author_relation, request
+            )
+            return related_content
+
+    class AuthorListSerializer(AuthorBaseSerializer, AuthorFieldMethodSerializer):
         """
         Serialize all records in given fields into an API
         """
+        research_relation = SerializerMethodField()
         url = hyperlinked_identity('research_api:author_detail', 'slug')
 
         class Meta:
             model = Author
-            fields = AuthorBaseSerializer.Meta.fields + ['url', ]
+            fields = AuthorBaseSerializer.Meta.fields + ['url', 'research_relation', ]
 
-    class AuthorDetailSerializer(AuthorBaseSerializer, FieldMethodSerializer):
+    class AuthorDetailSerializer(AuthorBaseSerializer, FieldMethodSerializer, AuthorFieldMethodSerializer):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        research_author_serializers = research_author_serializers()
+        # research_author_serializers = research_author_serializers()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
         research_relation = SerializerMethodField()
@@ -56,24 +78,24 @@ def author_serializers():
                 'research_relation',
             ]
             model = Author
-            fields = ['id', ] + AuthorBaseSerializer.Meta.fields + ['author_bio', ] + common_fields
+            fields = ['id', ] + AuthorBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
 
-        def get_research_relation(self, obj):
-            """
-            Gets control/treatment research record
-            :param obj: Current record object
-            :return: Related research object/record
-            :rtype: Object/record
-            """
-            request = self.context['request']
-            ResearchAuthorContentTypeSerializer = self.research_author_serializers[
-                'ResearchAuthorContentTypeSerializer'
-            ]
-            related_content = get_related_content(
-                obj, ResearchAuthorContentTypeSerializer, obj.research_author_relation, request
-            )
-            return related_content
+        # def get_research_relation(self, obj):
+        #     """
+        #     Gets control/treatment research record
+        #     :param obj: Current record object
+        #     :return: Related research object/record
+        #     :rtype: Object/record
+        #     """
+        #     request = self.context['request']
+        #     ResearchAuthorContentTypeSerializer = self.research_author_serializers[
+        #         'ResearchAuthorContentTypeSerializer'
+        #     ]
+        #     related_content = get_related_content(
+        #         obj, ResearchAuthorContentTypeSerializer, obj.research_author_relation, request
+        #     )
+        #     return related_content
 
     return {
         'AuthorListSerializer': AuthorListSerializer,
