@@ -39,6 +39,20 @@ def experiment_unit_serializers():
                 'latin_name',
             ]
 
+    class ExperimentUnitRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        experiment_unit_category_url = SerializerMethodField()
+        research_relation = SerializerMethodField()
+
+        class Meta:
+            model = ExperimentUnit
+            fields = [
+                'experiment_unit_category_url',
+                'research_relation',
+            ]
+
     class ExperimentUnitFieldMethodSerializer:
         """
         Serialize an object based on a provided field
@@ -68,42 +82,38 @@ def experiment_unit_serializers():
             )
             return related_content
 
-    class ExperimentUnitListSerializer(ExperimentUnitBaseSerializer, ExperimentUnitFieldMethodSerializer):
+    class ExperimentUnitListSerializer(
+        ExperimentUnitBaseSerializer,
+        ExperimentUnitRelationBaseSerializer,
+        ExperimentUnitFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        experiment_unit_category_url = SerializerMethodField()
-        research_relation = SerializerMethodField()
         url = hyperlinked_identity('research_api:experiment_unit_detail', 'slug')
 
         class Meta:
             model = ExperimentUnit
-            fields = ExperimentUnitBaseSerializer.Meta.fields + [
-                'experiment_unit_category_url',
-                'url',
-                'research_relation',
-            ]
+            fields = ExperimentUnitBaseSerializer.Meta.fields + ['url', ] + \
+                     ExperimentUnitRelationBaseSerializer.Meta.fields
 
     class ExperimentUnitDetailSerializer(
-        ExperimentUnitBaseSerializer, FieldMethodSerializer, ExperimentUnitFieldMethodSerializer
+        ExperimentUnitBaseSerializer, ExperimentUnitRelationBaseSerializer,
+        FieldMethodSerializer, ExperimentUnitFieldMethodSerializer
     ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        experiment_unit_category_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        research_relation = SerializerMethodField()
 
         class Meta:
             common_fields = [
-                'experiment_unit_category_url',
                 'user',
                 'modified_by',
                 'last_update',
                 'time_created',
-                'research_relation',
-            ]
+            ] + ExperimentUnitRelationBaseSerializer.Meta.fields
             model = ExperimentUnit
             fields = ExperimentUnitBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
