@@ -17,6 +17,29 @@ def measurement_season_serializers():
     :rtype: Object
     """
 
+    class MeasurementSeasonBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        class Meta:
+            model = MeasurementSeason
+            fields = [
+                'id',
+                'meas_season',
+            ]
+
+    class MeasurementSeasonRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        measurement_year = SerializerMethodField()
+
+        class Meta:
+            model = MeasurementSeason
+            fields = [
+                'measurement_year',
+            ]
+
     class MeasurementSeasonFieldMethodSerializer:
         """
         Serialize an object based on a provided field
@@ -34,30 +57,30 @@ def measurement_season_serializers():
             )
             return related_content
 
-    class MeasurementSeasonListSerializer(ModelSerializer, MeasurementSeasonFieldMethodSerializer):
+    class MeasurementSeasonListSerializer(
+        MeasurementSeasonBaseSerializer,
+        MeasurementSeasonRelationBaseSerializer,
+        MeasurementSeasonFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        measurement_year = SerializerMethodField()
         url = hyperlinked_identity('research_api:measurement_season_detail', 'slug')
 
         class Meta:
             model = MeasurementSeason
-            fields = [
-                'meas_season',
-                'url',
-                'measurement_year',
-            ]
+            fields = MeasurementSeasonBaseSerializer.Meta.fields + ['url', ] + \
+                     MeasurementSeasonRelationBaseSerializer.Meta.fields
 
     class MeasurementSeasonDetailSerializer(
-        ModelSerializer, FieldMethodSerializer, MeasurementSeasonFieldMethodSerializer
+        MeasurementSeasonBaseSerializer, MeasurementSeasonRelationBaseSerializer,
+        FieldMethodSerializer, MeasurementSeasonFieldMethodSerializer
     ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        measurement_year = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -65,13 +88,9 @@ def measurement_season_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'measurement_year',
-            ]
+            ] + MeasurementSeasonRelationBaseSerializer.Meta.fields
             model = MeasurementSeason
-            fields = [
-                'id',
-                'meas_season',
-            ] + common_fields
+            fields = MeasurementSeasonBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
     return {
         'MeasurementSeasonListSerializer': MeasurementSeasonListSerializer,
