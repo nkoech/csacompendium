@@ -31,6 +31,18 @@ def author_serializers():
                 'author_bio',
             ]
 
+    class AuthorRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        research_relation = SerializerMethodField()
+
+        class Meta:
+            model = Author
+            fields = [
+                'research_relation',
+            ]
+
     class AuthorFieldMethodSerializer:
         """
         Serialize an object based on a provided field
@@ -51,18 +63,21 @@ def author_serializers():
             )
             return related_content
 
-    class AuthorListSerializer(AuthorBaseSerializer, AuthorFieldMethodSerializer):
+    class AuthorListSerializer(
+        AuthorBaseSerializer, AuthorRelationBaseSerializer, AuthorFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        research_relation = SerializerMethodField()
         url = hyperlinked_identity('research_api:author_detail', 'slug')
 
         class Meta:
             model = Author
-            fields = AuthorBaseSerializer.Meta.fields + ['url', 'research_relation', ]
+            fields = AuthorBaseSerializer.Meta.fields + ['url', ] + AuthorRelationBaseSerializer.Meta.fields
 
-    class AuthorDetailSerializer(AuthorBaseSerializer, FieldMethodSerializer, AuthorFieldMethodSerializer):
+    class AuthorDetailSerializer(
+        AuthorBaseSerializer, AuthorRelationBaseSerializer, FieldMethodSerializer, AuthorFieldMethodSerializer
+    ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
@@ -76,8 +91,7 @@ def author_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'research_relation',
-            ]
+            ] + AuthorRelationBaseSerializer.Meta.fields
             model = Author
             fields = AuthorBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields

@@ -59,7 +59,7 @@ def treatment_research_serializers():
                 'outcome_uom',
             ]
 
-    class TreatmentResearchManyToManyBaseSerializer(ModelSerializer):
+    class TreatmentResearchRelationBaseSerializer(ModelSerializer):
         """
         Base serializer for DRY implementation.
         """
@@ -265,7 +265,7 @@ def treatment_research_serializers():
         return TreatmentResearchCreateSerializer
 
     class TreatmentResearchListSerializer(
-        TreatmentResearchBaseSerializer, TreatmentResearchManyToManyBaseSerializer,
+        TreatmentResearchBaseSerializer, TreatmentResearchRelationBaseSerializer,
         FieldMethodSerializer, TreatmentResearchFieldMethodSerializer
     ):
         """
@@ -276,10 +276,10 @@ def treatment_research_serializers():
         class Meta:
             model = TreatmentResearch
             fields = TreatmentResearchBaseSerializer.Meta.fields + ['url', ] + \
-                     TreatmentResearchManyToManyBaseSerializer.Meta.fields
+                     TreatmentResearchRelationBaseSerializer.Meta.fields
 
     class TreatmentResearchDetailSerializer(
-        TreatmentResearchBaseSerializer, TreatmentResearchManyToManyBaseSerializer,
+        TreatmentResearchBaseSerializer, TreatmentResearchRelationBaseSerializer,
         FieldMethodSerializer, TreatmentResearchFieldMethodSerializer
     ):
         """
@@ -294,7 +294,7 @@ def treatment_research_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-            ] + TreatmentResearchManyToManyBaseSerializer.Meta.fields
+            ] + TreatmentResearchRelationBaseSerializer.Meta.fields
             model = TreatmentResearch
             fields = TreatmentResearchBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields

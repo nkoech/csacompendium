@@ -60,7 +60,7 @@ def control_research_serializers():
                 'outcome_uom',
             ]
 
-    class ControlResearchManyToManyBaseSerializer(ModelSerializer):
+    class ControlResearchRelationBaseSerializer(ModelSerializer):
         """
         Base serializer for DRY implementation.
         """
@@ -267,7 +267,7 @@ def control_research_serializers():
         return ControlResearchCreateSerializer
 
     class ControlResearchListSerializer(
-        ControlResearchBaseSerializer, ControlResearchManyToManyBaseSerializer,
+        ControlResearchBaseSerializer, ControlResearchRelationBaseSerializer,
         FieldMethodSerializer, ControlResearchFieldMethodSerializer
     ):
         """
@@ -278,10 +278,10 @@ def control_research_serializers():
         class Meta:
             model = ControlResearch
             fields = ControlResearchBaseSerializer.Meta.fields + ['url', ] + \
-                     ControlResearchManyToManyBaseSerializer.Meta.fields
+                     ControlResearchRelationBaseSerializer.Meta.fields
 
     class ControlResearchDetailSerializer(
-        ControlResearchBaseSerializer, ControlResearchManyToManyBaseSerializer,
+        ControlResearchBaseSerializer, ControlResearchRelationBaseSerializer,
         FieldMethodSerializer, ControlResearchFieldMethodSerializer
     ):
         """
@@ -296,7 +296,7 @@ def control_research_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-            ] + ControlResearchManyToManyBaseSerializer.Meta.fields
+            ] + ControlResearchRelationBaseSerializer.Meta.fields
             model = ControlResearch
             fields = ControlResearchBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
