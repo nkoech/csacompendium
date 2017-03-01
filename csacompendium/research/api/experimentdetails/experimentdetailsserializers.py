@@ -18,6 +18,30 @@ def experiment_details_serializers():
     :return: All experiment details serializers
     :rtype: Object
     """
+    class ExperimentDetailsBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        class Meta:
+            model = ExperimentDetails
+            fields = [
+                'id',
+                'exp_detail',
+            ]
+
+    class ExperimentDetailsRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        control_research = SerializerMethodField()
+        treatment_research = SerializerMethodField()
+
+        class Meta:
+            model = ExperimentDetails
+            fields = [
+                'control_research',
+                'treatment_research',
+            ]
 
     class ExperimentDetailsFieldMethodSerializer:
         """
@@ -49,33 +73,30 @@ def experiment_details_serializers():
             )
             return related_content
 
-    class ExperimentDetailsListSerializer(ModelSerializer, ExperimentDetailsFieldMethodSerializer):
+    class ExperimentDetailsListSerializer(
+        ExperimentDetailsBaseSerializer,
+        ExperimentDetailsRelationBaseSerializer,
+        ExperimentDetailsFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        control_research = SerializerMethodField()
-        treatment_research = SerializerMethodField()
         url = hyperlinked_identity('research_api:experiment_details_detail', 'slug')
 
         class Meta:
             model = ExperimentDetails
-            fields = [
-                'exp_detail',
-                'url',
-                'control_research',
-                'treatment_research',
-            ]
+            fields = ExperimentDetailsBaseSerializer.Meta.fields + ['url', ] + \
+                     ExperimentDetailsRelationBaseSerializer.Meta.fields
 
     class ExperimentDetailsDetailSerializer(
-        ModelSerializer, FieldMethodSerializer, ExperimentDetailsFieldMethodSerializer
+        ExperimentDetailsBaseSerializer, ExperimentDetailsRelationBaseSerializer,
+        FieldMethodSerializer, ExperimentDetailsFieldMethodSerializer
     ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        control_research = SerializerMethodField()
-        treatment_research = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -83,14 +104,9 @@ def experiment_details_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'control_research',
-                'treatment_research',
-            ]
+            ] + ExperimentDetailsRelationBaseSerializer.Meta.fields
             model = ExperimentDetails
-            fields = [
-                'id',
-                'exp_detail',
-            ] + common_fields
+            fields = ExperimentDetailsBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
 
     return {
