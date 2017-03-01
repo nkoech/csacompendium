@@ -19,6 +19,31 @@ def experiment_duration_serializers():
     :rtype: Object
     """
 
+    class ExperimentDurationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        class Meta:
+            model = ExperimentDuration
+            fields = [
+                'id',
+                'exp_duration',
+            ]
+
+    class ExperimentDurationRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        control_research = SerializerMethodField()
+        treatment_research = SerializerMethodField()
+
+        class Meta:
+            model = ExperimentDuration
+            fields = [
+                'control_research',
+                'treatment_research',
+            ]
+
     class ExperimentDurationFieldMethodSerializer:
         """
         Serialize an object based on a provided field
@@ -49,25 +74,24 @@ def experiment_duration_serializers():
             )
             return related_content
 
-    class ExperimentDurationListSerializer(ModelSerializer, ExperimentDurationFieldMethodSerializer):
+    class ExperimentDurationListSerializer(
+        ExperimentDurationBaseSerializer,
+        ExperimentDurationRelationBaseSerializer,
+        ExperimentDurationFieldMethodSerializer,
+    ):
         """
         Serialize all records in given fields into an API
         """
-        control_research = SerializerMethodField()
-        treatment_research = SerializerMethodField()
         url = hyperlinked_identity('research_api:experiment_duration_detail', 'pk')
 
         class Meta:
             model = ExperimentDuration
-            fields = [
-                'exp_duration',
-                'url',
-                'control_research',
-                'treatment_research',
-            ]
+            fields = ExperimentDurationBaseSerializer.Meta.fields + ['url', ] + \
+                     ExperimentDurationRelationBaseSerializer.Meta.fields
 
     class ExperimentDurationDetailSerializer(
-        ModelSerializer, FieldMethodSerializer, ExperimentDurationFieldMethodSerializer
+        ExperimentDurationBaseSerializer, ExperimentDurationRelationBaseSerializer,
+        FieldMethodSerializer, ExperimentDurationFieldMethodSerializer
     ):
         """
         Serialize single record into an API. This is dependent on fields given.
@@ -83,14 +107,9 @@ def experiment_duration_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'control_research',
-                'treatment_research',
-            ]
+            ] + ExperimentDurationRelationBaseSerializer.Meta.fields
             model = ExperimentDuration
-            fields = [
-                'id',
-                'exp_duration',
-            ] + common_fields
+            fields = ExperimentDurationBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
     return {
         'ExperimentDurationListSerializer': ExperimentDurationListSerializer,
