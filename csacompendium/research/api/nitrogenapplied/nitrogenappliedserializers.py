@@ -19,7 +19,7 @@ def nitrogen_applied_serializers():
     :rtype: Object
     """
 
-    class  NitrogenAppliedBaseSerializer(ModelSerializer):
+    class NitrogenAppliedBaseSerializer(ModelSerializer):
         """
         Base serializer for DRY implementation.
         """
@@ -29,6 +29,20 @@ def nitrogen_applied_serializers():
                 'id',
                 'nitrogen_amount',
                 'amount_uom',
+            ]
+
+    class NitrogenAppliedRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        control_research = SerializerMethodField()
+        treatment_research = SerializerMethodField()
+
+        class Meta:
+            model = NitrogenApplied
+            fields = [
+                'control_research',
+                'treatment_research',
             ]
 
     class NitrogenAppliedFieldMethodSerializer:
@@ -61,32 +75,30 @@ def nitrogen_applied_serializers():
             )
             return related_content
 
-    class NitrogenAppliedListSerializer(NitrogenAppliedBaseSerializer, NitrogenAppliedFieldMethodSerializer):
+    class NitrogenAppliedListSerializer(
+        NitrogenAppliedBaseSerializer,
+        NitrogenAppliedRelationBaseSerializer,
+        NitrogenAppliedFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        control_research = SerializerMethodField()
-        treatment_research = SerializerMethodField()
         url = hyperlinked_identity('research_api:nitrogen_applied_detail', 'pk')
 
         class Meta:
             model = NitrogenApplied
-            fields = NitrogenAppliedBaseSerializer.Meta.fields + [
-                'url',
-                'control_research',
-                'treatment_research',
-            ]
+            fields = NitrogenAppliedBaseSerializer.Meta.fields + ['url', ] + \
+                     NitrogenAppliedRelationBaseSerializer.Meta.fields
 
     class NitrogenAppliedDetailSerializer(
-        NitrogenAppliedBaseSerializer, FieldMethodSerializer, NitrogenAppliedFieldMethodSerializer
+        NitrogenAppliedBaseSerializer, NitrogenAppliedRelationBaseSerializer,
+        FieldMethodSerializer, NitrogenAppliedFieldMethodSerializer
     ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        control_research = SerializerMethodField()
-        treatment_research = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -94,9 +106,7 @@ def nitrogen_applied_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'control_research',
-                'treatment_research',
-            ]
+            ] + NitrogenAppliedRelationBaseSerializer.Meta.fields
             model = NitrogenApplied
             fields = NitrogenAppliedBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
