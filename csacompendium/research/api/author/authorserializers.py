@@ -23,6 +23,7 @@ def author_serializers():
         class Meta:
             model = Author
             fields = [
+                'id',
                 'author_code',
                 'first_name',
                 'middle_name',
@@ -78,7 +79,7 @@ def author_serializers():
                 'research_relation',
             ]
             model = Author
-            fields = ['id', ] + AuthorBaseSerializer.Meta.fields + common_fields
+            fields = AuthorBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
     return {
         'AuthorListSerializer': AuthorListSerializer,
