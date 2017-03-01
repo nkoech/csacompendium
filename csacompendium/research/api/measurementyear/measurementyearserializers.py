@@ -35,6 +35,22 @@ def measurement_year_serializers():
                 'measurementseason',
             ]
 
+    class MeasurementYearRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        measurement_season_url = SerializerMethodField()
+        control_research = SerializerMethodField()
+        treatment_research = SerializerMethodField()
+
+        class Meta:
+            model = MeasurementYear
+            fields = [
+                'measurement_season_url',
+                'control_research',
+                'treatment_research',
+            ]
+
     class MeasurementYearFieldMethodSerializer:
         """
         Serialize an object based on a provided field
@@ -75,46 +91,38 @@ def measurement_year_serializers():
             )
             return related_content
 
-    class MeasurementYearListSerializer(MeasurementYearBaseSerializer, MeasurementYearFieldMethodSerializer):
+    class MeasurementYearListSerializer(
+        MeasurementYearBaseSerializer,
+        MeasurementYearRelationBaseSerializer,
+        MeasurementYearFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        measurement_season_url = SerializerMethodField()
-        control_research = SerializerMethodField()
-        treatment_research = SerializerMethodField()
         url = hyperlinked_identity('research_api:measurement_year_detail', 'slug')
 
         class Meta:
             model = MeasurementYear
-            fields = MeasurementYearBaseSerializer.Meta.fields + [
-                'url',
-                'measurement_season_url',
-                'control_research',
-                'treatment_research',
-            ]
+            fields = MeasurementYearBaseSerializer.Meta.fields + ['url', ] + \
+                     MeasurementYearRelationBaseSerializer.Meta.fields
 
     class MeasurementYearDetailSerializer(
-        MeasurementYearBaseSerializer, FieldMethodSerializer, MeasurementYearFieldMethodSerializer
+        MeasurementYearBaseSerializer, MeasurementYearRelationBaseSerializer,
+        FieldMethodSerializer, MeasurementYearFieldMethodSerializer
     ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        measurement_season_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        control_research = SerializerMethodField()
-        treatment_research = SerializerMethodField()
 
         class Meta:
             common_fields = [
-                'measurement_season_url',
                 'user',
                 'modified_by',
                 'last_update',
                 'time_created',
-                'control_research',
-                'treatment_research',
-            ]
+            ] + MeasurementYearRelationBaseSerializer.Meta.fields
             model = MeasurementYear
             fields = MeasurementYearBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
