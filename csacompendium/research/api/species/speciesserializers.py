@@ -28,6 +28,16 @@ def species_serializers():
                 'species',
             ]
 
+    class SpeciesRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        research_relation = SerializerMethodField()
+
+        class Meta:
+            model = Species
+            fields = ['research_relation', ]
+
     class SpeciesFieldMethodSerializer:
         """
         Serialize an object based on a provided field
@@ -48,24 +58,30 @@ def species_serializers():
             )
             return related_content
 
-    class SpeciesListSerializer(SpeciesBaseSerializer, SpeciesFieldMethodSerializer):
+    class SpeciesListSerializer(
+        SpeciesBaseSerializer,
+        SpeciesRelationBaseSerializer,
+        SpeciesFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        research_relation = SerializerMethodField()
         url = hyperlinked_identity('research_api:species_detail', 'slug')
 
         class Meta:
             model = Species
-            fields = SpeciesBaseSerializer.Meta.fields + ['url', 'research_relation', ]
+            fields = SpeciesBaseSerializer.Meta.fields + ['url', ] + \
+                     SpeciesRelationBaseSerializer.Meta.fields
 
-    class SpeciesDetailSerializer(SpeciesBaseSerializer, FieldMethodSerializer, SpeciesFieldMethodSerializer):
+    class SpeciesDetailSerializer(
+        SpeciesBaseSerializer, SpeciesRelationBaseSerializer,
+        FieldMethodSerializer, SpeciesFieldMethodSerializer
+    ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        research_relation = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -73,8 +89,7 @@ def species_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'research_relation',
-            ]
+            ] + SpeciesRelationBaseSerializer.Meta.fields
             model = Species
             fields = SpeciesBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
