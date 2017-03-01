@@ -22,6 +22,47 @@ def research_experiment_unit_serializers():
     :rtype: Object
     """
 
+    class ResearchExperimentUnitBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        class Meta:
+            model = ResearchExperimentUnit
+            fields = [
+                'id',
+                'experimentunit',
+                'upper_soil_depth',
+                'lower_soil_depth',
+                'incubation_days',
+            ]
+
+    class ResearchExperimentUnitRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        experiment_unit_url = SerializerMethodField()
+        content_type_url = SerializerMethodField()
+
+        class Meta:
+            model = ResearchExperimentUnit
+            fields = [
+                'experiment_unit_url',
+                'content_type_url',
+            ]
+
+    class ResearchExperimentUnitFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
+        def get_experiment_unit_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            return get_related_content_url(ExperimentUnit, obj.experimentunit.id)
+
     def create_research_experiment_unit_serializer(model_type=None, pk=None, user=None):
         """
         Creates a model serializer
@@ -32,21 +73,13 @@ def research_experiment_unit_serializers():
         :rtype: Object
         """
 
-        class ResearchExperimentUnitCreateSerializer(ModelSerializer, CreateSerializerUtil):
+        class ResearchExperimentUnitCreateSerializer(ResearchExperimentUnitBaseSerializer, CreateSerializerUtil):
             """
             Create a record
             """
             class Meta:
                 model = ResearchExperimentUnit
-                fields = [
-                    'id',
-                    'experimentunit',
-                    'upper_soil_depth',
-                    'lower_soil_depth',
-                    'incubation_days',
-                    'last_update',
-                    'time_created',
-                ]
+                fields = ResearchExperimentUnitBaseSerializer.Meta.fields + ['last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
                 super(ResearchExperimentUnitCreateSerializer, self).__init__(*args, **kwargs)
@@ -84,34 +117,21 @@ def research_experiment_unit_serializers():
 
         return ResearchExperimentUnitCreateSerializer
 
-    class ResearchExperimentUnitListSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchExperimentUnitListSerializer(
+        ResearchExperimentUnitBaseSerializer, ResearchExperimentUnitRelationBaseSerializer,
+        FieldMethodSerializer, ResearchExperimentUnitFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        experiment_unit_url = SerializerMethodField()
-        content_type_url = SerializerMethodField()
         research_experiment_unit_url = hyperlinked_identity(
             'research_api:research_experiment_unit_detail', 'pk'
         )
 
         class Meta:
             model = ResearchExperimentUnit
-            fields = [
-                'id',
-                'experimentunit',
-                'experiment_unit_url',
-                'content_type_url',
-                'research_experiment_unit_url',
-            ]
-
-        def get_experiment_unit_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(ExperimentUnit, obj.experimentunit.id)
+            fields = ResearchExperimentUnitBaseSerializer.Meta.fields + ['research_experiment_unit_url', ] + \
+                     ResearchExperimentUnitRelationBaseSerializer.Meta.fields
 
     class ResearchExperimentUnitSerializer(ModelSerializer):
         """
@@ -176,49 +196,26 @@ def research_experiment_unit_serializers():
             """
             return obj.id
 
-    class ResearchExperimentUnitDetailSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchExperimentUnitDetailSerializer(
+        ResearchExperimentUnitBaseSerializer, ResearchExperimentUnitRelationBaseSerializer,
+        FieldMethodSerializer, ResearchExperimentUnitFieldMethodSerializer
+    ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        experiment_unit_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        content_type_url = SerializerMethodField()
 
         class Meta:
+            common_fields = [
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+            ] + ResearchExperimentUnitRelationBaseSerializer.Meta.fields
             model = ResearchExperimentUnit
-            fields = [
-                'id',
-                'experimentunit',
-                'experiment_unit_url',
-                'upper_soil_depth',
-                'lower_soil_depth',
-                'incubation_days',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'content_type_url',
-            ]
-            read_only_fields = [
-                'id',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'experiment_unit_url',
-                'content_type_url',
-            ]
-
-        def get_experiment_unit_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(ExperimentUnit, obj.experimentunit.id)
-
+            fields = ResearchExperimentUnitBaseSerializer.Meta.fields + common_fields
+            read_only_fields = ['id', ] + common_fields
     return {
         'create_research_experiment_unit_serializer': create_research_experiment_unit_serializer,
         'ResearchExperimentUnitListSerializer': ResearchExperimentUnitListSerializer,
