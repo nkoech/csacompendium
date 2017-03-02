@@ -7,6 +7,8 @@ from csacompendium.csa_practice.models import PracticeType
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
 
+csa_practice_serializers = csa_practice_serializers()
+
 
 def practice_type_serializers():
     """
@@ -15,42 +17,33 @@ def practice_type_serializers():
     :rtype: Object
     """
 
-    class PracticeTypeListSerializer(ModelSerializer):
+    class PracticeTypeBaseSerializer(ModelSerializer):
         """
-        Serialize all records in given fields into an API
+        Base serializer for DRY implementation.
         """
-        url = hyperlinked_identity('csa_practice_api:practice_type_detail', 'slug')
-
         class Meta:
-            model = PracticeType
-            fields = [
-                'practice_type',
-                'url',
-            ]
-
-    class PracticeTypeDetailSerializer(ModelSerializer, FieldMethodSerializer):
-        """
-        Serialize single record into an API. This is dependent on fields given.
-        """
-        csa_practice_serializers = csa_practice_serializers()
-        user = SerializerMethodField()
-        modified_by = SerializerMethodField()
-        csa_practices = SerializerMethodField()
-
-        class Meta:
-            common_fields = [
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'csa_practices',
-            ]
             model = PracticeType
             fields = [
                 'id',
                 'practice_type',
-            ] + common_fields
-            read_only_fields = ['id', ] + common_fields
+            ]
+
+    class PracticeTypeRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        csa_practices = SerializerMethodField()
+
+        class Meta:
+            model = PracticeType
+            fields = [
+                'csa_practices',
+            ]
+
+    class PracticeTypeFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
 
         def get_csa_practices(self, obj):
             """
@@ -59,10 +52,45 @@ def practice_type_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            CsaPracticeListSerializer = self.csa_practice_serializers['CsaPracticeListSerializer']
+            CsaPracticeListSerializer = csa_practice_serializers['CsaPracticeListSerializer']
             related_content = get_related_content(obj, CsaPracticeListSerializer, obj.csa_practice_relation, request)
             return related_content
 
+    class PracticeTypeListSerializer(
+        PracticeTypeBaseSerializer,
+        PracticeTypeRelationBaseSerializer,
+        PracticeTypeFieldMethodSerializer
+    ):
+        """
+        Serialize all records in given fields into an API
+        """
+        url = hyperlinked_identity('csa_practice_api:practice_type_detail', 'slug')
+
+        class Meta:
+            model = PracticeType
+            fields = PracticeTypeBaseSerializer.Meta.fields + ['url', ] + \
+                     PracticeTypeRelationBaseSerializer.Meta.fields
+
+    class PracticeTypeDetailSerializer(
+        PracticeTypeBaseSerializer, PracticeTypeRelationBaseSerializer,
+        FieldMethodSerializer, PracticeTypeFieldMethodSerializer
+    ):
+        """
+        Serialize single record into an API. This is dependent on fields given.
+        """
+        user = SerializerMethodField()
+        modified_by = SerializerMethodField()
+
+        class Meta:
+            common_fields = [
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+            ] + PracticeTypeRelationBaseSerializer.Meta.fields
+            model = PracticeType
+            fields = PracticeTypeBaseSerializer.Meta.fields + common_fields
+            read_only_fields = ['id', ] + common_fields
     return {
         'PracticeTypeListSerializer': PracticeTypeListSerializer,
         'PracticeTypeDetailSerializer': PracticeTypeDetailSerializer
