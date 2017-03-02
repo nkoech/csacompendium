@@ -22,6 +22,44 @@ def research_csa_practice_serializers():
     :rtype: Object
     """
 
+    class ResearchCsaPracticeBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        class Meta:
+            model = ResearchCsaPractice
+            fields = [
+                'id',
+                'csapractice',
+            ]
+
+    class ResearchCsaPracticeRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        content_type_url = SerializerMethodField()
+        csa_practice_url = SerializerMethodField()
+
+        class Meta:
+            model = ResearchCsaPractice
+            fields = [
+                'content_type_url',
+                'csa_practice_url',
+            ]
+
+    class ResearchCsaPracticeFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
+        def get_csa_practice_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            return get_related_content_url(CsaPractice, obj.csapractice.id)
+
     def create_research_csa_practice_serializer(model_type=None, pk=None, user=None):
         """
         Creates a model serializer
@@ -32,18 +70,13 @@ def research_csa_practice_serializers():
         :rtype: Object
         """
 
-        class ResearchCsaPracticeCreateSerializer(ModelSerializer, CreateSerializerUtil):
+        class ResearchCsaPracticeCreateSerializer(ResearchCsaPracticeBaseSerializer, CreateSerializerUtil):
             """
             Create a record
             """
             class Meta:
                 model = ResearchCsaPractice
-                fields = [
-                    'id',
-                    'csapractice',
-                    'last_update',
-                    'time_created',
-                ]
+                fields = ResearchCsaPracticeBaseSerializer.Meta.fields + ['last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
                 super(ResearchCsaPracticeCreateSerializer, self).__init__(*args, **kwargs)
@@ -75,34 +108,21 @@ def research_csa_practice_serializers():
 
         return ResearchCsaPracticeCreateSerializer
 
-    class ResearchCsaPracticeListSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchCsaPracticeListSerializer(
+        ResearchCsaPracticeBaseSerializer, ResearchCsaPracticeRelationBaseSerializer,
+        FieldMethodSerializer, ResearchCsaPracticeFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        csa_practice_url = SerializerMethodField()
-        content_type_url = SerializerMethodField()
         research_csa_practice_url = hyperlinked_identity(
             'csa_practice_api:research_csa_practice_detail', 'pk'
         )
 
         class Meta:
             model = ResearchCsaPractice
-            fields = [
-                'id',
-                'csapractice',
-                'csa_practice_url',
-                'content_type_url',
-                'research_csa_practice_url',
-            ]
-
-        def get_csa_practice_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(CsaPractice, obj.csapractice.id)
+            fields = ResearchCsaPracticeBaseSerializer.Meta.fields + ['research_csa_practice_url', ] + \
+                     ResearchCsaPracticeRelationBaseSerializer.Meta.fields
 
     class ResearchCsaPracticeSerializer(ModelSerializer):
         """
@@ -167,46 +187,25 @@ def research_csa_practice_serializers():
             """
             return obj.id
 
-    class ResearchCsaPracticeDetailSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchCsaPracticeDetailSerializer(
+        ResearchCsaPracticeBaseSerializer, ResearchCsaPracticeRelationBaseSerializer,
+        FieldMethodSerializer, ResearchCsaPracticeFieldMethodSerializer
+    ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        csa_practice_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        content_type_url = SerializerMethodField()
 
         class Meta:
             model = ResearchCsaPractice
-            fields = [
-                'id',
-                'csapractice',
-                'csa_practice_url',
+            common_fields = [
                 'user',
                 'modified_by',
                 'last_update',
                 'time_created',
-                'content_type_url',
-            ]
-            read_only_fields = [
-                'id',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'csa_practice_url',
-                'content_type_url',
-            ]
-
-        def get_csa_practice_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(CsaPractice, obj.csapractice.id)
-
+            ] + ResearchCsaPracticeRelationBaseSerializer.Meta.fields
+            read_only_fields = ['id', ] + common_fields
     return {
         'create_research_csa_practice_serializer': create_research_csa_practice_serializer,
         'ResearchCsaPracticeListSerializer': ResearchCsaPracticeListSerializer,
