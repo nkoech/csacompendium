@@ -22,6 +22,44 @@ def research_author_serializers():
     :rtype: Object
     """
 
+    class ResearchAuthorBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        class Meta:
+            model = ResearchAuthor
+            fields = [
+                'id',
+                'author',
+            ]
+
+    class ResearchAuthorRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        author_url = SerializerMethodField()
+        content_type_url = SerializerMethodField()
+
+        class Meta:
+            model = ResearchAuthor
+            fields = [
+                'content_type_url',
+                'author_url',
+            ]
+
+    class ResearchAuthorFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
+        def get_author_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            return get_related_content_url(Author, obj.author.id)
+
     def create_research_author_serializer(model_type=None, pk=None, user=None):
         """
         Creates a model serializer
@@ -32,18 +70,13 @@ def research_author_serializers():
         :rtype: Object
         """
 
-        class ResearchAuthorCreateSerializer(ModelSerializer, CreateSerializerUtil):
+        class ResearchAuthorCreateSerializer(ResearchAuthorBaseSerializer, CreateSerializerUtil):
             """
             Create a record
             """
             class Meta:
                 model = ResearchAuthor
-                fields = [
-                    'id',
-                    'author',
-                    'last_update',
-                    'time_created',
-                ]
+                fields = ResearchAuthorBaseSerializer.Meta.fields + ['last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
                 super(ResearchAuthorCreateSerializer, self).__init__(*args, **kwargs)
@@ -75,32 +108,19 @@ def research_author_serializers():
 
         return ResearchAuthorCreateSerializer
 
-    class ResearchAuthorListSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchAuthorListSerializer(
+        ResearchAuthorBaseSerializer, ResearchAuthorRelationBaseSerializer,
+        FieldMethodSerializer, ResearchAuthorFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        author_url = SerializerMethodField()
-        content_type_url = SerializerMethodField()
         research_author_url = hyperlinked_identity('research_api:research_author_detail', 'pk')
 
         class Meta:
             model = ResearchAuthor
-            fields = [
-                'id',
-                'author',
-                'author_url',
-                'content_type_url',
-                'research_author_url',
-            ]
-
-        def get_author_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(Author, obj.author.id)
+            fields = ResearchAuthorBaseSerializer.Meta.fields + ['research_author_url', ] + \
+                     ResearchAuthorRelationBaseSerializer.Meta.fields
 
     class ResearchAuthorSerializer(ModelSerializer):
         """
@@ -161,46 +181,26 @@ def research_author_serializers():
             """
             return obj.id
 
-    class ResearchAuthorDetailSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchAuthorDetailSerializer(
+        ResearchAuthorBaseSerializer, ResearchAuthorRelationBaseSerializer,
+        FieldMethodSerializer, ResearchAuthorFieldMethodSerializer
+    ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        author_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        content_type_url = SerializerMethodField()
 
         class Meta:
+            common_fields = [
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+            ] + ResearchAuthorRelationBaseSerializer.Meta.fields
             model = ResearchAuthor
-            fields = [
-                'id',
-                'author',
-                'author_url',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'content_type_url',
-            ]
-            read_only_fields = [
-                'id',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'author_url',
-                'content_type_url',
-            ]
-
-        def get_author_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(Author, obj.author.id)
-
+            fields = ResearchAuthorBaseSerializer.Meta.fields + common_fields
+            read_only_fields = ['id', ] + common_fields
     return {
         'create_research_author_serializer': create_research_author_serializer,
         'ResearchAuthorListSerializer': ResearchAuthorListSerializer,
