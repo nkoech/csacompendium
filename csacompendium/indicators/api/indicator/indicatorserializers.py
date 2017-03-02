@@ -11,6 +11,7 @@ from csacompendium.utils.serializersutils import (
     get_related_content,
 )
 
+outcome_indicator_serializers = outcome_indicator_serializers()
 
 def indicator_serializers():
     """
@@ -19,46 +20,36 @@ def indicator_serializers():
     :rtype: Object
     """
 
-    class IndicatorListSerializer(ModelSerializer):
+    class IndicatorBaseSerializer(ModelSerializer):
         """
-        Serialize all records in given fields into an API
+        Base serializer for DRY implementation.
         """
-        url = hyperlinked_identity('indicator_outcome_api:indicator_detail', 'slug')
-
         class Meta:
-            model = Indicator
-            fields = [
-                'indicator',
-                'url',
-            ]
-
-    class IndicatorDetailSerializer(ModelSerializer, FieldMethodSerializer):
-        """
-        Serialize single record into an API. This is dependent on fields given.
-        """
-        outcome_indicator_serializers = outcome_indicator_serializers()
-        subpillar_url = SerializerMethodField()
-        user = SerializerMethodField()
-        modified_by = SerializerMethodField()
-        outcome_indicators = SerializerMethodField()
-
-        class Meta:
-            common_fields = [
-                'subpillar_url',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'outcome_indicators',
-            ]
             model = Indicator
             fields = [
                 'id',
                 'subpillar',
                 'indicator',
-            ] + common_fields
-            read_only_fields = ['id', ] + common_fields
+            ]
 
+    class IndicatorRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        subpillar_url = SerializerMethodField()
+        outcome_indicators = SerializerMethodField()
+
+        class Meta:
+            model = Indicator
+            fields = [
+                'subpillar_url',
+                'outcome_indicators',
+            ]
+
+    class IndicatorFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
         def get_subpillar_url(self, obj):
             """
             Get related content type/object url
@@ -75,12 +66,47 @@ def indicator_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            OutcomeIndicatorListSerializer = self.outcome_indicator_serializers['OutcomeIndicatorListSerializer']
+            OutcomeIndicatorListSerializer = outcome_indicator_serializers['OutcomeIndicatorListSerializer']
             related_content = get_related_content(
                 obj, OutcomeIndicatorListSerializer, obj.outcome_indicator_relation, request
             )
             return related_content
 
+    class IndicatorListSerializer(
+        IndicatorBaseSerializer,
+        IndicatorRelationBaseSerializer,
+        IndicatorFieldMethodSerializer,
+    ):
+        """
+        Serialize all records in given fields into an API
+        """
+        url = hyperlinked_identity('indicator_outcome_api:indicator_detail', 'slug')
+
+        class Meta:
+            model = Indicator
+            fields = IndicatorBaseSerializer.Meta.fields + ['url', ] + \
+                     IndicatorRelationBaseSerializer.Meta.fields
+
+    class IndicatorDetailSerializer(
+        IndicatorBaseSerializer, IndicatorRelationBaseSerializer,
+        FieldMethodSerializer, IndicatorFieldMethodSerializer
+    ):
+        """
+        Serialize single record into an API. This is dependent on fields given.
+        """
+        user = SerializerMethodField()
+        modified_by = SerializerMethodField()
+
+        class Meta:
+            common_fields = [
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+            ] + IndicatorRelationBaseSerializer.Meta.fields
+            model = Indicator
+            fields = IndicatorBaseSerializer.Meta.fields + common_fields
+            read_only_fields = ['id', ] + common_fields
     return {
         'IndicatorListSerializer': IndicatorListSerializer,
         'IndicatorDetailSerializer': IndicatorDetailSerializer
