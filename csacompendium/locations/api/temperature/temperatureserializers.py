@@ -7,6 +7,7 @@ from csacompendium.locations.models import Temperature
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
 
+location_relation_serializers = location_relation_serializers()
 
 def temperature_serializers():
     """
@@ -15,46 +16,34 @@ def temperature_serializers():
     :rtype: Object
     """
 
-    class TemperatureListSerializer(ModelSerializer):
+    class TemperatureBaseSerializer(ModelSerializer):
         """
-        Serialize all records in given fields into an API
+        Base serializer for DRY implementation.
         """
-        url = hyperlinked_identity('location_api:temperature_detail', 'pk')
-
         class Meta:
             model = Temperature
             fields = [
                 'id',
                 'temperature',
                 'temperature_uom',
-                'url',
             ]
 
-    class TemperatureDetailSerializer(ModelSerializer, FieldMethodSerializer):
+    class TemperatureRelationBaseSerializer(ModelSerializer):
         """
-        Serialize single record into an API. This is dependent on fields given.
+        Base serializer for DRY implementation.
         """
-        location_relation_serializers = location_relation_serializers()
-        user = SerializerMethodField()
-        modified_by = SerializerMethodField()
         locations = SerializerMethodField()
 
         class Meta:
-            common_fields = [
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'locations',
-            ]
             model = Temperature
             fields = [
-                'id',
-                'temperature',
-                'temperature_uom',
-            ] + common_fields
-            read_only_fields = ['id', ] + common_fields
+                'locations',
+            ]
 
+    class TemperatureFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
         def get_locations(self, obj):
             """
             :param obj: Current record object
@@ -62,10 +51,45 @@ def temperature_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            LocationRelationSerializer = self.location_relation_serializers['LocationRelationSerializer']
+            LocationRelationSerializer = location_relation_serializers['LocationRelationSerializer']
             related_content = get_related_content(obj, LocationRelationSerializer, obj.location_relations, request)
             return related_content
 
+    class TemperatureListSerializer(
+        TemperatureBaseSerializer,
+        TemperatureRelationBaseSerializer,
+        TemperatureFieldMethodSerializer
+    ):
+        """
+        Serialize all records in given fields into an API
+        """
+        url = hyperlinked_identity('location_api:temperature_detail', 'pk')
+
+        class Meta:
+            model = Temperature
+            fields = TemperatureBaseSerializer.Meta.fields + ['url', ] + \
+                     TemperatureRelationBaseSerializer.Meta.fields
+
+    class TemperatureDetailSerializer(
+        TemperatureBaseSerializer, TemperatureRelationBaseSerializer,
+        FieldMethodSerializer, TemperatureFieldMethodSerializer
+    ):
+        """
+        Serialize single record into an API. This is dependent on fields given.
+        """
+        user = SerializerMethodField()
+        modified_by = SerializerMethodField()
+
+        class Meta:
+            common_fields = [
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+            ] + TemperatureRelationBaseSerializer.Meta.fields
+            model = Temperature
+            fields = TemperatureBaseSerializer.Meta.fields + common_fields
+            read_only_fields = ['id', ] + common_fields
     return {
         'TemperatureListSerializer': TemperatureListSerializer,
         'TemperatureDetailSerializer': TemperatureDetailSerializer
