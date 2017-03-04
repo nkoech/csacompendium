@@ -7,6 +7,8 @@ from csacompendium.locations.models import Precipitation
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import FieldMethodSerializer, get_related_content
 
+location_relation_serializers = location_relation_serializers()
+
 
 def precipitation_serializers():
     """
@@ -15,12 +17,10 @@ def precipitation_serializers():
     :rtype: Object
     """
 
-    class PrecipitationListSerializer(ModelSerializer):
+    class PrecipitationBaseSerializer(ModelSerializer):
         """
-        Serialize all records in given fields into an API
+        Base serializer for DRY implementation.
         """
-        url = hyperlinked_identity('location_api:precipitation_detail', 'pk')
-
         class Meta:
             model = Precipitation
             fields = [
@@ -28,35 +28,24 @@ def precipitation_serializers():
                 'precipitation',
                 'precipitation_uom',
                 'precipitation_desc',
-                'url',
             ]
 
-    class PrecipitationDetailSerializer(ModelSerializer, FieldMethodSerializer):
+    class PrecipitationRelationBaseSerializer(ModelSerializer):
         """
-        Serialize single record into an API. This is dependent on fields given.
+        Base serializer for DRY implementation.
         """
-        location_relation_serializers = location_relation_serializers()
-        user = SerializerMethodField()
-        modified_by = SerializerMethodField()
         locations = SerializerMethodField()
 
         class Meta:
-            common_fields = [
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'locations',
-            ]
             model = Precipitation
             fields = [
-                'id',
-                'precipitation',
-                'precipitation_uom',
-                'precipitation_desc',
-            ] + common_fields
-            read_only_fields = ['id', ] + common_fields
+                'locations',
+            ]
 
+    class PrecipitationFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
         def get_locations(self, obj):
             """
             :param obj: Current record object
@@ -64,10 +53,47 @@ def precipitation_serializers():
             :rtype: Object/record
             """
             request = self.context['request']
-            LocationRelationSerializer = self.location_relation_serializers['LocationRelationSerializer']
+            LocationRelationSerializer = location_relation_serializers['LocationRelationSerializer']
             related_content = get_related_content(obj, LocationRelationSerializer, obj.location_relations, request)
             return related_content
 
+    class PrecipitationListSerializer(
+        PrecipitationBaseSerializer,
+        PrecipitationRelationBaseSerializer,
+        PrecipitationFieldMethodSerializer
+    ):
+        """
+        Serialize all records in given fields into an API
+        """
+        url = hyperlinked_identity('location_api:precipitation_detail', 'pk')
+
+        class Meta:
+            model = Precipitation
+            fields = PrecipitationBaseSerializer.Meta.fields + ['url', ] + \
+                     PrecipitationRelationBaseSerializer.Meta.fields
+
+    class PrecipitationDetailSerializer(
+        PrecipitationBaseSerializer,
+        PrecipitationRelationBaseSerializer,
+        FieldMethodSerializer,
+        PrecipitationFieldMethodSerializer
+    ):
+        """
+        Serialize single record into an API. This is dependent on fields given.
+        """
+        user = SerializerMethodField()
+        modified_by = SerializerMethodField()
+
+        class Meta:
+            common_fields = [
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+            ] + PrecipitationRelationBaseSerializer.Meta.fields
+            model = Precipitation
+            fields = PrecipitationBaseSerializer.Meta.fields + common_fields
+            read_only_fields = ['id', ] + common_fields
     return {
         'PrecipitationListSerializer': PrecipitationListSerializer,
         'PrecipitationDetailSerializer': PrecipitationDetailSerializer
