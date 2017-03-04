@@ -19,6 +19,44 @@ def location_relation_serializers():
     :rtype: Object
     """
 
+    class LocationRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        class Meta:
+            model = LocationRelation
+            fields = [
+                'id',
+                'location',
+            ]
+
+    class LocationRelationRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        content_type_url = SerializerMethodField()
+        location_url = SerializerMethodField()
+
+        class Meta:
+            model = LocationRelation
+            fields = [
+                'content_type_url',
+                'location_url',
+            ]
+
+    class LocationRelationFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
+        def get_location_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            return get_related_content_url(Location, obj.location.id)
+
     def create_location_relation_serializer(model_type=None, pk=None, user=None):
         """
         Creates a model serializer
@@ -29,18 +67,13 @@ def location_relation_serializers():
         :rtype: Object
         """
 
-        class LocationRelationCreateSerializer(ModelSerializer, CreateSerializerUtil):
+        class LocationRelationCreateSerializer(LocationRelationBaseSerializer, CreateSerializerUtil):
             """
             Create a record
             """
             class Meta:
                 model = LocationRelation
-                fields = [
-                    'id',
-                    'location',
-                    'last_update',
-                    'time_created',
-                ]
+                fields = LocationRelationBaseSerializer.Meta.fields + ['last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
                 super(LocationRelationCreateSerializer, self).__init__(*args, **kwargs)
@@ -72,32 +105,19 @@ def location_relation_serializers():
 
         return LocationRelationCreateSerializer
 
-    class LocationRelationListSerializer(ModelSerializer, FieldMethodSerializer):
+    class LocationRelationListSerializer(
+        LocationRelationBaseSerializer, LocationRelationRelationBaseSerializer,
+        FieldMethodSerializer, LocationRelationFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        location_url = SerializerMethodField()
-        content_type_url = SerializerMethodField()
         location_relation_url = hyperlinked_identity('location_api:locationrelation_detail', 'pk')
 
         class Meta:
             model = LocationRelation
-            fields = [
-                'id',
-                'location',
-                'location_url',
-                'content_type_url',
-                'location_relation_url',
-            ]
-
-        def get_location_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(Location, obj.location.id)
+            fields = LocationRelationBaseSerializer.Meta.fields + ['location_relation_url', ] + \
+                     LocationRelationRelationBaseSerializer.Meta.fields
 
     class LocationRelationSerializer(ModelSerializer):
         """
@@ -158,46 +178,27 @@ def location_relation_serializers():
             """
             return obj.id
 
-    class LocationRelationDetailSerializer(ModelSerializer, FieldMethodSerializer):
+    class LocationRelationDetailSerializer(
+        LocationRelationBaseSerializer, LocationRelationRelationBaseSerializer,
+        FieldMethodSerializer, LocationRelationFieldMethodSerializer
+    ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        location_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        content_type_url = SerializerMethodField()
 
         class Meta:
+            common_fields = [
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+            ] + LocationRelationRelationBaseSerializer.Meta.fields
+
             model = LocationRelation
-            fields = [
-                'id',
-                'location',
-                'location_url',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'content_type_url',
-            ]
-            read_only_fields = [
-                'id',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'location_url',
-                'content_type_url',
-            ]
-
-        def get_location_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(Location, obj.location.id)
-
+            fields = LocationRelationBaseSerializer.Meta.fields + common_fields
+            read_only_fields = ['id', ] + common_fields
     return {
         'create_location_relation_serializer': create_location_relation_serializer,
         'LocationRelationListSerializer': LocationRelationListSerializer,
