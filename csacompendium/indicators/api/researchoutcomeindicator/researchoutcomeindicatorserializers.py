@@ -22,6 +22,45 @@ def research_outcome_indicator_serializers():
     :rtype: Object
     """
 
+    class ResearchOutcomeIndicatorBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+
+        class Meta:
+            model = ResearchOutcomeIndicator
+            fields = [
+                'id',
+                'outcomeindicator',
+            ]
+
+    class ResearchOutcomeIndicatorRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        content_type_url = SerializerMethodField()
+        outcome_indicator_url = SerializerMethodField()
+
+        class Meta:
+            model = ResearchOutcomeIndicator
+            fields = [
+                'content_type_url',
+                'outcome_indicator_url',
+            ]
+
+    class ResearchOutcomeIndicatorFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
+        def get_outcome_indicator_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            return get_related_content_url(OutcomeIndicator, obj.outcomeindicator.id)
+
     def create_research_outcome_indicator_serializer(model_type=None, pk=None, user=None):
         """
         Creates a model serializer
@@ -32,18 +71,15 @@ def research_outcome_indicator_serializers():
         :rtype: Object
         """
 
-        class ResearchOutcomeIndicatorCreateSerializer(ModelSerializer, CreateSerializerUtil):
+        class ResearchOutcomeIndicatorCreateSerializer(
+            ResearchOutcomeIndicatorBaseSerializer, CreateSerializerUtil
+        ):
             """
             Create a record
             """
             class Meta:
                 model = ResearchOutcomeIndicator
-                fields = [
-                    'id',
-                    'outcomeindicator',
-                    'last_update',
-                    'time_created',
-                ]
+                fields = ResearchOutcomeIndicatorBaseSerializer.Meta.fields + ['last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
                 super(ResearchOutcomeIndicatorCreateSerializer, self).__init__(*args, **kwargs)
@@ -75,34 +111,22 @@ def research_outcome_indicator_serializers():
 
         return ResearchOutcomeIndicatorCreateSerializer
 
-    class ResearchOutcomeIndicatorListSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchOutcomeIndicatorListSerializer(
+        ResearchOutcomeIndicatorBaseSerializer, ResearchOutcomeIndicatorRelationBaseSerializer,
+        FieldMethodSerializer, ResearchOutcomeIndicatorFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
-        outcome_indicator_url = SerializerMethodField()
-        content_type_url = SerializerMethodField()
         research_outcome_indicator_url = hyperlinked_identity(
             'indicator_outcome_api:research_outcome_indicator_detail', 'pk'
         )
 
         class Meta:
             model = ResearchOutcomeIndicator
-            fields = [
-                'id',
-                'outcomeindicator',
-                'outcome_indicator_url',
-                'content_type_url',
-                'research_outcome_indicator_url',
-            ]
-
-        def get_outcome_indicator_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(OutcomeIndicator, obj.outcomeindicator.id)
+            fields = ResearchOutcomeIndicatorBaseSerializer.Meta.fields + \
+                     ['research_outcome_indicator_url', ] + \
+                     ResearchOutcomeIndicatorRelationBaseSerializer.Meta.fields
 
     class ResearchOutcomeIndicatorSerializer(ModelSerializer):
         """
@@ -167,45 +191,27 @@ def research_outcome_indicator_serializers():
             """
             return obj.id
 
-    class ResearchOutcomeIndicatorDetailSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchOutcomeIndicatorDetailSerializer(
+        ResearchOutcomeIndicatorBaseSerializer, ResearchOutcomeIndicatorRelationBaseSerializer,
+        FieldMethodSerializer, ResearchOutcomeIndicatorFieldMethodSerializer
+    ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        outcome_indicator_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        content_type_url = SerializerMethodField()
 
         class Meta:
+            common_fields = [
+                'user',
+                'modified_by',
+                'last_update',
+                'time_created',
+            ] + ResearchOutcomeIndicatorRelationBaseSerializer.Meta.fields
             model = ResearchOutcomeIndicator
-            fields = [
-                'id',
-                'outcomeindicator',
-                'outcome_indicator_url',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'content_type_url',
-            ]
-            read_only_fields = [
-                'id',
-                'user',
-                'modified_by',
-                'last_update',
-                'time_created',
-                'outcome_indicator_url',
-                'content_type_url',
-            ]
 
-        def get_outcome_indicator_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(OutcomeIndicator, obj.outcomeindicator.id)
+            fields = ResearchOutcomeIndicatorBaseSerializer.Meta.fields + common_fields
+            read_only_fields = ['id', ] + common_fields
 
     return {
         'create_research_outcome_indicator_serializer': create_research_outcome_indicator_serializer,
