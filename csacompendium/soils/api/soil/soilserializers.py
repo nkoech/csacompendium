@@ -30,12 +30,53 @@ def soil_serializers():
         class Meta:
             model = Soil
             fields = [
+                'id',
+                'soiltype',
+                'soiltexture',
                 'som',
                 'som_uom',
                 'initial_soc',
                 'soil_ph',
                 'soil_years',
             ]
+
+    class SoilRelationBaseSerializer(ModelSerializer):
+        """
+        Base serializer for DRY implementation.
+        """
+        content_type_url = SerializerMethodField()
+        soil_type_url = SerializerMethodField()
+        soil_texture_url = SerializerMethodField()
+
+        class Meta:
+            model = Soil
+            fields = [
+                'content_type_url',
+                'soil_type_url',
+                'soil_texture_url',
+            ]
+
+    class SoilFieldMethodSerializer:
+        """
+        Serialize an object based on a provided field
+        """
+        def get_soil_type_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            return get_related_content_url(SoilType, obj.soiltype.id)
+
+        def get_soil_texture_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            return get_related_content_url(SoilTexture, obj.soiltexture.id)
 
     def create_soil_serializer(model_type=None, slug=None, user=None):
         """
@@ -54,9 +95,7 @@ def soil_serializers():
 
             class Meta:
                 model = Soil
-                fields = ['id', 'soiltype', 'soiltexture', ] + \
-                         SoilBaseSerializer.Meta.fields + \
-                         ['last_update', 'time_created', ]
+                fields = SoilBaseSerializer.Meta.fields + ['last_update', 'time_created', ]
 
             def __init__(self, *args, **kwargs):
                 super(SoilCreateSerializer, self).__init__(*args, **kwargs)
@@ -110,15 +149,15 @@ def soil_serializers():
             model = Soil
             fields = SoilBaseSerializer.Meta.fields + ['url', ]
 
-    class SoilDetailSerializer(SoilBaseSerializer, FieldMethodSerializer):
+    class SoilDetailSerializer(
+        SoilBaseSerializer, SoilRelationBaseSerializer,
+        FieldMethodSerializer, SoilFieldMethodSerializer
+    ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
-        soil_type_url = SerializerMethodField()
-        soil_texture_url = SerializerMethodField()
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        content_type_url = SerializerMethodField()
 
         class Meta:
             common_fields = [
@@ -126,31 +165,10 @@ def soil_serializers():
                 'modified_by',
                 'last_update',
                 'time_created',
-                'content_type_url',
-            ]
+            ] + SoilRelationBaseSerializer.Meta.fields
             model = Soil
-            fields = ['id', 'soil_type_url', 'soil_texture_url', ] + \
-                     SoilBaseSerializer.Meta.fields + ['user', ] + common_fields
+            fields = SoilBaseSerializer.Meta.fields + common_fields
             read_only_fields = ['id', ] + common_fields
-
-        def get_soil_type_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(SoilType, obj.soiltype.id)
-
-        def get_soil_texture_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(SoilTexture, obj.soiltexture.id)
-
     return {
         'create_soil_serializer': create_soil_serializer,
         'SoilListSerializer': SoilListSerializer,
