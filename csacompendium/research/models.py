@@ -61,17 +61,6 @@ class ExperimentRep(AuthUserDetail, CreateUpdateTime):
         qs = ControlResearch.objects.filter_by_model_type(instance)
         return qs
 
-    @property
-    def treatment_research_relation(self):
-        """
-        Get related treatment research properties
-        :return: Query result from the treatment research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = TreatmentResearch.objects.filter_by_model_type(instance)
-        return qs
-
 
 class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
     """
@@ -109,25 +98,12 @@ class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
         qs = ControlResearch.objects.filter_by_model_type(instance)
         return qs
 
-    @property
-    def treatment_research_relation(self):
-        """
-        Get related treatment research properties
-        :return: Query result from the treatment research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = TreatmentResearch.objects.filter_by_model_type(instance)
-        return qs
-
 
 class ExperimentDetails(AuthUserDetail, CreateUpdateTime):
     """
     Experiment details model
     """
     slug = models.SlugField(max_length=250, unique=True, blank=True)
-    # slug = models.TextField(unique=True, blank=True)
-    # exp_detail = models.CharField(max_length=250, unique=True, verbose_name='Experiment Details')
     exp_detail = models.TextField(unique=False, verbose_name='Experiment Details')
 
     def __unicode__(self):
@@ -157,17 +133,6 @@ class ExperimentDetails(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = ControlResearch.objects.filter_by_model_type(instance)
-        return qs
-
-    @property
-    def treatment_research_relation(self):
-        """
-        Get related treatment research properties
-        :return: Query result from the treatment research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = TreatmentResearch.objects.filter_by_model_type(instance)
         return qs
 
 
@@ -221,17 +186,6 @@ class ExperimentDuration(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = ControlResearch.objects.filter_by_model_type(instance)
-        return qs
-
-    @property
-    def treatment_research_relation(self):
-        """
-        Get related treatment research properties
-        :return: Query result from the treatment research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = TreatmentResearch.objects.filter_by_model_type(instance)
         return qs
 
 
@@ -350,17 +304,6 @@ class MeasurementYear(AuthUserDetail, CreateUpdateTime):
         qs = ControlResearch.objects.filter_by_model_type(instance)
         return qs
 
-    @property
-    def treatment_research_relation(self):
-        """
-        Get related treatment research properties
-        :return: Query result from the treatment research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = TreatmentResearch.objects.filter_by_model_type(instance)
-        return qs
-
 
 @receiver(pre_save, sender=MeasurementYear)
 def pre_save_indicator_receiver(sender, instance, *args, **kwargs):
@@ -474,8 +417,7 @@ class ResearchAuthor(AuthUserDetail, CreateUpdateTime):
     """
     Research author entry relationship model. A many to many bridge table between research and other models
     """
-    limit = models.Q(app_label='research', model='controlresearch') | \
-            models.Q(app_label='research', model='treatmentresearch')
+    limit = models.Q(app_label='research', model='controlresearch')
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -579,8 +521,7 @@ class ResearchSpecies(AuthUserDetail, CreateUpdateTime):
     """
     Research species entry relationship model. A many to many bridge table between research and other models
     """
-    limit = models.Q(app_label='research', model='controlresearch') | \
-            models.Q(app_label='research', model='treatmentresearch')
+    limit = models.Q(app_label='research', model='controlresearch')
     species = models.ForeignKey(Species, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -759,8 +700,7 @@ class ResearchExperimentUnit(AuthUserDetail, CreateUpdateTime):
     Research experiment unit entry relationship model. A many to many bridge table
     between research and other models
     """
-    limit = models.Q(app_label='research', model='controlresearch') | \
-            models.Q(app_label='research', model='treatmentresearch')
+    limit = models.Q(app_label='research', model='controlresearch')
     experimentunit = models.ForeignKey(ExperimentUnit, on_delete=models.PROTECT, verbose_name='Experiment Unit')
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -859,141 +799,6 @@ class ControlResearch(AuthUserDetail, ResearchOutcome, CreateUpdateTime):
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Control Research'
-
-    @property
-    def research_author(self):
-        """
-        Get related research author object/record
-        :return: Query result from the research author model
-        :rtype: object/record
-        """
-        instance = self
-        qs = ResearchAuthor.objects.filter_by_instance(instance)
-        return qs
-
-    @property
-    def research_species(self):
-        """
-        Get related research species object/record
-        :return: Query result from the research species model
-        :rtype: object/record
-        """
-        instance = self
-        qs = ResearchSpecies.objects.filter_by_instance(instance)
-        return qs
-
-    @property
-    def research_outcome_indicator(self):
-        """
-        Get related research outcome indicator object/record
-        :return: Query result from the research outcome indicator model
-        :rtype: object/record
-        """
-        instance = self
-        qs = ResearchOutcomeIndicator.objects.filter_by_instance(instance)
-        return qs
-
-    @property
-    def research_csa_practice(self):
-        """
-        Get related research CSA practice object/record
-        :return: Query result from the research CSA practice model
-        :rtype: object/record
-        """
-        instance = self
-        qs = ResearchCsaPractice.objects.filter_by_instance(instance)
-        return qs
-
-    @property
-    def research_experiment_unit(self):
-        """
-        Get related research experiment unit object/record
-        :return: Query result from the research experiment unit model
-        :rtype: object/record
-        """
-        instance = self
-        qs = ResearchExperimentUnit.objects.filter_by_instance(instance)
-        return qs
-
-
-class TreatmentResearchManager(models.Manager):
-    """
-    Treatment research model manager
-    """
-    def filter_by_instance(self, instance):
-        """
-        Query a related treatment research object/record from another model's object
-        :param instance: Object instance
-        :return: Query result from content type/model
-        :rtye: object/record
-        """
-        return model_instance_filter(instance, self, TreatmentResearchManager)
-
-    def filter_by_model_type(self, instance):
-        """
-        Query related objects/model type
-        :param instance: Object instance
-        :return: Matching object else none
-        :rtype: Object/record
-        """
-        obj_qs = model_foreign_key_qs(instance, self, TreatmentResearchManager)
-        if obj_qs.exists():
-            return model_type_filter(self, obj_qs, TreatmentResearchManager)
-
-    def create_by_model_type(self, model_type, pk, **kwargs):
-        """
-        Create object by model type
-        :param model_type: Content/model type
-        :param pk: Primary Key
-        :param kwargs: Fields to be created
-        :return: Data object
-        :rtype: Object
-        """
-        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
-
-
-class TreatmentResearch(AuthUserDetail, ResearchOutcome, CreateUpdateTime):
-    """
-    Creates treatment research entity.
-    """
-    limit = models.Q(app_label='locations', model='location')
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
-    experimentrep = models.ForeignKey(
-        ExperimentRep, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Experiment Replications'
-    )
-    experimentdetails = models.ForeignKey(
-        ExperimentDetails, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Experiment Details'
-    )
-    nitrogenapplied = models.ForeignKey(
-        NitrogenApplied, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Nitrogen Applied'
-    )
-    experimentduration = models.ForeignKey(
-        ExperimentDuration, blank=True, null=True, on_delete=models.PROTECT, verbose_name='Experiment Duration'
-    )
-    measurementyear = models.ForeignKey(
-        MeasurementYear, blank=True, null=True, on_delete=models.PROTECT, verbose_name='Measurement Year'
-    )
-    objects = TreatmentResearchManager()
-
-    def __unicode__(self):
-        return str(self.experimentdetails)
-
-    def __str__(self):
-        return str(self.experimentdetails)
-
-    def get_api_url(self):
-        """
-        Get treatment research URL as a reverse from model
-        :return: URL
-        :rtype: String
-        """
-        return reverse('research_api:treatment_research_detail', kwargs={'pk': self.pk})
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Treatment Research'
 
     @property
     def research_author(self):

@@ -14,7 +14,6 @@ from .views import (
     research_experiment_unit_views,
     experiment_unit_category_views,
     control_research_views,
-    treatment_research_views,
 )
 
 # Experiment replication URLs
@@ -280,24 +279,5 @@ urlpatterns += [
         r'controlresearch/(?P<pk>[\w-]+)/$',
         control_research_views['ControlResearchDetailAPIView'].as_view(),
         name='control_research_detail'
-    ),
-]
-
-# Treatment research URLs
-urlpatterns += [
-    url(
-        r'^treatmentresearch/$',
-        treatment_research_views['TreatmentResearchListAPIView'].as_view(),
-        name='treatment_research_list'
-    ),
-    url(
-        r'^treatmentresearch/create/$',
-        treatment_research_views['TreatmentResearchCreateAPIView'].as_view(),
-        name='treatment_research_create'
-    ),
-    url(
-        r'treatmentresearch/(?P<pk>[\w-]+)/$',
-        treatment_research_views['TreatmentResearchDetailAPIView'].as_view(),
-        name='treatment_research_detail'
     ),
 ]

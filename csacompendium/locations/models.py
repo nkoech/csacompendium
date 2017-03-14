@@ -5,7 +5,7 @@ from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
     CreateUpdateTime,
 )
-from csacompendium.research.models import ControlResearch, TreatmentResearch
+from csacompendium.research.models import ControlResearch
 from csacompendium.soils.models import Soil
 from csacompendium.utils.createslug import create_slug
 from csacompendium.utils.modelmanagers import (
@@ -102,17 +102,6 @@ class Location(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = ControlResearch.objects.filter_by_instance(instance)
-        return qs
-
-    @property
-    def treatment_research(self):
-        """
-        Get related treatment research object/record
-        :return: Query result from the treatment research model
-        :rtye: object/record
-        """
-        instance = self
-        qs = TreatmentResearch.objects.filter_by_instance(instance)
         return qs
 
     @property

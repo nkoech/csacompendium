@@ -1,9 +1,6 @@
 from csacompendium.soils.api.serializers import soil_serializers
 from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
-from csacompendium.research.api.serializers import (
-    control_research_serializers,
-    treatment_research_serializers,
-)
+from csacompendium.research.api.serializers import control_research_serializers
 from csacompendium.locations.models import Location
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
@@ -49,7 +46,6 @@ def location_serializers():
         relation_details = SerializerMethodField()
         soils = SerializerMethodField()
         control_research = SerializerMethodField()
-        treatment_research = SerializerMethodField()
 
         class Meta:
             model = Location
@@ -58,7 +54,6 @@ def location_serializers():
                 'relation_details',
                 'soils',
                 'control_research',
-                'treatment_research',
             ]
 
     class LocationFieldMethodSerializer:
@@ -103,19 +98,6 @@ def location_serializers():
             ControlResearchListSerializer = control_research_serializers['ControlResearchListSerializer']
             related_content = get_related_content(
                 obj, ControlResearchListSerializer, obj.control_research, request
-            )
-            return related_content
-
-        def get_treatment_research(self, obj):
-            """
-            :param obj: Current record object
-            :return: Control research object/record
-            :rtype: Object/record
-            """
-            request = self.context['request']
-            TreatmentResearchListSerializer = treatment_research_serializers['TreatmentResearchListSerializer']
-            related_content = get_related_content(
-                obj, TreatmentResearchListSerializer, obj.treatment_research, request
             )
             return related_content
 

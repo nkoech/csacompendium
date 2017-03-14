@@ -13,29 +13,10 @@ from .models import (
     Species,
     ResearchSpecies,
     ControlResearch,
-    TreatmentResearch,
     ExperimentUnitCategory,
     ExperimentUnit,
     ResearchExperimentUnit,
 )
-
-
-class TreatmentResearchModelAdmin(admin.ModelAdmin):
-    """
-    Treatment research model admin settings
-    """
-    list_display = [
-        'experimentdetails', 'experimentrep', 'nitrogenapplied', 'experimentduration',
-        'mean_outcome', 'std_outcome', 'outcome_uom', 'last_update', 'modified_by'
-    ]
-    list_display_links = ['experimentdetails']
-    list_filter = [
-        'experimentrep', 'nitrogenapplied', 'experimentduration',
-        'mean_outcome', 'std_outcome', 'outcome_uom', 'last_update', 'modified_by'
-    ]
-
-    class Meta:
-        model = TreatmentResearch
 
 
 class ControlResearchModelAdmin(admin.ModelAdmin):
@@ -201,7 +182,6 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
     class Meta:
         model = ExperimentUnit
 
-admin.site.register(TreatmentResearch, TreatmentResearchModelAdmin)
 admin.site.register(ControlResearch, ControlResearchModelAdmin)
 admin.site.register(ExperimentDetails, ExperimentDetailsModelAdmin)
 admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
