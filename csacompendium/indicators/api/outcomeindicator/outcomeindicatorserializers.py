@@ -82,7 +82,7 @@ def outcome_indicator_serializers():
 
         def get_research_relation(self, obj):
             """
-            Gets control/treatment research record
+            Gets research record
             :param obj: Current record object
             :return: Related research object/record
             :rtype: Object/record

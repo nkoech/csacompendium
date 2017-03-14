@@ -2,7 +2,7 @@ from rest_framework.serializers import (
     ModelSerializer,
     SerializerMethodField
 )
-from csacompendium.research.api.controlresearch.controlresearchserializers import control_research_serializers
+from csacompendium.research.api.research.researchserializers import research_serializers
 from csacompendium.research.models import MeasurementYear, MeasurementSeason
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
@@ -11,7 +11,7 @@ from csacompendium.utils.serializersutils import (
     get_related_content_url,
 )
 
-control_research_serializers = control_research_serializers()
+research_serializers = research_serializers()
 
 
 def measurement_year_serializers():
@@ -38,13 +38,13 @@ def measurement_year_serializers():
         Base serializer for DRY implementation.
         """
         measurement_season_url = SerializerMethodField()
-        control_research = SerializerMethodField()
+        research = SerializerMethodField()
 
         class Meta:
             model = MeasurementYear
             fields = [
                 'measurement_season_url',
-                'control_research',
+                'research',
             ]
 
     class MeasurementYearFieldMethodSerializer:
@@ -61,16 +61,16 @@ def measurement_year_serializers():
             """
             return get_related_content_url(MeasurementSeason, obj.measurementseason.id)
 
-        def get_control_research(self, obj):
+        def get_research(self, obj):
             """
             :param obj: Current record object
-            :return: Control research object
+            :return: Research object
             :rtype: Object/record
             """
             request = self.context['request']
-            ControlResearchListSerializer = control_research_serializers['ControlResearchListSerializer']
+            ResearchListSerializer = research_serializers['ResearchListSerializer']
             related_content = get_related_content(
-                obj, ControlResearchListSerializer, obj.control_research_relation, request
+                obj, ResearchListSerializer, obj.research_relation, request
             )
             return related_content
 

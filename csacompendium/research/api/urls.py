@@ -13,7 +13,7 @@ from .views import (
     experiment_unit_views,
     research_experiment_unit_views,
     experiment_unit_category_views,
-    control_research_views,
+    research_views,
 )
 
 # Experiment replication URLs
@@ -263,21 +263,10 @@ urlpatterns += [
     ),
 ]
 
-# Control research URLs
+
+# Research URLs
 urlpatterns += [
-    url(
-        r'^controlresearch/$',
-        control_research_views['ControlResearchListAPIView'].as_view(),
-        name='control_research_list'
-    ),
-    url(
-        r'^controlresearch/create/$',
-        control_research_views['ControlResearchCreateAPIView'].as_view(),
-        name='control_research_create'
-    ),
-    url(
-        r'controlresearch/(?P<pk>[\w-]+)/$',
-        control_research_views['ControlResearchDetailAPIView'].as_view(),
-        name='control_research_detail'
-    ),
+    url(r'^$', research_views['ResearchListAPIView'].as_view(), name='research_list'),
+    url(r'^create/$', research_views['ResearchCreateAPIView'].as_view(), name='research_create'),
+    url(r'^(?P<pk>[\w-]+)/$', research_views['ResearchDetailAPIView'].as_view(), name='research_detail'),
 ]

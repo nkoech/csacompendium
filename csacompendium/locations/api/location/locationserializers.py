@@ -1,6 +1,6 @@
 from csacompendium.soils.api.serializers import soil_serializers
 from csacompendium.locations.api.locationrelation.locationrelationserializer import location_relation_serializers
-from csacompendium.research.api.serializers import control_research_serializers
+from csacompendium.research.api.serializers import research_serializers
 from csacompendium.locations.models import Location
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
@@ -45,7 +45,7 @@ def location_serializers():
         content_type_url = SerializerMethodField()
         relation_details = SerializerMethodField()
         soils = SerializerMethodField()
-        control_research = SerializerMethodField()
+        research = SerializerMethodField()
 
         class Meta:
             model = Location
@@ -53,7 +53,7 @@ def location_serializers():
                 'content_type_url',
                 'relation_details',
                 'soils',
-                'control_research',
+                'research',
             ]
 
     class LocationFieldMethodSerializer:
@@ -88,16 +88,16 @@ def location_serializers():
             related_content = get_related_content(obj, SoilListSerializer, obj.soils, request)
             return related_content
 
-        def get_control_research(self, obj):
+        def get_research(self, obj):
             """
             :param obj: Current record object
-            :return: Control research object/record
+            :return: Research object/record
             :rtype: Object/record
             """
             request = self.context['request']
-            ControlResearchListSerializer = control_research_serializers['ControlResearchListSerializer']
+            ResearchListSerializer = research_serializers['ResearchListSerializer']
             related_content = get_related_content(
-                obj, ControlResearchListSerializer, obj.control_research, request
+                obj, ResearchListSerializer, obj.research, request
             )
             return related_content
 

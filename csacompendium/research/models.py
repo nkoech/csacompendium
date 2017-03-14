@@ -5,7 +5,7 @@ from csacompendium.indicators.models import ResearchOutcomeIndicator
 from csacompendium.csa_practice.models import ResearchCsaPractice
 from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
-    ResearchOutcome,
+    # ResearchOutcome,
     CreateUpdateTime,
 )
 from csacompendium.utils.createslug import create_slug
@@ -51,14 +51,14 @@ class ExperimentRep(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Experiment Replications'
 
     @property
-    def control_research_relation(self):
+    def research_relation(self):
         """
-        Get related control research properties
-        :return: Query result from the control research model
+        Get related research properties
+        :return: Query result from the research model
         :rtype: object/record
         """
         instance = self
-        qs = ControlResearch.objects.filter_by_model_type(instance)
+        qs = Research.objects.filter_by_model_type(instance)
         return qs
 
 
@@ -88,14 +88,14 @@ class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Nitrogen Applied'
 
     @property
-    def control_research_relation(self):
+    def research_relation(self):
         """
-        Get related control research properties
-        :return: Query result from the control research model
+        Get related research properties
+        :return: Query result from the research model
         :rtype: object/record
         """
         instance = self
-        qs = ControlResearch.objects.filter_by_model_type(instance)
+        qs = Research.objects.filter_by_model_type(instance)
         return qs
 
 
@@ -125,14 +125,14 @@ class ExperimentDetails(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Experiment Details'
 
     @property
-    def control_research_relation(self):
+    def research_relation(self):
         """
-        Get related control research properties
-        :return: Query result from the control research model
+        Get related research properties
+        :return: Query result from the research model
         :rtype: object/record
         """
         instance = self
-        qs = ControlResearch.objects.filter_by_model_type(instance)
+        qs = Research.objects.filter_by_model_type(instance)
         return qs
 
 
@@ -178,14 +178,14 @@ class ExperimentDuration(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Experiment Durations'
 
     @property
-    def control_research_relation(self):
+    def research_relation(self):
         """
-        Get related control research properties
-        :return: Query result from the control research model
+        Get related research properties
+        :return: Query result from the research model
         :rtype: object/record
         """
         instance = self
-        qs = ControlResearch.objects.filter_by_model_type(instance)
+        qs = Research.objects.filter_by_model_type(instance)
         return qs
 
 
@@ -294,14 +294,14 @@ class MeasurementYear(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Measurement Years'
 
     @property
-    def control_research_relation(self):
+    def research_relation(self):
         """
-        Get related control research properties
-        :return: Query result from the control research model
+        Get related research properties
+        :return: Query result from the research model
         :rtype: object/record
         """
         instance = self
-        qs = ControlResearch.objects.filter_by_model_type(instance)
+        qs = Research.objects.filter_by_model_type(instance)
         return qs
 
 
@@ -417,7 +417,7 @@ class ResearchAuthor(AuthUserDetail, CreateUpdateTime):
     """
     Research author entry relationship model. A many to many bridge table between research and other models
     """
-    limit = models.Q(app_label='research', model='controlresearch')
+    limit = models.Q(app_label='research', model='research')
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -521,7 +521,7 @@ class ResearchSpecies(AuthUserDetail, CreateUpdateTime):
     """
     Research species entry relationship model. A many to many bridge table between research and other models
     """
-    limit = models.Q(app_label='research', model='controlresearch')
+    limit = models.Q(app_label='research', model='research')
     species = models.ForeignKey(Species, on_delete=models.PROTECT)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -700,7 +700,7 @@ class ResearchExperimentUnit(AuthUserDetail, CreateUpdateTime):
     Research experiment unit entry relationship model. A many to many bridge table
     between research and other models
     """
-    limit = models.Q(app_label='research', model='controlresearch')
+    limit = models.Q(app_label='research', model='research')
     experimentunit = models.ForeignKey(ExperimentUnit, on_delete=models.PROTECT, verbose_name='Experiment Unit')
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -721,18 +721,18 @@ class ResearchExperimentUnit(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Research Experiment Units'
 
 
-class ControlResearchManager(models.Manager):
+class ResearchManager(models.Manager):
     """
-    Control research model manager
+    Research model manager
     """
     def filter_by_instance(self, instance):
         """
-        Query a related control research object/record from another model's object
+        Query a related Research object/record from another model's object
         :param instance: Object instance
         :return: Query result from content type/model
         :rtype: object/record
         """
-        return model_instance_filter(instance, self, ControlResearchManager)
+        return model_instance_filter(instance, self, ResearchManager)
 
     def filter_by_model_type(self, instance):
         """
@@ -741,9 +741,9 @@ class ControlResearchManager(models.Manager):
         :return: Matching object else none
         :rtype: Object/record
         """
-        obj_qs = model_foreign_key_qs(instance, self, ControlResearchManager)
+        obj_qs = model_foreign_key_qs(instance, self, ResearchManager)
         if obj_qs.exists():
-            return model_type_filter(self, obj_qs, ControlResearchManager)
+            return model_type_filter(self, obj_qs, ResearchManager)
 
     def create_by_model_type(self, model_type, pk, **kwargs):
         """
@@ -757,14 +757,20 @@ class ControlResearchManager(models.Manager):
         return create_model_type(self, model_type, pk, slugify=False, **kwargs)
 
 
-class ControlResearch(AuthUserDetail, ResearchOutcome, CreateUpdateTime):
+# class Research(AuthUserDetail, ResearchOutcome, CreateUpdateTime):
+class Research(AuthUserDetail, CreateUpdateTime):
     """
-    Creates control research entity.
+    Creates research entity.
     """
+    EXPERIMENT_DESIGN = (
+        ('Control Treatment', 'Control Treatment'),
+        ('Improved Treatment', 'Improved Treatment'),
+    )
     limit = models.Q(app_label='locations', model='location')
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+    experiment_design = models.CharField(max_length=22, choices=EXPERIMENT_DESIGN)
     experimentrep = models.ForeignKey(
         ExperimentRep, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Experiment Replications'
     )
@@ -780,7 +786,16 @@ class ControlResearch(AuthUserDetail, ResearchOutcome, CreateUpdateTime):
     measurementyear = models.ForeignKey(
         MeasurementYear, blank=True, null=True, on_delete=models.PROTECT, verbose_name='Measurement Year'
     )
-    objects = ControlResearchManager()
+    mean_outcome = models.DecimalField(
+        max_digits=8, decimal_places=2, blank=True, null=True,
+        default=Decimal('0.0'), verbose_name='Mean outcome'
+    )
+    std_outcome = models.DecimalField(
+        max_digits=8, decimal_places=2, blank=True, null=True,
+        default=Decimal('0.0'),  verbose_name='Standard outcome'
+    )
+    outcome_uom = models.CharField(max_length=200, blank=True, null=True, default='kg/ha')
+    objects = ResearchManager()
 
     def __unicode__(self):
         return str(self.experimentdetails)
@@ -790,15 +805,15 @@ class ControlResearch(AuthUserDetail, ResearchOutcome, CreateUpdateTime):
 
     def get_api_url(self):
         """
-        Get control research URL as a reverse from model
+        Get Research URL as a reverse from model
         :return: URL
         :rtype: String
         """
-        return reverse('research_api:control_research_detail', kwargs={'pk': self.pk})
+        return reverse('research_api:research_detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Control Research'
+        verbose_name_plural = 'Research'
 
     @property
     def research_author(self):

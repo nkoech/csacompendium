@@ -1,4 +1,4 @@
-from .controlresearch.controlresearchviews import control_research_views
+from .research.researchviews import research_views
 from .experimentrep.experimentrepviews import experiment_rep_views
 from .nitrogenapplied.nitrogenappliedviews import nitrogen_applied_views
 from .experimentdetails.experimentdetailsviews import experiment_details_views
@@ -14,7 +14,7 @@ from .researchexperimentunit.researchexperimentunitviews import research_experim
 from .experimentunitcategory.experimentunitcategoryviews import experiment_unit_category_views
 
 
-control_research_views = control_research_views()
+research_views = research_views()
 experiment_rep_views = experiment_rep_views()
 nitrogen_applied_views = nitrogen_applied_views()
 experiment_details_views = experiment_details_views()

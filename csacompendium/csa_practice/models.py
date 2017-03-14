@@ -289,9 +289,9 @@ class ResearchCsaPracticeManager(models.Manager):
 class ResearchCsaPractice(AuthUserDetail, CreateUpdateTime):
     """
     Research CSA practice entry relationship model. A many to many bridge
-    table between control/treatment research and other models
+    table between research and other models
     """
-    limit = models.Q(app_label='research', model='controlresearch')
+    limit = models.Q(app_label='research', model='research')
     csapractice = models.ForeignKey(CsaPractice, on_delete=models.PROTECT,  verbose_name='CSA practice')
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()

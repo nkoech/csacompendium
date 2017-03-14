@@ -1,4 +1,4 @@
-from .controlresearch.controlresearchserializers import control_research_serializers
+from .research.researchserializers import research_serializers
 from .experimentrep.experimentrepserializers import experiment_rep_serializers
 from .nitrogenapplied.nitrogenappliedserializers import nitrogen_applied_serializers
 from .experimentdetails.experimentdetailsserializers import experiment_details_serializers
@@ -14,7 +14,7 @@ from .researchexperimentunit.researchexperimentunitserializers import research_e
 from .experimentunitcategory.experimentunitcategoryserializers import experiment_unit_category_serializers
 
 
-control_research_serializers = control_research_serializers()
+research_serializers = research_serializers()
 experiment_rep_serializers = experiment_rep_serializers()
 nitrogen_applied_serializers = nitrogen_applied_serializers()
 experiment_details_serializers = experiment_details_serializers()

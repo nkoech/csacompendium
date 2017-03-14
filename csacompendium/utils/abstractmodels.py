@@ -16,20 +16,20 @@ class AuthUserDetail(models.Model):
         abstract = True
 
 
-class ResearchOutcome(models.Model):
-    """
-    Abstract model for control and treatment research outcome.
-    """
-    mean_outcome = models.DecimalField(
-        max_digits=8, decimal_places=2, blank=True, null=True, default=Decimal('0.0'), verbose_name='Mean outcome'
-    )
-    std_outcome = models.DecimalField(
-        max_digits=8, decimal_places=2, blank=True, null=True, default=Decimal('0.0'),  verbose_name='Standard outcome'
-    )
-    outcome_uom = models.CharField(max_length=200, blank=True, null=True, default='kg/ha')
-
-    class Meta:
-        abstract = True
+# class ResearchOutcome(models.Model):
+#     """
+#     Abstract model for research outcome.
+#     """
+#     mean_outcome = models.DecimalField(
+#         max_digits=8, decimal_places=2, blank=True, null=True, default=Decimal('0.0'), verbose_name='Mean outcome'
+#     )
+#     std_outcome = models.DecimalField(
+#         max_digits=8, decimal_places=2, blank=True, null=True, default=Decimal('0.0'),  verbose_name='Standard outcome'
+#     )
+#     outcome_uom = models.CharField(max_length=200, blank=True, null=True, default='kg/ha')
+#
+#     class Meta:
+#         abstract = True
 
 
 class CreateUpdateTime(models.Model):
