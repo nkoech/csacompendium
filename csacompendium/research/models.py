@@ -742,10 +742,10 @@ class Research(AuthUserDetail, CreateUpdateTime):
     objects = ResearchManager()
 
     def __unicode__(self):
-        return str(self.experimentdetails)
+        return str(self.experiment_description)
 
     def __str__(self):
-        return str(self.experimentdetails)
+        return str(self.experiment_description)
 
     def get_api_url(self):
         """
