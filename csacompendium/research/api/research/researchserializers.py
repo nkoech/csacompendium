@@ -53,7 +53,7 @@ def research_serializers():
         class Meta:
             model = Research
             fields = [
-                'id', 'experiment_design', 'experiment_replications_url',
+                'id', 'experiment_design', 'experiment_description', 'experiment_replications_url',
                 'nitrogen_applied_url', 'experiment_duration_url', 'measurement_year_url', 'mean_outcome',
                 'std_outcome', 'outcome_uom',
             ]
