@@ -1,7 +1,6 @@
 from .research.researchviews import research_views
 from .experimentrep.experimentrepviews import experiment_rep_views
 from .nitrogenapplied.nitrogenappliedviews import nitrogen_applied_views
-from .experimentdetails.experimentdetailsviews import experiment_details_views
 from .experimentduration.experimentdurationviews import experiment_duration_views
 from .measurementyear.measurementyearviews import measurement_year_views
 from .measurementseason.measurementseasonviews import measurement_season_views
@@ -17,7 +16,6 @@ from .experimentunitcategory.experimentunitcategoryviews import experiment_unit_
 research_views = research_views()
 experiment_rep_views = experiment_rep_views()
 nitrogen_applied_views = nitrogen_applied_views()
-experiment_details_views = experiment_details_views()
 experiment_duration_views = experiment_duration_views()
 measurement_year_views = measurement_year_views()
 measurement_season_views = measurement_season_views()

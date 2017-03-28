@@ -2,7 +2,6 @@ from csacompendium.research.models import (
     Research,
     ExperimentRep,
     NitrogenApplied,
-    ExperimentDetails,
     ExperimentDuration,
     MeasurementYear,
 )
@@ -47,7 +46,6 @@ def research_serializers():
         Base serializer for DRY implementation.
         """
         experiment_replications_url = SerializerMethodField()
-        experiment_details_url = SerializerMethodField()
         nitrogen_applied_url = SerializerMethodField()
         experiment_duration_url = SerializerMethodField()
         measurement_year_url = SerializerMethodField()
@@ -55,7 +53,7 @@ def research_serializers():
         class Meta:
             model = Research
             fields = [
-                'id', 'experiment_design', 'experiment_replications_url', 'experiment_details_url',
+                'id', 'experiment_design', 'experiment_replications_url',
                 'nitrogen_applied_url', 'experiment_duration_url', 'measurement_year_url', 'mean_outcome',
                 'std_outcome', 'outcome_uom',
             ]
@@ -86,15 +84,6 @@ def research_serializers():
         """
         Serialize an object based on a provided field
         """
-        def get_experiment_details_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(ExperimentRep, obj.experimentrep.id)
-
         def get_experiment_replications_url(self, obj):
             """
             Get related content type/object url
@@ -102,7 +91,7 @@ def research_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(ExperimentDetails, obj.experimentdetails.id)
+            return get_related_content_url(ExperimentRep, obj.experimentrep.id)
 
         def get_nitrogen_applied_url(self, obj):
             """
@@ -215,7 +204,7 @@ def research_serializers():
             class Meta:
                 model = Research
                 fields = [
-                    'id', 'experiment_design', 'experimentrep', 'experimentdetails',
+                    'id', 'experiment_design', 'experimentrep', 'experiment_description',
                     'nitrogenapplied', 'experimentduration', 'measurementyear', 'mean_outcome',
                     'std_outcome', 'outcome_uom', 'last_update', 'time_created',
                 ]
@@ -240,7 +229,7 @@ def research_serializers():
                 """
                 experiment_design = validated_data.get('experiment_design')
                 experimentrep = validated_data.get('experimentrep')
-                experimentdetails = validated_data.get('experimentdetails')
+                experiment_description = validated_data.get('experiment_description')
                 nitrogenapplied = validated_data.get('nitrogenapplied')
                 experimentduration = validated_data.get('experimentduration')
                 measurementyear = validated_data.get('measurementyear')
@@ -253,7 +242,7 @@ def research_serializers():
                     self.key,
                     experiment_design=experiment_design,
                     experimentrep=experimentrep,
-                    experimentdetails=experimentdetails,
+                    experiment_description=experiment_description,
                     nitrogenapplied=nitrogenapplied,
                     experimentduration=experimentduration,
                     measurementyear=measurementyear,

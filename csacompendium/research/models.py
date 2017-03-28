@@ -5,7 +5,6 @@ from csacompendium.indicators.models import ResearchOutcomeIndicator
 from csacompendium.csa_practice.models import ResearchCsaPractice
 from csacompendium.utils.abstractmodels import (
     AuthUserDetail,
-    # ResearchOutcome,
     CreateUpdateTime,
 )
 from csacompendium.utils.createslug import create_slug
@@ -97,58 +96,6 @@ class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
         instance = self
         qs = Research.objects.filter_by_model_type(instance)
         return qs
-
-
-class ExperimentDetails(AuthUserDetail, CreateUpdateTime):
-    """
-    Experiment details model
-    """
-    slug = models.SlugField(max_length=250, unique=True, blank=True)
-    exp_detail = models.TextField(unique=False, verbose_name='Experiment Details')
-
-    def __unicode__(self):
-        return self.exp_detail
-
-    def __str__(self):
-        return self.exp_detail
-
-    def get_api_url(self):
-        """
-        Get experiment details URL as a reverse from model
-        :return: URL
-        :rtype: String
-        """
-        return reverse('research_api:experiment_details_detail', kwargs={'slug': self.slug})
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Experiment Details'
-
-    @property
-    def research_relation(self):
-        """
-        Get related research properties
-        :return: Query result from the research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = Research.objects.filter_by_model_type(instance)
-        return qs
-
-
-@receiver(pre_save, sender=ExperimentDetails)
-def pre_save_experiment_details_receiver(sender, instance, *args, **kwargs):
-    """
-    Create a slug before save.
-    :param sender: Signal sending object
-    :param instance: Object instance
-    :param args: Any other argument
-    :param kwargs: Keyword arguments
-    :return: None
-    :rtype: None
-    """
-    if not instance.slug:
-        instance.slug = create_slug(instance, ExperimentDetails, instance.exp_detail)
 
 
 class ExperimentDuration(AuthUserDetail, CreateUpdateTime):
@@ -757,7 +704,6 @@ class ResearchManager(models.Manager):
         return create_model_type(self, model_type, pk, slugify=False, **kwargs)
 
 
-# class Research(AuthUserDetail, ResearchOutcome, CreateUpdateTime):
 class Research(AuthUserDetail, CreateUpdateTime):
     """
     Creates research entity.
@@ -774,9 +720,7 @@ class Research(AuthUserDetail, CreateUpdateTime):
     experimentrep = models.ForeignKey(
         ExperimentRep, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Experiment Replications'
     )
-    experimentdetails = models.ForeignKey(
-        ExperimentDetails, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Experiment Details'
-    )
+    experiment_description = models.TextField(blank=True, null=True)
     nitrogenapplied = models.ForeignKey(
         NitrogenApplied, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Nitrogen Applied'
     )

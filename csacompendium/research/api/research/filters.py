@@ -14,7 +14,7 @@ class ResearchListFilter(FilterSet):
         fields = {
             'experiment_design': ['iexact', 'icontains'],
             'experimentrep': ['exact'],
-            'experimentdetails': ['exact'],
+            'experiment_description': ['iexact', 'icontains'],
             'nitrogenapplied': ['exact'],
             'experimentduration': ['exact'],
             'measurementyear': ['exact'],
