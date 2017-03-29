@@ -225,9 +225,15 @@ class Precipitation(AuthUserDetail, CreateUpdateTime):
     """
     Precipitation model. Creates precipitation entity
     """
+    PRECIPITATION_DECSC = (
+        ('Mean Annual', 'Mean Annual'),
+        ('Mean Seasonal', 'Mean Seasonal'),
+        ('Total Annual', 'Total Annual'),
+        ('Total Seasonal', 'Total Seasonal'),
+    )
     precipitation = models.DecimalField(max_digits=7, decimal_places=2,  unique=True, default=Decimal('0.0'))
     precipitation_uom = models.CharField(max_length=5, default='mm', verbose_name='Precipitation UOM')
-    precipitation_desc = models.TextField(blank=True, null=True, verbose_name='Description')
+    precipitation_desc = models.CharField(max_length=65, blank=True, null=True, choices=PRECIPITATION_DECSC)
 
     def __unicode__(self):
         return str(self.precipitation)
