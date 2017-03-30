@@ -52,6 +52,13 @@ class Location(AuthUserDetail, CreateUpdateTime):
     """
     Location model.  Creates location entity.
     """
+    SITE_TYPE = (
+        ('On-Farm', 'On-Farm'),
+        ('On-Station', 'On-Station'),
+        ('Survey', 'Survey'),
+        ('Greenhouse', 'Greenhouse'),
+    )
+
     limit = models.Q(app_label='countries', model='country')
     slug = models.SlugField(unique=True, blank=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
@@ -61,6 +68,7 @@ class Location(AuthUserDetail, CreateUpdateTime):
     latitude = models.DecimalField(max_digits=8, decimal_places=6, default=Decimal('0.0'))
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=Decimal('0.0'))
     elevation = models.FloatField(blank=True, null=True)
+    site_type = models.CharField(max_length=30, blank=True, null=True, choices=SITE_TYPE)
     objects = LocationManager()
 
     def __unicode__(self):

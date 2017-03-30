@@ -36,6 +36,7 @@ def location_serializers():
                 'latitude',
                 'longitude',
                 'elevation',
+                'site_type',
             ]
 
     class LocationRelationBaseSerializer(ModelSerializer):
@@ -138,6 +139,7 @@ def location_serializers():
                 latitude = validated_data.get('latitude')
                 longitude = validated_data.get('longitude')
                 elevation = validated_data.get('elevation')
+                site_type = validated_data.get('site_type')
                 location = Location.objects.create_by_model_type(
                     self.model_type,
                     self.key,
@@ -145,6 +147,7 @@ def location_serializers():
                     latitude=latitude,
                     longitude=longitude,
                     elevation=elevation,
+                    site_type=site_type,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )

@@ -14,6 +14,7 @@ class LocationListFilter(FilterSet):
                   'latitude': ['exact', 'gte', 'lte'],
                   'longitude': ['exact', 'gte', 'lte'],
                   'elevation': ['exact', 'gte', 'lte'],
+                  'site_type': ['iexact', 'icontains'],
                   'object_id': ['exact'],
                   'content_type': ['exact'],
                   }
