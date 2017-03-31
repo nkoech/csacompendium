@@ -533,6 +533,7 @@ class Breed(AuthUserDetail, CreateUpdateTime):
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Breeds'
 
+
 @receiver(pre_save, sender=Breed)
 def pre_save_breed_receiver(sender, instance, *args, **kwargs):
     """
