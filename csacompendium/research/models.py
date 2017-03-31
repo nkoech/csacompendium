@@ -65,8 +65,13 @@ class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
     """
     Nitrogen applied model
     """
+    NITROGEN_SOURCE = (
+        ('Organic', 'Organic'),
+        ('Inorganic', 'Inorganic'),
+    )
     nitrogen_amount = models.DecimalField(max_digits=6, decimal_places=2,  unique=True, default=Decimal('0.0'))
     amount_uom = models.CharField(max_length=12, verbose_name='Nitrogen UOM', default='kg/ha')
+    nitrogen_source = models.CharField(max_length=30, blank=True, null=True, choices=NITROGEN_SOURCE)
 
     def __unicode__(self):
         return str(self.nitrogen_amount)

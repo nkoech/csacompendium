@@ -13,5 +13,6 @@ class NitrogenAppliedListFilter(FilterSet):
         fields = {
             'nitrogen_amount': ['exact', 'gte', 'lte'],
             'amount_uom': ['iexact', 'icontains'],
+            'nitrogen_source': ['iexact', 'icontains'],
         }
         order_by = ['nitrogen_amount']

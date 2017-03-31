@@ -40,9 +40,9 @@ class NitrogenAppliedModelAdmin(admin.ModelAdmin):
     """
     Nitrogen applied model admin settings
     """
-    list_display = ['nitrogen_amount', 'amount_uom', 'last_update', 'modified_by']
+    list_display = ['nitrogen_amount', 'amount_uom', 'nitrogen_source', 'last_update', 'modified_by']
     list_display_links = ['nitrogen_amount']
-    list_filter = ['nitrogen_amount', 'amount_uom', 'last_update', 'modified_by']
+    list_filter = ['nitrogen_amount', 'amount_uom', 'nitrogen_source', 'last_update', 'modified_by']
 
     class Meta:
         model = NitrogenApplied

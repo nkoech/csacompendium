@@ -27,6 +27,7 @@ def nitrogen_applied_serializers():
                 'id',
                 'nitrogen_amount',
                 'amount_uom',
+                'nitrogen_source',
             ]
 
     class NitrogenAppliedRelationBaseSerializer(ModelSerializer):
