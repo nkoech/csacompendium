@@ -139,7 +139,10 @@ def soil_serializers():
 
         return SoilCreateSerializer
 
-    class SoilListSerializer(SoilBaseSerializer):
+    class SoilListSerializer(
+        SoilBaseSerializer, SoilRelationBaseSerializer,
+        FieldMethodSerializer, SoilFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
@@ -147,7 +150,7 @@ def soil_serializers():
 
         class Meta:
             model = Soil
-            fields = SoilBaseSerializer.Meta.fields + ['url', ]
+            fields = SoilBaseSerializer.Meta.fields + ['url', ] + SoilRelationBaseSerializer.Meta.fields
 
     class SoilDetailSerializer(
         SoilBaseSerializer, SoilRelationBaseSerializer,
