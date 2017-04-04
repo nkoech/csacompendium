@@ -94,7 +94,7 @@ def breed_serializers():
         """
         Serialize all records in given fields into an API
         """
-        url = hyperlinked_identity('breed_api:breed_detail', 'slug')
+        url = hyperlinked_identity('research_api:breed_detail', 'slug')
 
         class Meta:
             model = Breed
