@@ -12,6 +12,7 @@ from .views import (
     experiment_unit_views,
     research_experiment_unit_views,
     experiment_unit_category_views,
+    breed_views,
     research_views,
 )
 
@@ -183,6 +184,25 @@ urlpatterns += [
         r'^species/(?P<slug>[\w-]+)/$',
         species_views['SpeciesDetailAPIView'].as_view(),
         name='species_detail'
+    ),
+]
+
+# Breed URLs
+urlpatterns += [
+    url(
+        r'^breed/$',
+        breed_views['BreedListAPIView'].as_view(),
+        name='breed_list'
+    ),
+    url(
+        r'^breed/$',
+        breed_views['BreedCreateAPIView'].as_view(),
+        name='breed_create'
+    ),
+    url(
+        r'^breed/(?P<slug>[\w-]+)/$',
+        breed_views['BreedDetailAPIView'].as_view(),
+        name='breed_detail'
     ),
 ]
 
