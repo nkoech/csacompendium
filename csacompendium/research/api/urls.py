@@ -195,7 +195,7 @@ urlpatterns += [
         name='breed_list'
     ),
     url(
-        r'^breed/$',
+        r'^breed/create/$',
         breed_views['BreedCreateAPIView'].as_view(),
         name='breed_create'
     ),
