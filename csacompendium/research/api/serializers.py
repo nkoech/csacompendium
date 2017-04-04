@@ -11,6 +11,7 @@ from .species.speciesserializers import species_serializers
 from .experimentunit.experimentunitserializers import experiment_unit_serializers
 from .researchexperimentunit.researchexperimentunitserializers import research_experiment_unit_serializers
 from .experimentunitcategory.experimentunitcategoryserializers import experiment_unit_category_serializers
+from .breed.breedserializers import breed_serializers
 
 
 research_serializers = research_serializers()
@@ -26,3 +27,4 @@ species_serializers = species_serializers()
 experiment_unit_serializers = experiment_unit_serializers()
 research_experiment_unit_serializers = research_experiment_unit_serializers()
 experiment_unit_category_serializers = experiment_unit_category_serializers()
+breed_serializers = breed_serializers()
