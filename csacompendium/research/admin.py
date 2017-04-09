@@ -9,8 +9,6 @@ from .models import (
     MeasurementYear,
     Author,
     ResearchAuthor,
-    Species,
-    ResearchSpecies,
     Research,
     Breed,
     ExperimentUnitCategory,
@@ -117,26 +115,6 @@ class AuthorModelAdmin(admin.ModelAdmin):
         model = Author
 
 
-class ResearchSpeciesInline(admin.TabularInline):
-    """
-    Easy editing of research species entry relations from the species entry page
-    """
-    model = ResearchSpecies
-
-
-class SpeciesModelAdmin(admin.ModelAdmin):
-    """
-    Species model admin settings
-    """
-    list_display = ['species', 'last_update', 'modified_by']
-    list_display_links = ['species']
-    list_filter = ['species', 'last_update', 'modified_by']
-    inlines = [ResearchSpeciesInline, ]
-
-    class Meta:
-        model = Species
-
-
 class BreedModelAdmin(admin.ModelAdmin):
     """
     Breed model admin settings
@@ -189,7 +167,6 @@ admin.site.register(ExperimentDuration, ExperimentDurationModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Author, AuthorModelAdmin)
-admin.site.register(Species, SpeciesModelAdmin)
 admin.site.register(Breed, BreedModelAdmin)
 admin.site.register(ExperimentUnitCategory, ExperimentUnitCategoryModelAdmin)
 admin.site.register(ExperimentUnit, ExperimentUnitModelAdmin)

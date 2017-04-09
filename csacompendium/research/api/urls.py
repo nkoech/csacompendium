@@ -7,8 +7,6 @@ from .views import (
     measurement_year_views,
     research_author_views,
     author_views,
-    research_species_views,
-    species_views,
     experiment_unit_views,
     research_experiment_unit_views,
     experiment_unit_category_views,
@@ -146,44 +144,6 @@ urlpatterns += [
         r'^author/(?P<slug>[\w-]+)/$',
         author_views['AuthorDetailAPIView'].as_view(),
         name='author_detail'
-    ),
-]
-
-# Research species URLs
-urlpatterns += [
-    url(
-        r'^researchspecies/$',
-        research_species_views['ResearchSpeciesListAPIView'].as_view(),
-        name='research_species_list'
-    ),
-    url(
-        r'^researchspecies/create/$',
-        research_species_views['ResearchSpeciesCreateAPIView'].as_view(),
-        name='research_species_create'
-    ),
-    url(
-        r'^researchspecies/(?P<pk>[\w-]+)/$',
-        research_species_views['ResearchSpeciesDetailAPIView'].as_view(),
-        name='research_species_detail'
-    ),
-]
-
-# Species URLs
-urlpatterns += [
-    url(
-        r'^species/$',
-        species_views['SpeciesListAPIView'].as_view(),
-        name='species_list'
-    ),
-    url(
-        r'^species/create/$',
-        species_views['SpeciesCreateAPIView'].as_view(),
-        name='species_create'
-    ),
-    url(
-        r'^species/(?P<slug>[\w-]+)/$',
-        species_views['SpeciesDetailAPIView'].as_view(),
-        name='species_detail'
     ),
 ]
 

@@ -382,110 +382,6 @@ class ResearchAuthor(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Research Authors'
 
 
-class Species(AuthUserDetail, CreateUpdateTime):
-    """
-    Species model
-    """
-    slug = models.SlugField(max_length=200, unique=True, blank=True)
-    species = models.CharField(max_length=200, unique=True)
-
-    def __unicode__(self):
-        return self.species
-
-    def __str__(self):
-        return self.species
-
-    def get_api_url(self):
-        """
-        Get species URL as a reverse from model
-        :return: URL
-        :rtype: String
-        """
-        return reverse('research_api:species_detail', kwargs={'slug': self.slug})
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Species'
-
-    @property
-    def research_species_relation(self):
-        """
-        Get related research species object/record
-        :return: Query result from the research species model
-        :rtype: object/record
-        """
-        instance = self
-        qs = ResearchSpecies.objects.filter_by_model_type(instance)
-        return qs
-
-
-@receiver(pre_save, sender=Species)
-def pre_save_species_receiver(sender, instance, *args, **kwargs):
-    """
-    Create a slug before save.
-    :param sender: Signal sending object
-    :param instance: Object instance
-    :param args: Any other argument
-    :param kwargs: Keyword arguments
-    :return: None
-    :rtype: None
-    """
-    if not instance.slug:
-        instance.slug = create_slug(instance, Species, instance.species)
-
-
-class ResearchSpeciesManager(models.Manager):
-    """
-    Research species model manager
-    """
-    def filter_by_instance(self, instance):
-        """
-        Query a related research species object/record from another model's object
-        :param instance: Object instance
-        :return: Query result from content type/model
-        :rtye: object/record
-        """
-        return model_instance_filter(instance, self, ResearchSpeciesManager)
-
-    def filter_by_model_type(self, instance):
-        """
-        Query related objects/model type
-        :param instance: Object instance
-        :return: Matching object else none
-        :rtype: Object/record
-        """
-        obj_qs = model_foreign_key_qs(instance, self, ResearchSpeciesManager)
-        if obj_qs.exists():
-            return model_type_filter(self, obj_qs, ResearchSpeciesManager)
-
-    def create_by_model_type(self, model_type, pk, **kwargs):
-        """
-        Create object by model type
-        :param model_type: Content/model type
-        :param pk: Primary key
-        :param kwargs: Fields to be created
-        :return: Data object
-        :rtype: Object
-        """
-        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
-
-
-class ResearchSpecies(AuthUserDetail, CreateUpdateTime):
-    """
-    Research species entry relationship model. A many to many bridge table between research and other models
-    """
-    limit = models.Q(app_label='research', model='research')
-    species = models.ForeignKey(Species, on_delete=models.PROTECT)
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
-    objects = ResearchSpeciesManager()
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Research Species'
-
-
 class BreedManager(models.Manager):
     """
     Breed model manager
@@ -741,7 +637,7 @@ class ResearchExperimentUnit(AuthUserDetail, CreateUpdateTime):
     incubation_days = models.DecimalField(
         max_digits=4, decimal_places=2, blank=True, null=True, verbose_name='Incubation Days', default=Decimal('0.0')
     )
-    objects = ResearchSpeciesManager()
+    objects = ResearchExperimentUnitManager()
 
     class Meta:
         ordering = ['-time_created', '-last_update']
@@ -848,17 +744,6 @@ class Research(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = ResearchAuthor.objects.filter_by_instance(instance)
-        return qs
-
-    @property
-    def research_species(self):
-        """
-        Get related research species object/record
-        :return: Query result from the research species model
-        :rtype: object/record
-        """
-        instance = self
-        qs = ResearchSpecies.objects.filter_by_instance(instance)
         return qs
 
     @property

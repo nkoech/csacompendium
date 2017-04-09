@@ -173,7 +173,7 @@ def location_relation_serializers():
         def get_relation_id (self, obj):
             """
             :param obj: Current record object
-            :return: Research species id
+            :return: Relation id
             :rtype: String
             """
             return obj.id

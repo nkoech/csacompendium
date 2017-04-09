@@ -159,7 +159,7 @@ def research_experiment_unit_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(ResearchExperimentUnit, obj.experimentunit.id)
+            return get_related_content_url(ExperimentUnit, obj.experimentunit.id)
 
         def get_relation_id (self, obj):
             """
