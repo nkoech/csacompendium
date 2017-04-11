@@ -17,7 +17,7 @@ class Country(AuthUserDetail, CreateUpdateTime):
     """
     Country model.  Creates country entity.
     """
-    country_code = models.CharField(max_length=2, unique=True, help_text='Country abbreviated name')
+    country_code = models.CharField(max_length=3, unique=True, help_text='Country abbreviated name')
     country_name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True, blank=True)
 
