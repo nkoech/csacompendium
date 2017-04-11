@@ -2,10 +2,6 @@
 ###################
 .idea
 
-# Django migraions directory
-###################
-migrations/
-
 # Local Django settings
 #########################
 config/settings/local.py
