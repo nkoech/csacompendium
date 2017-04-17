@@ -285,10 +285,12 @@ class Author(AuthUserDetail, CreateUpdateTime):
     author_bio = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return self.first_name
+        str_format = '{0} {1}'.format(self.last_name, self.first_name)
+        return str(str_format)
 
     def __str__(self):
-        return self.first_name
+        str_format = '{0} {1}'.format(self.last_name, self.first_name)
+        return str(str_format)
 
     def get_api_url(self):
         """
@@ -326,7 +328,7 @@ def pre_save_author_receiver(sender, instance, *args, **kwargs):
     :rtype: None
     """
     if not instance.slug:
-        instance_fields = [instance.first_name, instance.last_name]
+        instance_fields = [instance.last_name, instance.first_name]
         instance.slug = create_slug(instance, Author, instance_fields)
 
 
@@ -432,7 +434,7 @@ class ResearchAuthor(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    journal = models.ForeignKey(Journal, on_delete=models.PROTECT, blank=True, null=True)
+    journal = models.ForeignKey(Journal, on_delete=models.SET_NULL, blank=True, null=True)
     objects = ResearchAuthorManager()
 
     class Meta:
