@@ -32,6 +32,7 @@ def research_author_serializers():
             fields = [
                 'id',
                 'author',
+                'journal',
             ]
 
     class ResearchAuthorRelationBaseSerializer(ModelSerializer):
@@ -106,10 +107,12 @@ def research_author_serializers():
                 :rtype: Object
                 """
                 author = validated_data.get('author')
+                journal = validated_data.get('journal')
                 author_relation = ResearchAuthor.objects.create_by_model_type(
                     self.model_type,
                     self.key,
                     author=author,
+                    journal=journal,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )
