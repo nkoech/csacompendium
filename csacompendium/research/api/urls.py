@@ -6,6 +6,7 @@ from .views import (
     measurement_season_views,
     measurement_year_views,
     research_author_views,
+    journal_views,
     author_views,
     experiment_unit_views,
     research_experiment_unit_views,
@@ -128,7 +129,25 @@ urlpatterns += [
     ),
 ]
 
-# Author URLs
+# Journal URLs
+urlpatterns += [
+    url(
+        r'^journal/$',
+        journal_views['JournalListAPIView'].as_view(),
+        name='journal_list'
+    ),
+    url(
+        r'^journal/create/$',
+        journal_views['JournalCreateAPIView'].as_view(),
+        name='journal_create'
+    ),
+    url(
+        r'^journal/(?P<slug>[\w-]+)/$',
+        journal_views['JournalDetailAPIView'].as_view(),
+        name='journal_detail'
+    ),
+
+]# Author URLs
 urlpatterns += [
     url(
         r'^author/$',
