@@ -8,6 +8,7 @@ from .models import (
     MeasurementSeason,
     MeasurementYear,
     Author,
+    Journal,
     ResearchAuthor,
     Research,
     Breed,
@@ -95,6 +96,18 @@ class MeasurementSeasonModelAdmin(admin.ModelAdmin):
         model = MeasurementSeason
 
 
+class JournalModelAdmin(admin.ModelAdmin):
+    """
+    Journal model admin settings
+    """
+    list_display = ['journal_tag', 'publication_year', 'last_update', 'modified_by']
+    list_display_links = ['journal_tag']
+    list_filter = ['journal_tag', 'publication_year', 'last_update', 'modified_by']
+
+    class Meta:
+        model = Journal
+
+
 class ResearchAuthorInline(admin.TabularInline):
     """
     Easy editing of research author entry relations from the author entry page
@@ -166,6 +179,7 @@ admin.site.register(ExperimentRep, ExperimentRepModelAdmin)
 admin.site.register(ExperimentDuration, ExperimentDurationModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
+admin.site.register(Journal, JournalModelAdmin)
 admin.site.register(Author, AuthorModelAdmin)
 admin.site.register(Breed, BreedModelAdmin)
 admin.site.register(ExperimentUnitCategory, ExperimentUnitCategoryModelAdmin)

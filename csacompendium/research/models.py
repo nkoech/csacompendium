@@ -330,6 +330,63 @@ def pre_save_author_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance, Author, instance_fields)
 
 
+class Journal(AuthUserDetail, CreateUpdateTime):
+    """
+    Journal model
+    """
+    slug = models.SlugField(max_length=64, unique=True, blank=True)
+    journal_tag = models.CharField(max_length=60)
+    publication_year = models.SmallIntegerField(choices=get_year_choices(), default=get_datetime_now())
+
+    def __unicode__(self):
+        str_format = '{0} - {1}'.format(self.journal_tag, self.publication_year)
+        return str(str_format)
+
+    def __str__(self):
+        str_format = '{0} - {1}'.format(self.journal_tag, self.publication_year)
+        return str(str_format)
+
+    def get_api_url(self):
+        """
+        Get journal URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_api:journal_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        unique_together = ['journal_tag', 'publication_year']
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Journals'
+
+    @property
+    def research_author_relation(self):
+        """
+        Get related research author properties
+        :return: Query result from the research author model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchAuthor.objects.filter_by_model_type(instance)
+        return qs
+
+
+@receiver(pre_save, sender=Journal)
+def pre_save_journal_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance_fields = [instance.journal_tag, instance.publication_year]
+        instance.slug = create_slug(instance, Journal, instance_fields)
+
+
 class ResearchAuthorManager(models.Manager):
     """
     Research author model manager
@@ -375,6 +432,7 @@ class ResearchAuthor(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+    journal = models.ForeignKey(Journal, on_delete=models.PROTECT, blank=True, null=True)
     objects = ResearchAuthorManager()
 
     class Meta:

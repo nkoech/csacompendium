@@ -226,12 +226,10 @@ class OutcomeIndicator(AuthUserDetail, CreateUpdateTime):
     def __unicode__(self):
         str_format = '{0} - {1}'.format(self.indicator_code, self.subindicator)
         return str(str_format)
-        # return str(self.indicator_code)
 
     def __str__(self):
         str_format = '{0} - {1}'.format(self.indicator_code, self.subindicator)
         return str(str_format)
-        # return str(self.indicator_code)
 
     def get_api_url(self):
         """
