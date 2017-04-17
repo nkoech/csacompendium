@@ -1,5 +1,6 @@
 from csacompendium.research.models import (
     Author,
+    Journal,
     ResearchAuthor,
 )
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
@@ -38,6 +39,7 @@ def research_author_serializers():
         Base serializer for DRY implementation.
         """
         author_url = SerializerMethodField()
+        journal_url = SerializerMethodField()
         content_type_url = SerializerMethodField()
 
         class Meta:
@@ -45,6 +47,7 @@ def research_author_serializers():
             fields = [
                 'content_type_url',
                 'author_url',
+                'journal_url',
             ]
 
     class ResearchAuthorFieldMethodSerializer:
@@ -59,6 +62,15 @@ def research_author_serializers():
             :rtype: String
             """
             return get_related_content_url(Author, obj.author.id)
+
+        def get_journal_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            return get_related_content_url(Journal, obj.journal.id)
 
     def create_research_author_serializer(model_type=None, pk=None, user=None):
         """
