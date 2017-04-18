@@ -137,7 +137,7 @@ def research_author_serializers():
             fields = ResearchAuthorBaseSerializer.Meta.fields + ['research_author_url', ] + \
                      ResearchAuthorRelationBaseSerializer.Meta.fields
 
-    class ResearchAuthorSerializer(ModelSerializer):
+    class ResearchAuthorSerializer(ModelSerializer, ResearchAuthorFieldMethodSerializer):
         """
         Serialize all records in given fields into an API
         """
@@ -153,15 +153,6 @@ def research_author_serializers():
                 'author_url',
                 'research_author_url',
             ]
-
-        def get_author_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            return get_related_content_url(Author, obj.author.id)
 
         def get_relation_id (self, obj):
             """
