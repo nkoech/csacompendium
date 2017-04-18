@@ -125,7 +125,7 @@ def research_csa_practice_serializers():
             fields = ResearchCsaPracticeBaseSerializer.Meta.fields + ['research_csa_practice_url', ] + \
                      ResearchCsaPracticeRelationBaseSerializer.Meta.fields
 
-    class ResearchCsaPracticeSerializer(ModelSerializer):
+    class ResearchCsaPracticeSerializer(ModelSerializer, ResearchCsaPracticeFieldMethodSerializer):
         """
         Serialize all records in given fields into an API
         """
@@ -143,16 +143,6 @@ def research_csa_practice_serializers():
                 'csa_practice_url',
                 'research_csa_practice_url',
             ]
-
-        def get_csa_practice_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            if obj.csapractice:
-                return get_related_content_url(CsaPractice, obj.csapractice.id)
 
         def get_relation_id (self, obj):
             """

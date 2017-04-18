@@ -120,7 +120,7 @@ def location_relation_serializers():
             fields = LocationRelationBaseSerializer.Meta.fields + ['location_relation_url', ] + \
                      LocationRelationRelationBaseSerializer.Meta.fields
 
-    class LocationRelationSerializer(ModelSerializer):
+    class LocationRelationSerializer(ModelSerializer, LocationRelationFieldMethodSerializer):
         """
         Serialize all records in given fields into an API
         """
@@ -136,16 +136,6 @@ def location_relation_serializers():
                 'location_url',
                 'location_relation_url',
             ]
-
-        def get_location_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            if obj.location:
-                return get_related_content_url(Location, obj.location.id)
 
         def get_relation_id (self, obj):
             """

@@ -129,7 +129,7 @@ def research_outcome_indicator_serializers():
                      ['research_outcome_indicator_url', ] + \
                      ResearchOutcomeIndicatorRelationBaseSerializer.Meta.fields
 
-    class ResearchOutcomeIndicatorSerializer(ModelSerializer):
+    class ResearchOutcomeIndicatorSerializer(ModelSerializer, ResearchOutcomeIndicatorFieldMethodSerializer):
         """
         Serialize all records in given fields into an API
         """
@@ -147,16 +147,6 @@ def research_outcome_indicator_serializers():
                 'outcome_indicator_url',
                 'research_outcome_indicator_url',
             ]
-
-        def get_outcome_indicator_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            if obj.outcomeindicator:
-                return get_related_content_url(OutcomeIndicator, obj.outcomeindicator.id)
 
         def get_relation_id (self, obj):
             """
