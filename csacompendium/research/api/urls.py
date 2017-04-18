@@ -10,6 +10,7 @@ from .views import (
     author_views,
     experiment_unit_views,
     research_experiment_unit_views,
+    breed_views,
     experiment_unit_category_views,
     research_views,
 )
@@ -146,7 +147,9 @@ urlpatterns += [
         name='journal_detail'
     ),
 
-]# Author URLs
+]
+
+# Author URLs
 urlpatterns += [
     url(
         r'^author/$',
@@ -201,6 +204,26 @@ urlpatterns += [
         research_experiment_unit_views['ResearchExperimentUnitDetailAPIView'].as_view(),
         name='research_experiment_unit_detail'
     ),
+]
+
+#Breed URLs
+urlpatterns += [
+    url(
+        r'^breed/$',
+        breed_views['BreedListAPIView'].as_view(),
+        name='breed_list'
+    ),
+    url(
+        r'^breed/create/$',
+        breed_views['BreedCreateAPIView'].as_view(),
+        name='breed_create'
+    ),
+    url(
+        r'^breed/(?P<slug>[\w-]+)/$',
+        breed_views['BreedDetailAPIView'].as_view(),
+        name='breed_detail'
+    ),
+
 ]
 
 # Experiment unit  URLs
