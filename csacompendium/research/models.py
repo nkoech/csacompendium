@@ -573,7 +573,7 @@ class Breed(AuthUserDetail, CreateUpdateTime):
     Breed model
     """
     slug = models.SlugField(max_length=120, unique=True, blank=True)
-    breed = models.CharField(max_length=120)
+    breed = models.CharField(max_length=120, unique=True)
 
     def __unicode__(self):
         return self.breed
