@@ -62,7 +62,8 @@ def research_author_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(Author, obj.author.id)
+            if obj.author:
+                return get_related_content_url(Author, obj.author.id)
 
         def get_journal_url(self, obj):
             """
@@ -71,7 +72,8 @@ def research_author_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(Journal, obj.journal.id)
+            if obj.journal:
+                return get_related_content_url(Journal, obj.journal.id)
 
     def create_research_author_serializer(model_type=None, pk=None, user=None):
         """

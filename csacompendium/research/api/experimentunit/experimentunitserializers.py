@@ -68,7 +68,8 @@ def experiment_unit_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(ExperimentUnitCategory, obj.experimentunitcategory.id)
+            if obj.experimentunitcategory:
+                return get_related_content_url(ExperimentUnitCategory, obj.experimentunitcategory.id)
 
         def get_breeds(self, obj):
             """

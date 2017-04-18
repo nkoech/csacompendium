@@ -61,7 +61,8 @@ def research_experiment_unit_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(ExperimentUnit, obj.experimentunit.id)
+            if obj.experimentunit:
+                return get_related_content_url(ExperimentUnit, obj.experimentunit.id)
 
     def create_research_experiment_unit_serializer(model_type=None, pk=None, user=None):
         """
@@ -159,7 +160,8 @@ def research_experiment_unit_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(ExperimentUnit, obj.experimentunit.id)
+            if obj.experimentunit:
+                return get_related_content_url(ExperimentUnit, obj.experimentunit.id)
 
         def get_relation_id (self, obj):
             """

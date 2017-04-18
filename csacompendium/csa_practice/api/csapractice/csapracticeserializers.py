@@ -73,7 +73,8 @@ def csa_practice_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(CsaTheme, obj.csatheme.id)
+            if obj.csatheme:
+                return get_related_content_url(CsaTheme, obj.csatheme.id)
 
         def get_practice_level_url(self, obj):
             """
@@ -82,7 +83,8 @@ def csa_practice_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(PracticeLevel, obj.practicelevel.id)
+            if obj.practicelevel:
+                return get_related_content_url(PracticeLevel, obj.practicelevel.id)
 
         def get_practice_type_url(self, obj):
             """
@@ -91,7 +93,8 @@ def csa_practice_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(PracticeType, obj.practicetype.id)
+            if obj.practicetype:
+                return get_related_content_url(PracticeType, obj.practicetype.id)
 
         def get_research_relation(self, obj):
             """

@@ -59,7 +59,8 @@ def measurement_year_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(MeasurementSeason, obj.measurementseason.id)
+            if obj.measurementseason:
+                return get_related_content_url(MeasurementSeason, obj.measurementseason.id)
 
         def get_research(self, obj):
             """

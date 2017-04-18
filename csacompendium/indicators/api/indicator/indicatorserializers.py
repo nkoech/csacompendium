@@ -57,7 +57,8 @@ def indicator_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(Subpillar, obj.subpillar.id)
+            if obj.subpillar:
+                return get_related_content_url(Subpillar, obj.subpillar.id)
 
         def get_outcome_indicators(self, obj):
             """

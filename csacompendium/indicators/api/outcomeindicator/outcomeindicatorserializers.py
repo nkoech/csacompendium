@@ -69,7 +69,8 @@ def outcome_indicator_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(Indicator, obj.indicator.id)
+            if obj.indicator:
+                return get_related_content_url(Indicator, obj.indicator.id)
 
         def get_indicator_type_url(self, obj):
             """
@@ -78,7 +79,8 @@ def outcome_indicator_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(IndicatorType, obj.indicatortype.id)
+            if obj.indicatortype:
+                return get_related_content_url(IndicatorType, obj.indicatortype.id)
 
         def get_research_relation(self, obj):
             """

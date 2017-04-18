@@ -58,7 +58,8 @@ def research_csa_practice_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(CsaPractice, obj.csapractice.id)
+            if obj.csapractice:
+                return get_related_content_url(CsaPractice, obj.csapractice.id)
 
     def create_research_csa_practice_serializer(model_type=None, pk=None, user=None):
         """
@@ -150,7 +151,8 @@ def research_csa_practice_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(CsaPractice, obj.csapractice.id)
+            if obj.csapractice:
+                return get_related_content_url(CsaPractice, obj.csapractice.id)
 
         def get_relation_id (self, obj):
             """

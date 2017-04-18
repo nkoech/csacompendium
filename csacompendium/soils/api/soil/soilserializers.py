@@ -67,7 +67,8 @@ def soil_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(SoilType, obj.soiltype.id)
+            if obj.soiltype:
+                return get_related_content_url(SoilType, obj.soiltype.id)
 
         def get_soil_texture_url(self, obj):
             """
@@ -76,7 +77,8 @@ def soil_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(SoilTexture, obj.soiltexture.id)
+            if obj.soiltexture:
+                return get_related_content_url(SoilTexture, obj.soiltexture.id)
 
     def create_soil_serializer(model_type=None, slug=None, user=None):
         """

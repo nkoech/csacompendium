@@ -87,7 +87,8 @@ def research_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(ExperimentRep, obj.experimentrep.id)
+            if obj.experimentrep:
+                return get_related_content_url(ExperimentRep, obj.experimentrep.id)
 
         def get_nitrogen_applied_url(self, obj):
             """
@@ -96,7 +97,8 @@ def research_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(NitrogenApplied, obj.nitrogenapplied.id)
+            if obj.nitrogenapplied:
+                return get_related_content_url(NitrogenApplied, obj.nitrogenapplied.id)
 
         def get_experiment_duration_url(self, obj):
             """
@@ -105,7 +107,8 @@ def research_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(ExperimentDuration, obj.experimentduration.id)
+            if obj.experimentduration:
+                return get_related_content_url(ExperimentDuration, obj.experimentduration.id)
 
         def get_measurement_year_url(self, obj):
             """
@@ -114,7 +117,8 @@ def research_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(MeasurementYear, obj.measurementyear.id)
+            if obj.measurementyear:
+                return get_related_content_url(MeasurementYear, obj.measurementyear.id)
 
         def get_authors(self, obj):
             """

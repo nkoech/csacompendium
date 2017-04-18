@@ -59,7 +59,8 @@ def research_outcome_indicator_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(OutcomeIndicator, obj.outcomeindicator.id)
+            if obj.outcomeindicator:
+                return get_related_content_url(OutcomeIndicator, obj.outcomeindicator.id)
 
     def create_research_outcome_indicator_serializer(model_type=None, pk=None, user=None):
         """
@@ -154,7 +155,8 @@ def research_outcome_indicator_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(OutcomeIndicator, obj.outcomeindicator.id)
+            if obj.outcomeindicator:
+                return get_related_content_url(OutcomeIndicator, obj.outcomeindicator.id)
 
         def get_relation_id (self, obj):
             """

@@ -55,7 +55,8 @@ def location_relation_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(Location, obj.location.id)
+            if obj.location:
+                return get_related_content_url(Location, obj.location.id)
 
     def create_location_relation_serializer(model_type=None, pk=None, user=None):
         """
@@ -143,7 +144,8 @@ def location_relation_serializers():
             :return: URL to related object
             :rtype: String
             """
-            return get_related_content_url(Location, obj.location.id)
+            if obj.location:
+                return get_related_content_url(Location, obj.location.id)
 
         def get_relation_id (self, obj):
             """
