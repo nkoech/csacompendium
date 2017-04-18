@@ -442,69 +442,6 @@ class ResearchAuthor(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Research Authors'
 
 
-class BreedManager(models.Manager):
-    """
-    Breed model manager
-    """
-    def filter_by_instance(self, instance):
-        """
-        Query a related breed object/record from another model's object
-        :param instance: Object instance
-        :return: Query result from content type/model
-        :rtye: object/record
-        """
-        return model_instance_filter(instance, self, BreedManager)
-
-    def create_by_model_type(self, model_type, slug, **kwargs):
-        """
-        Create object by model type
-        :param model_type: Content/model type
-        :param slug: Slug
-        :param kwargs: Fields to be created
-        :return: Data object
-        :rtype: Object
-        """
-        return create_model_type(self, model_type, slug, slugify=True, **kwargs)
-
-
-class Breed(AuthUserDetail, CreateUpdateTime):
-    """
-    Breed model.  Creates Breed entity.
-    """
-    limit = models.Q(app_label='research', model='experimentunit')
-    slug = models.SlugField(max_length=200, unique=True, blank=True)
-    breed = models.CharField(max_length=200, unique=True)
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey('content_type', 'object_id')
-    objects = BreedManager()
-
-    def __unicode__(self):
-        return str(self.breed)
-
-    def __str__(self):
-        return str(self.breed)
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Breeds'
-
-
-@receiver(pre_save, sender=Breed)
-def pre_save_breed_receiver(sender, instance, *args, **kwargs):
-    """
-    Create a slug before save.
-    :param sender: Signal sending object
-    :param instance: Object instance
-    :param args: Any other argument
-    :param kwargs: Keyword arguments
-    :return: None
-    :rtype: None
-    """
-    if not instance.slug:
-        instance.slug = create_slug(instance, Breed, instance.breed)
-
-
 class ExperimentUnitCategory(AuthUserDetail, CreateUpdateTime):
     """
     Experiment unit category model. Creates experiment unit category entity.
@@ -613,17 +550,6 @@ class ExperimentUnit(AuthUserDetail, CreateUpdateTime):
         """
         instance = self
         qs = ResearchExperimentUnit.objects.filter_by_model_type(instance)
-        return qs
-
-    @property
-    def breeds(self):
-        """
-        Get related breed object/record
-        :return: Query result from the breed model
-        :rtype: object/record
-        """
-        instance = self
-        qs = Breed.objects.filter_by_instance(instance)
         return qs
 
 

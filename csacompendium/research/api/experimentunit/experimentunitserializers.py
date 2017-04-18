@@ -1,4 +1,3 @@
-from csacompendium.research.api.breed.breedserializers import breed_serializers
 from csacompendium.research.api.researchexperimentunit.researchexperimentunitserializers \
     import research_experiment_unit_serializers
 from csacompendium.research.models import (
@@ -16,7 +15,6 @@ from rest_framework.serializers import (
     SerializerMethodField
 )
 
-breed_serializers = breed_serializers()
 research_experiment_unit_serializers = research_experiment_unit_serializers()
 
 
@@ -46,14 +44,12 @@ def experiment_unit_serializers():
         Base serializer for DRY implementation.
         """
         experiment_unit_category_url = SerializerMethodField()
-        breeds = SerializerMethodField()
         research_relation = SerializerMethodField()
 
         class Meta:
             model = ExperimentUnit
             fields = [
                 'experiment_unit_category_url',
-                'breeds',
                 'research_relation',
             ]
 
@@ -70,18 +66,6 @@ def experiment_unit_serializers():
             """
             if obj.experimentunitcategory:
                 return get_related_content_url(ExperimentUnitCategory, obj.experimentunitcategory.id)
-
-        def get_breeds(self, obj):
-            """
-            Get related breed data
-            :param obj: Current record object
-            :return: Breed in an experiment unit/species
-            :rtype: Object/record
-            """
-            request = self.context['request']
-            BreedListSerializer = breed_serializers['BreedListSerializer']
-            related_content = get_related_content(obj, BreedListSerializer, obj.breeds, request)
-            return related_content
 
         def get_research_relation(self, obj):
             """

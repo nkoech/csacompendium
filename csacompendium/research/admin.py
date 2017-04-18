@@ -11,7 +11,6 @@ from .models import (
     Journal,
     ResearchAuthor,
     Research,
-    Breed,
     ExperimentUnitCategory,
     ExperimentUnit,
     ResearchExperimentUnit,
@@ -128,18 +127,6 @@ class AuthorModelAdmin(admin.ModelAdmin):
         model = Author
 
 
-class BreedModelAdmin(admin.ModelAdmin):
-    """
-    Breed model admin settings
-    """
-    list_display = ['breed', 'last_update', 'modified_by']
-    list_display_links = ['breed']
-    list_filter = ['breed', 'last_update', 'modified_by']
-
-    class Meta:
-        model = Breed
-
-
 class ExperimentUnitCategoryModelAdmin(admin.ModelAdmin):
     """
     Experiment unit category model admin settings
@@ -181,6 +168,5 @@ admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Journal, JournalModelAdmin)
 admin.site.register(Author, AuthorModelAdmin)
-admin.site.register(Breed, BreedModelAdmin)
 admin.site.register(ExperimentUnitCategory, ExperimentUnitCategoryModelAdmin)
 admin.site.register(ExperimentUnit, ExperimentUnitModelAdmin)
