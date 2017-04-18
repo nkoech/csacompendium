@@ -11,6 +11,7 @@ class ResearchAuthorListFilter(FilterSet):
     class Meta:
         model = ResearchAuthor
         fields = {'author': ['exact'],
+                  'journal': ['exact'],
                   'object_id': ['exact'],
                   'content_type': ['exact'],
                   }

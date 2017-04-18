@@ -12,6 +12,7 @@ class ResearchExperimentUnitListFilter(FilterSet):
         model = ResearchExperimentUnit
         fields = {
             'experimentunit': ['exact'],
+            'breed': ['exact'],
             'upper_soil_depth': ['exact', 'gte', 'lte'],
             'lower_soil_depth': ['exact', 'gte', 'lte'],
             'incubation_days': ['exact', 'gte', 'lte'],
