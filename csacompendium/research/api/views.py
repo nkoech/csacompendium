@@ -5,7 +5,7 @@ from .experimentduration.experimentdurationviews import experiment_duration_view
 from .measurementyear.measurementyearviews import measurement_year_views
 from .measurementseason.measurementseasonviews import measurement_season_views
 from .researchauthor.researchauthorviews import research_author_views
-from .Journal.journalviews import journal_views
+from .journal.journalviews import journal_views
 from .author.authorviews import author_views
 from .experimentunit.experimentunitviews import experiment_unit_views
 from .researchexperimentunit.researchexperimentunitviews import research_experiment_unit_views
