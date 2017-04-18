@@ -1,5 +1,6 @@
 from csacompendium.research.models import (
     ExperimentUnit,
+    Breed,
     ResearchExperimentUnit,
 )
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
@@ -31,6 +32,7 @@ def research_experiment_unit_serializers():
             fields = [
                 'id',
                 'experimentunit',
+                'breed',
                 'upper_soil_depth',
                 'lower_soil_depth',
                 'incubation_days',
@@ -41,12 +43,14 @@ def research_experiment_unit_serializers():
         Base serializer for DRY implementation.
         """
         experiment_unit_url = SerializerMethodField()
+        breed_url = SerializerMethodField()
         content_type_url = SerializerMethodField()
 
         class Meta:
             model = ResearchExperimentUnit
             fields = [
                 'experiment_unit_url',
+                'breed_url',
                 'content_type_url',
             ]
 
@@ -63,6 +67,16 @@ def research_experiment_unit_serializers():
             """
             if obj.experimentunit:
                 return get_related_content_url(ExperimentUnit, obj.experimentunit.id)
+
+        def get_breed_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            if obj.breed:
+                return get_related_content_url(Breed, obj.breed.id)
 
     def create_research_experiment_unit_serializer(model_type=None, pk=None, user=None):
         """
@@ -98,6 +112,7 @@ def research_experiment_unit_serializers():
                 :rtype: Object
                 """
                 experimentunit = validated_data.get('experimentunit')
+                breed = validated_data.get('breed')
                 upper_soil_depth = validated_data.get('upper_soil_depth')
                 lower_soil_depth = validated_data.get('lower_soil_depth')
                 incubation_days = validated_data.get('incubation_days')
@@ -105,6 +120,7 @@ def research_experiment_unit_serializers():
                     self.model_type,
                     self.key,
                     experimentunit=experimentunit,
+                    breed=breed,
                     upper_soil_depth=upper_soil_depth,
                     lower_soil_depth=lower_soil_depth,
                     incubation_days=incubation_days,
@@ -143,6 +159,7 @@ def research_experiment_unit_serializers():
         research_experiment_unit_url = hyperlinked_identity(
             'research_api:research_experiment_unit_detail', 'pk'
         )
+        breed_url = SerializerMethodField()
 
         class Meta:
             model = ResearchExperimentUnit
@@ -151,6 +168,7 @@ def research_experiment_unit_serializers():
                 'experimentunit_id',
                 'experiment_unit_url',
                 'research_experiment_unit_url',
+                'breed_url',
             ]
 
         def get_relation_id (self, obj):
@@ -161,7 +179,11 @@ def research_experiment_unit_serializers():
             """
             return obj.id
 
-    class ResearchExperimentUnitContentTypeSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchExperimentUnitContentTypeSerializer(
+        ModelSerializer,
+        FieldMethodSerializer,
+        ResearchExperimentUnitFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
@@ -170,6 +192,7 @@ def research_experiment_unit_serializers():
         research_experiment_unit_url = hyperlinked_identity(
             'research_api:research_experiment_unit_detail', 'pk'
         )
+        breed_url = SerializerMethodField()
 
         class Meta:
             model = ResearchExperimentUnit
@@ -178,6 +201,7 @@ def research_experiment_unit_serializers():
                 'object_id',
                 'content_type_url',
                 'research_experiment_unit_url',
+                'breed_url',
             ]
 
         def get_relation_id (self, obj):
