@@ -144,6 +144,7 @@ def research_author_serializers():
         Serialize all records in given fields into an API
         """
         author_url = SerializerMethodField()
+        journal_url = SerializerMethodField()
         relation_id = SerializerMethodField()
         research_author_url = hyperlinked_identity('research_api:research_author_detail', 'pk')
 
@@ -153,6 +154,7 @@ def research_author_serializers():
                 'relation_id',
                 'author_id',
                 'author_url',
+                'journal_url',
                 'research_author_url',
             ]
 
@@ -164,12 +166,17 @@ def research_author_serializers():
             """
             return obj.id
 
-    class ResearchAuthorContentTypeSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchAuthorContentTypeSerializer(
+        ModelSerializer,
+        FieldMethodSerializer,
+        ResearchAuthorFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
         relation_id = SerializerMethodField()
         content_type_url = SerializerMethodField()
+        journal_url = SerializerMethodField()
         research_author_url = hyperlinked_identity('research_api:research_author_detail', 'pk')
 
         class Meta:
@@ -178,6 +185,7 @@ def research_author_serializers():
                 'relation_id',
                 'object_id',
                 'content_type_url',
+                'journal_url',
                 'research_author_url',
             ]
 
