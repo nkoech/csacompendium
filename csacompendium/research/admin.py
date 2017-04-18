@@ -13,6 +13,7 @@ from .models import (
     Research,
     ExperimentUnitCategory,
     ExperimentUnit,
+    Breed,
     ResearchExperimentUnit,
 )
 
@@ -139,6 +140,18 @@ class ExperimentUnitCategoryModelAdmin(admin.ModelAdmin):
         model = ExperimentUnitCategory
 
 
+class BreedModelAdmin(admin.ModelAdmin):
+    """
+    Breed model admin settings
+    """
+    list_display = ['breed', 'last_update', 'modified_by']
+    list_display_links = ['breed']
+    list_filter = ['breed', 'last_update', 'modified_by']
+
+    class Meta:
+        model = Breed
+
+
 class ResearchExperimentUnitInline(admin.TabularInline):
     """
     Easy editing of research experiment unit entry relations from the experiment unit entry page
@@ -169,4 +182,5 @@ admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Journal, JournalModelAdmin)
 admin.site.register(Author, AuthorModelAdmin)
 admin.site.register(ExperimentUnitCategory, ExperimentUnitCategoryModelAdmin)
+admin.site.register(Breed, BreedModelAdmin)
 admin.site.register(ExperimentUnit, ExperimentUnitModelAdmin)

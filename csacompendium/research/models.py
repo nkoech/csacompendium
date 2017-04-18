@@ -568,6 +568,58 @@ def pre_save_experiment_unit_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance, ExperimentUnit, instance.common_name)
 
 
+class Breed(AuthUserDetail, CreateUpdateTime):
+    """
+    Breed model
+    """
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
+    breed = models.CharField(max_length=120)
+
+    def __unicode__(self):
+        return self.breed
+
+    def __str__(self):
+        return self.breed
+
+    def get_api_url(self):
+        """
+        Get breed URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_api:breed_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Breeds'
+
+    @property
+    def research_experiment_unit_relation(self):
+        """
+        Get related research experiment unit properties
+        :return: Query result from the research experiment unit model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchExperimentUnit.objects.filter_by_model_type(instance)
+        return qs
+
+
+@receiver(pre_save, sender=Breed)
+def pre_save_breed_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, Breed, instance.breed)
+
+
 class ResearchExperimentUnitManager(models.Manager):
     """
     Research experiment unit model manager
@@ -614,6 +666,7 @@ class ResearchExperimentUnit(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+    breed = models.ForeignKey(Breed, on_delete=models.SET_NULL, blank=True, null=True)
     upper_soil_depth = models.DecimalField(
         max_digits=5, decimal_places=2, blank=True, null=True, default=Decimal('0.0')
     )
