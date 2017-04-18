@@ -6,7 +6,7 @@ from rest_framework.filters import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .filters import JournalListFilter
-from csacompendium.research.api.Journal.journalserializers import journal_serializers
+from csacompendium.research.api.journal.journalserializers import journal_serializers
 
 
 def journal_views():

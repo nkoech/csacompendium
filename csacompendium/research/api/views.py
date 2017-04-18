@@ -9,6 +9,7 @@ from .journal.journalviews import journal_views
 from .author.authorviews import author_views
 from .experimentunit.experimentunitviews import experiment_unit_views
 from .researchexperimentunit.researchexperimentunitviews import research_experiment_unit_views
+from .breed.breedviews import breed_views
 from .experimentunitcategory.experimentunitcategoryviews import experiment_unit_category_views
 
 
@@ -23,4 +24,5 @@ journal_views = journal_views()
 author_views = author_views()
 experiment_unit_views = experiment_unit_views()
 research_experiment_unit_views = research_experiment_unit_views()
+breed_views = breed_views()
 experiment_unit_category_views = experiment_unit_category_views()
