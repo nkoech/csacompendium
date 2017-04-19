@@ -2,7 +2,6 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import (
-    ExperimentRep,
     NitrogenApplied,
     MeasurementSeason,
     MeasurementYear,
@@ -22,12 +21,11 @@ class ResearchModelAdmin(admin.ModelAdmin):
     Research model admin settings
     """
     list_display = [
-        'experiment_design', 'experiment_description', 'experimentrep',
-        'nitrogenapplied','last_update', 'modified_by'
+        'experiment_design', 'experiment_description', 'nitrogenapplied', 'last_update', 'modified_by'
     ]
     list_display_links = ['experiment_description']
     list_filter = [
-        'experiment_design', 'experimentrep', 'nitrogenapplied', 'last_update', 'modified_by'
+        'experiment_design', 'nitrogenapplied', 'last_update', 'modified_by'
     ]
 
     class Meta:
@@ -44,18 +42,6 @@ class NitrogenAppliedModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = NitrogenApplied
-
-
-class ExperimentRepModelAdmin(admin.ModelAdmin):
-    """
-    Experiment replication model admin settings
-    """
-    list_display = ['no_replication', 'last_update', 'modified_by']
-    list_display_links = ['no_replication']
-    list_filter = ['no_replication', 'last_update', 'modified_by']
-
-    class Meta:
-        model = ExperimentRep
 
 
 class MeasurementYearModelAdmin(admin.ModelAdmin):
@@ -161,7 +147,6 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Research, ResearchModelAdmin)
 admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
-admin.site.register(ExperimentRep, ExperimentRepModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Journal, JournalModelAdmin)

@@ -25,42 +25,6 @@ from django.core.urlresolvers import reverse
 from decimal import Decimal
 
 
-class ExperimentRep(AuthUserDetail, CreateUpdateTime):
-    """
-    Experiment replication model
-    """
-    no_replication = models.SmallIntegerField(default=0, verbose_name='Experiment Replication Number')
-
-    def __unicode__(self):
-        return str(self.no_replication)
-
-    def __str__(self):
-        return str(self.no_replication)
-
-    def get_api_url(self):
-        """
-        Get experiment replication URL as a reverse from model
-        :return: URL
-        :rtype: String
-        """
-        return reverse('research_api:experiment_rep_detail', kwargs={'pk': self.pk})
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Experiment Replications'
-
-    @property
-    def research_relation(self):
-        """
-        Get related research properties
-        :return: Query result from the research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = Research.objects.filter_by_model_type(instance)
-        return qs
-
-
 class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
     """
     Nitrogen applied model
@@ -685,9 +649,6 @@ class Research(AuthUserDetail, CreateUpdateTime):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     experiment_design = models.CharField(max_length=22, choices=EXPERIMENT_DESIGN)
-    experimentrep = models.ForeignKey(
-        ExperimentRep, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Experiment Replications'
-    )
     experiment_description = models.TextField(blank=True, null=True)
     nitrogenapplied = models.ForeignKey(
         NitrogenApplied, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Nitrogen Applied'

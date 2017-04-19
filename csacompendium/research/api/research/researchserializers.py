@@ -1,6 +1,5 @@
 from csacompendium.research.models import (
     Research,
-    ExperimentRep,
     NitrogenApplied,
     MeasurementYear,
 )
@@ -42,7 +41,6 @@ def research_serializers():
         """
         Base serializer for DRY implementation.
         """
-        experiment_replications_url = SerializerMethodField()
         nitrogen_applied_url = SerializerMethodField()
         measurement_year_url = SerializerMethodField()
 
@@ -50,8 +48,7 @@ def research_serializers():
             model = Research
             fields = [
                 'id', 'experiment_design', 'experiment_description',
-                'experiment_replications_url', 'nitrogen_applied_url',
-                'measurement_year_url',
+                'nitrogen_applied_url', 'measurement_year_url',
             ]
 
     class ResearchRelationBaseSerializer(ModelSerializer):
@@ -78,16 +75,6 @@ def research_serializers():
         """
         Serialize an object based on a provided field
         """
-        def get_experiment_replications_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            if obj.experimentrep:
-                return get_related_content_url(ExperimentRep, obj.experimentrep.id)
-
         def get_nitrogen_applied_url(self, obj):
             """
             Get related content type/object url
@@ -181,7 +168,7 @@ def research_serializers():
             class Meta:
                 model = Research
                 fields = [
-                    'id', 'experiment_design', 'experimentrep', 'experiment_description',
+                    'id', 'experiment_design', 'experiment_description',
                     'nitrogenapplied', 'measurementyear', 'last_update', 'time_created',
                 ]
 
@@ -204,7 +191,6 @@ def research_serializers():
                 :rtype: Object
                 """
                 experiment_design = validated_data.get('experiment_design')
-                experimentrep = validated_data.get('experimentrep')
                 experiment_description = validated_data.get('experiment_description')
                 nitrogenapplied = validated_data.get('nitrogenapplied')
                 measurementyear = validated_data.get('measurementyear')
@@ -213,7 +199,6 @@ def research_serializers():
                     self.model_type,
                     self.key,
                     experiment_design=experiment_design,
-                    experimentrep=experimentrep,
                     experiment_description=experiment_description,
                     nitrogenapplied=nitrogenapplied,
                     measurementyear=measurementyear,
