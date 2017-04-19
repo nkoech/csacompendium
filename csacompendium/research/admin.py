@@ -22,13 +22,12 @@ class ResearchModelAdmin(admin.ModelAdmin):
     Research model admin settings
     """
     list_display = [
-        'experiment_design', 'experiment_description', 'experimentrep', 'nitrogenapplied',
-        'mean_outcome', 'std_outcome', 'outcome_uom', 'last_update', 'modified_by'
+        'experiment_design', 'experiment_description', 'experimentrep',
+        'nitrogenapplied','last_update', 'modified_by'
     ]
     list_display_links = ['experiment_description']
     list_filter = [
-        'experiment_design', 'experimentrep', 'nitrogenapplied', 'mean_outcome',
-        'std_outcome', 'outcome_uom', 'last_update', 'modified_by'
+        'experiment_design', 'experimentrep', 'nitrogenapplied', 'last_update', 'modified_by'
     ]
 
     class Meta:

@@ -17,9 +17,6 @@ class ResearchListFilter(FilterSet):
             'experiment_description': ['iexact', 'icontains'],
             'nitrogenapplied': ['exact'],
             'measurementyear': ['exact'],
-            'mean_outcome': ['exact'],
-            'std_outcome': ['exact'],
-            'outcome_uom': ['iexact', 'icontains'],
             'object_id': ['exact'],
             'content_type': ['exact'],
         }

@@ -49,8 +49,9 @@ def research_serializers():
         class Meta:
             model = Research
             fields = [
-                'id', 'experiment_design', 'experiment_description', 'experiment_replications_url',
-                'nitrogen_applied_url', 'measurement_year_url', 'mean_outcome', 'std_outcome', 'outcome_uom',
+                'id', 'experiment_design', 'experiment_description',
+                'experiment_replications_url', 'nitrogen_applied_url',
+                'measurement_year_url',
             ]
 
     class ResearchRelationBaseSerializer(ModelSerializer):
@@ -181,8 +182,7 @@ def research_serializers():
                 model = Research
                 fields = [
                     'id', 'experiment_design', 'experimentrep', 'experiment_description',
-                    'nitrogenapplied', 'measurementyear', 'mean_outcome',
-                    'std_outcome', 'outcome_uom', 'last_update', 'time_created',
+                    'nitrogenapplied', 'measurementyear', 'last_update', 'time_created',
                 ]
 
             def __init__(self, *args, **kwargs):
@@ -208,9 +208,6 @@ def research_serializers():
                 experiment_description = validated_data.get('experiment_description')
                 nitrogenapplied = validated_data.get('nitrogenapplied')
                 measurementyear = validated_data.get('measurementyear')
-                mean_outcome = validated_data.get('mean_outcome')
-                std_outcome = validated_data.get('std_outcome')
-                outcome_uom = validated_data.get('outcome_uom')
 
                 research = Research.objects.create_by_model_type(
                     self.model_type,
@@ -220,9 +217,6 @@ def research_serializers():
                     experiment_description=experiment_description,
                     nitrogenapplied=nitrogenapplied,
                     measurementyear=measurementyear,
-                    mean_outcome=mean_outcome,
-                    std_outcome=std_outcome,
-                    outcome_uom=outcome_uom,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )

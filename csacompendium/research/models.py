@@ -695,15 +695,6 @@ class Research(AuthUserDetail, CreateUpdateTime):
     measurementyear = models.ForeignKey(
         MeasurementYear, blank=True, null=True, on_delete=models.PROTECT, verbose_name='Measurement Year'
     )
-    mean_outcome = models.DecimalField(
-        max_digits=8, decimal_places=2, blank=True, null=True,
-        default=Decimal('0.0'), verbose_name='Mean outcome'
-    )
-    std_outcome = models.DecimalField(
-        max_digits=8, decimal_places=2, blank=True, null=True,
-        default=Decimal('0.0'),  verbose_name='Standard outcome'
-    )
-    outcome_uom = models.CharField(max_length=200, blank=True, null=True, default='kg/ha')
     objects = ResearchManager()
 
     def __unicode__(self):
