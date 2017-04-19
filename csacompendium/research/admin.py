@@ -57,6 +57,7 @@ class ExperimentRepModelAdmin(admin.ModelAdmin):
     class Meta:
         model = ExperimentRep
 
+
 class MeasurementYearModelAdmin(admin.ModelAdmin):
     """
     Measurement year model admin settings

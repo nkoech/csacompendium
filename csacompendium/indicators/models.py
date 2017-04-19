@@ -270,6 +270,51 @@ def pre_save_outcome_indicator_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance, OutcomeIndicator, instance.indicator_code)
 
 
+class SoilMeasurement(AuthUserDetail, CreateUpdateTime):
+    """
+    Soil measurement model
+    """
+    upper_soil_depth = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    lower_soil_depth = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    depth_uom = models.CharField(max_length=8, default='cm')
+    incubation_days = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
+
+    def __unicode__(self):
+        str_format = 'Upper Soil: {0},  Lower Soil: {1}, Days: {2}'.format(
+            self.upper_soil_depth, self.lower_soil_depth, self.incubation_days
+        )
+        return str(str_format)
+
+    def __str__(self):
+        str_format = 'Upper Soil: {0},  Lower Soil: {1}, Days: {2}'.format(
+            self.upper_soil_depth, self.lower_soil_depth, self.incubation_days
+        )
+        return str(str_format)
+
+    def get_api_url(self):
+        """
+        Get soil measurement URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('indicator_outcome_api:soil_measurement_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Soil measurements'
+
+    @property
+    def research_outcome_indicator_relation(self):
+        """
+        Get related research outcome indicator properties
+        :return: Query result from the research outcome indicator model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchOutcomeIndicator.objects.filter_by_model_type(instance)
+        return qs
+
+
 class ResearchOutcomeIndicatorManager(models.Manager):
     """
     Research outcome indicator model manager
@@ -316,6 +361,7 @@ class ResearchOutcomeIndicator(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+    soilmeasurement = models.ForeignKey(SoilMeasurement, on_delete=models.SET_NULL, blank=True, null=True)
     objects = ResearchOutcomeIndicatorManager()
 
     class Meta:

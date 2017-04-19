@@ -3,11 +3,24 @@ from django.contrib import admin
 # Register your models here.
 from .models import (
     OutcomeIndicator,
+    SoilMeasurement,
     ResearchOutcomeIndicator,
     IndicatorType,
     Indicator,
     Subpillar,
 )
+
+
+class SoilMeasurementModelAdmin(admin.ModelAdmin):
+    """
+    Soil measurement model admin settings
+    """
+    list_display = ['upper_soil_depth', 'lower_soil_depth', 'incubation_days', 'last_update', 'modified_by']
+    list_display_links = ['upper_soil_depth']
+    list_filter = ['upper_soil_depth', 'lower_soil_depth', 'modified_by']
+
+    class Meta:
+        model = SoilMeasurement
 
 
 class ResearchOutcomeIndicatorInline(admin.TabularInline):
@@ -69,6 +82,7 @@ class SubpillarModelAdmin(admin.ModelAdmin):
         model = Subpillar
 
 
+admin.site.register(SoilMeasurement, SoilMeasurementModelAdmin)
 admin.site.register(OutcomeIndicator, OutcomeIndicatorModelAdmin)
 admin.site.register(IndicatorType, IndicatorTypeModelAdmin)
 admin.site.register(Indicator, IndicatorModelAdmin)
