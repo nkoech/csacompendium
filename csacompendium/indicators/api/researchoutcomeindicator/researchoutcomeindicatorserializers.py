@@ -1,6 +1,7 @@
 from csacompendium.indicators.models import (
     OutcomeIndicator,
     SoilMeasurement,
+    ExperimentOutcome,
     ResearchOutcomeIndicator,
 )
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
@@ -34,6 +35,7 @@ def research_outcome_indicator_serializers():
                 'id',
                 'outcomeindicator',
                 'soilmeasurement',
+                'experimentoutcome',
             ]
 
     class ResearchOutcomeIndicatorRelationBaseSerializer(ModelSerializer):
@@ -42,6 +44,7 @@ def research_outcome_indicator_serializers():
         """
         content_type_url = SerializerMethodField()
         soil_measurement_url = SerializerMethodField()
+        experiment_outcome_url = SerializerMethodField()
         outcome_indicator_url = SerializerMethodField()
 
         class Meta:
@@ -49,6 +52,7 @@ def research_outcome_indicator_serializers():
             fields = [
                 'content_type_url',
                 'soil_measurement_url',
+                'experiment_outcome_url',
                 'outcome_indicator_url',
             ]
 
@@ -75,6 +79,16 @@ def research_outcome_indicator_serializers():
             """
             if obj.soilmeasurement:
                 return get_related_content_url(SoilMeasurement, obj.soilmeasurement.id)
+
+        def get_experiment_outcome_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            if obj.experimentoutcome:
+                return get_related_content_url(ExperimentOutcome, obj.experimentoutcome.id)
 
     def create_research_outcome_indicator_serializer(model_type=None, pk=None, user=None):
         """
@@ -113,11 +127,13 @@ def research_outcome_indicator_serializers():
                 """
                 outcomeindicator = validated_data.get('outcomeindicator')
                 soilmeasurement = validated_data.get('soilmeasurement')
+                experimentoutcome = validated_data.get('experimentoutcome')
                 outcomeindicator_relation = ResearchOutcomeIndicator.objects.create_by_model_type(
                     self.model_type,
                     self.key,
                     outcomeindicator=outcomeindicator,
                     soilmeasurement=soilmeasurement,
+                    experimentoutcome=experimentoutcome,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )
@@ -155,6 +171,7 @@ def research_outcome_indicator_serializers():
             'indicator_outcome_api:research_outcome_indicator_detail', 'pk'
         )
         soil_measurement_url = SerializerMethodField()
+        experiment_outcome_url = SerializerMethodField()
 
         class Meta:
             model = ResearchOutcomeIndicator
@@ -164,6 +181,7 @@ def research_outcome_indicator_serializers():
                 'outcome_indicator_url',
                 'research_outcome_indicator_url',
                 'soil_measurement_url',
+                'experiment_outcome_url',
             ]
 
         def get_relation_id (self, obj):
@@ -188,6 +206,7 @@ def research_outcome_indicator_serializers():
             'indicator_outcome_api:research_outcome_indicator_detail', 'pk'
         )
         soil_measurement_url = SerializerMethodField()
+        experiment_outcome_url = SerializerMethodField()
 
         class Meta:
             model = ResearchOutcomeIndicator
@@ -197,6 +216,7 @@ def research_outcome_indicator_serializers():
                 'content_type_url',
                 'research_outcome_indicator_url',
                 'soil_measurement_url',
+                'experiment_outcome_url',
             ]
 
         def get_relation_id (self, obj):
