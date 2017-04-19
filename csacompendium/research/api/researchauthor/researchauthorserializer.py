@@ -55,6 +55,14 @@ def research_author_serializers():
         """
         Serialize an object based on a provided field
         """
+        def get_relation_id (self, obj):
+            """
+            :param obj: Current record object
+            :return: Research author id
+            :rtype: Integer
+            """
+            return obj.id
+
         def get_author_url(self, obj):
             """
             Get related content type/object url
@@ -158,14 +166,6 @@ def research_author_serializers():
                 'journal_url',
             ]
 
-        def get_relation_id (self, obj):
-            """
-            :param obj: Current record object
-            :return: Research author id
-            :rtype: Integer
-            """
-            return obj.id
-
     class ResearchAuthorContentTypeSerializer(
         ModelSerializer,
         FieldMethodSerializer,
@@ -188,14 +188,6 @@ def research_author_serializers():
                 'research_author_url',
                 'journal_url',
             ]
-
-        def get_relation_id (self, obj):
-            """
-            :param obj: Current record object
-            :return: Research author id
-            :rtype: String
-            """
-            return obj.id
 
     class ResearchAuthorDetailSerializer(
         ResearchAuthorBaseSerializer, ResearchAuthorRelationBaseSerializer,
