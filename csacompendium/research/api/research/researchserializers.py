@@ -66,9 +66,9 @@ def research_serializers():
             fields = [
                 'content_type_url',
                 'authors',
-                'outcome_indicator',
                 'csa_practice',
                 'experiment_unit',
+                'outcome_indicator',
             ]
 
     class ResearchFieldMethodSerializer:
@@ -106,21 +106,6 @@ def research_serializers():
             related_content = get_related_content(obj, ResearchAuthorSerializer, obj.research_author, request)
             return related_content
 
-        def get_outcome_indicator(self, obj):
-            """
-            :param obj: Current record object
-            :return: Related outcome indicator details
-            :rtype: Object/record
-            """
-            request = self.context['request']
-            ResearchOutcomeIndicatorSerializer = research_outcome_indicator_serializers[
-                'ResearchOutcomeIndicatorSerializer'
-            ]
-            related_content = get_related_content(
-                obj, ResearchOutcomeIndicatorSerializer, obj.research_outcome_indicator, request
-            )
-            return related_content
-
         def get_csa_practice(self, obj):
             """
             :param obj: Current record object
@@ -148,6 +133,21 @@ def research_serializers():
             ]
             related_content = get_related_content(
                 obj, ResearchExperimentUnitSerializer, obj.research_experiment_unit, request
+            )
+            return related_content
+
+        def get_outcome_indicator(self, obj):
+            """
+            :param obj: Current record object
+            :return: Related outcome indicator details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchOutcomeIndicatorSerializer = research_outcome_indicator_serializers[
+                'ResearchOutcomeIndicatorSerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchOutcomeIndicatorSerializer, obj.research_outcome_indicator, request
             )
             return related_content
 
