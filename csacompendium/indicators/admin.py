@@ -4,6 +4,7 @@ from django.contrib import admin
 from .models import (
     OutcomeIndicator,
     SoilMeasurement,
+    ExperimentOutcome,
     ResearchOutcomeIndicator,
     IndicatorType,
     Indicator,
@@ -21,6 +22,18 @@ class SoilMeasurementModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = SoilMeasurement
+
+
+class ExperimentOutcomeModelAdmin(admin.ModelAdmin):
+    """
+    Experiment outcome model admin settings
+    """
+    list_display = ['mean_outcome', 'std_outcome', 'outcome_uom', 'last_update', 'modified_by']
+    list_display_links = ['mean_outcome']
+    list_filter = ['mean_outcome', 'std_outcome', 'modified_by']
+
+    class Meta:
+        model = ExperimentOutcome
 
 
 class ResearchOutcomeIndicatorInline(admin.TabularInline):
@@ -83,6 +96,7 @@ class SubpillarModelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(SoilMeasurement, SoilMeasurementModelAdmin)
+admin.site.register(ExperimentOutcome, ExperimentOutcomeModelAdmin)
 admin.site.register(OutcomeIndicator, OutcomeIndicatorModelAdmin)
 admin.site.register(IndicatorType, IndicatorTypeModelAdmin)
 admin.site.register(Indicator, IndicatorModelAdmin)

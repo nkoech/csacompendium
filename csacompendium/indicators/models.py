@@ -276,7 +276,7 @@ class SoilMeasurement(AuthUserDetail, CreateUpdateTime):
     """
     upper_soil_depth = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     lower_soil_depth = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    depth_uom = models.CharField(max_length=8, default='cm')
+    depth_uom = models.CharField(max_length=8, blank=True, null=True, default='cm')
     incubation_days = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
 
     def __unicode__(self):
@@ -302,6 +302,47 @@ class SoilMeasurement(AuthUserDetail, CreateUpdateTime):
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Soil measurements'
+
+    @property
+    def research_outcome_indicator_relation(self):
+        """
+        Get related research outcome indicator properties
+        :return: Query result from the research outcome indicator model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchOutcomeIndicator.objects.filter_by_model_type(instance)
+        return qs
+
+
+class ExperimentOutcome(AuthUserDetail, CreateUpdateTime):
+    """
+    Experiment outcome model
+    """
+    mean_outcome = models.DecimalField(max_digits=8, decimal_places=2)
+    std_outcome = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+    outcome_uom = models.CharField(max_length=100, default='kg/ha')
+
+    def __unicode__(self):
+        str_format = 'Mean Outcome: {0},  STD Outcome: {1}'.format(self.mean_outcome, self.std_outcome)
+        return str(str_format)
+
+    def __str__(self):
+        str_format = 'Mean Outcome: {0},  STD Outcome: {1}'.format(self.mean_outcome, self.std_outcome)
+        return str(str_format)
+
+    def get_api_url(self):
+        """
+        Get experiment outcome URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('indicator_outcome_api:experiment_outcome_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        unique_together = ['mean_outcome', 'std_outcome']
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Experiment Outcomes'
 
     @property
     def research_outcome_indicator_relation(self):
@@ -363,6 +404,9 @@ class ResearchOutcomeIndicator(AuthUserDetail, CreateUpdateTime):
     content_object = GenericForeignKey('content_type', 'object_id')
     soilmeasurement = models.ForeignKey(
         SoilMeasurement, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Soil measurement'
+    )
+    experimentoutcome = models.ForeignKey(
+        ExperimentOutcome, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Experiment Outcome'
     )
     objects = ResearchOutcomeIndicatorManager()
 
