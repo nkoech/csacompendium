@@ -361,7 +361,9 @@ class ResearchOutcomeIndicator(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    soilmeasurement = models.ForeignKey(SoilMeasurement, on_delete=models.SET_NULL, blank=True, null=True)
+    soilmeasurement = models.ForeignKey(
+        SoilMeasurement, on_delete=models.SET_NULL, blank=True, null=True, verbose_name='Soil measurement'
+    )
     objects = ResearchOutcomeIndicatorManager()
 
     class Meta:

@@ -1,5 +1,6 @@
 from csacompendium.indicators.models import (
     OutcomeIndicator,
+    SoilMeasurement,
     ResearchOutcomeIndicator,
 )
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
@@ -32,6 +33,7 @@ def research_outcome_indicator_serializers():
             fields = [
                 'id',
                 'outcomeindicator',
+                'soilmeasurement',
             ]
 
     class ResearchOutcomeIndicatorRelationBaseSerializer(ModelSerializer):
@@ -39,12 +41,14 @@ def research_outcome_indicator_serializers():
         Base serializer for DRY implementation.
         """
         content_type_url = SerializerMethodField()
+        soil_measurement_url = SerializerMethodField()
         outcome_indicator_url = SerializerMethodField()
 
         class Meta:
             model = ResearchOutcomeIndicator
             fields = [
                 'content_type_url',
+                'soil_measurement_url',
                 'outcome_indicator_url',
             ]
 
@@ -61,6 +65,16 @@ def research_outcome_indicator_serializers():
             """
             if obj.outcomeindicator:
                 return get_related_content_url(OutcomeIndicator, obj.outcomeindicator.id)
+
+        def get_soil_measurement_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            if obj.soilmeasurement:
+                return get_related_content_url(SoilMeasurement, obj.soilmeasurement.id)
 
     def create_research_outcome_indicator_serializer(model_type=None, pk=None, user=None):
         """
@@ -98,10 +112,12 @@ def research_outcome_indicator_serializers():
                 :rtype: Object
                 """
                 outcomeindicator = validated_data.get('outcomeindicator')
+                soilmeasurement = validated_data.get('soilmeasurement')
                 outcomeindicator_relation = ResearchOutcomeIndicator.objects.create_by_model_type(
                     self.model_type,
                     self.key,
                     outcomeindicator=outcomeindicator,
+                    soilmeasurement=soilmeasurement,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )
@@ -138,6 +154,7 @@ def research_outcome_indicator_serializers():
         research_outcome_indicator_url = hyperlinked_identity(
             'indicator_outcome_api:research_outcome_indicator_detail', 'pk'
         )
+        soil_measurement_url = SerializerMethodField()
 
         class Meta:
             model = ResearchOutcomeIndicator
@@ -146,6 +163,7 @@ def research_outcome_indicator_serializers():
                 'outcomeindicator_id',
                 'outcome_indicator_url',
                 'research_outcome_indicator_url',
+                'soil_measurement_url',
             ]
 
         def get_relation_id (self, obj):
@@ -156,7 +174,11 @@ def research_outcome_indicator_serializers():
             """
             return obj.id
 
-    class ResearchOutcomeIndicatorContentTypeSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchOutcomeIndicatorContentTypeSerializer(
+        ModelSerializer,
+        FieldMethodSerializer,
+        ResearchOutcomeIndicatorFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
@@ -165,6 +187,7 @@ def research_outcome_indicator_serializers():
         research_outcome_indicator_url = hyperlinked_identity(
             'indicator_outcome_api:research_outcome_indicator_detail', 'pk'
         )
+        soil_measurement_url = SerializerMethodField()
 
         class Meta:
             model = ResearchOutcomeIndicator
@@ -173,6 +196,7 @@ def research_outcome_indicator_serializers():
                 'object_id',
                 'content_type_url',
                 'research_outcome_indicator_url',
+                'soil_measurement_url',
             ]
 
         def get_relation_id (self, obj):
