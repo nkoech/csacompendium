@@ -2,6 +2,7 @@ from django.conf.urls import url
 from .views import (
     outcome_indicator_views,
     research_outcome_indicator_views,
+    soil_measurement_views,
     indicator_type_views,
     indicator_views,
     subpillar_views,
@@ -80,6 +81,25 @@ urlpatterns += [
         r'^researchoutcomeindicator/(?P<pk>[\w-]+)/$',
         research_outcome_indicator_views['ResearchOutcomeIndicatorDetailAPIView'].as_view(),
         name='research_outcome_indicator_detail'
+    ),
+]
+
+# Soil measurement URLs
+urlpatterns += [
+    url(
+        r'^soilmeasurement/$',
+        soil_measurement_views['SoilMeasurementListAPIView'].as_view(),
+        name='soil_measurement_list'
+    ),
+    url(
+        r'^soilmeasurement/create/$',
+        soil_measurement_views['SoilMeasurementCreateAPIView'].as_view(),
+        name='soil_measurement_create'
+    ),
+    url(
+        r'^soilmeasurement/(?P<pk>[\w-]+)/$',
+        soil_measurement_views['SoilMeasurementDetailAPIView'].as_view(),
+        name='soil_measurement_detail'
     ),
 ]
 
