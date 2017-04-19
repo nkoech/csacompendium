@@ -48,6 +48,14 @@ def location_relation_serializers():
         """
         Serialize an object based on a provided field
         """
+        def get_relation_id (self, obj):
+            """
+            :param obj: Current record object
+            :return: Location relation id
+            :rtype: Integer
+            """
+            return obj.id
+
         def get_location_url(self, obj):
             """
             Get related content type/object url
@@ -137,15 +145,11 @@ def location_relation_serializers():
                 'location_relation_url',
             ]
 
-        def get_relation_id (self, obj):
-            """
-            :param obj: Current record object
-            :return: Location relation id
-            :rtype: Integer
-            """
-            return obj.id
-
-    class LocationRelationContentTypeSerializer(ModelSerializer, FieldMethodSerializer):
+    class LocationRelationContentTypeSerializer(
+        ModelSerializer,
+        FieldMethodSerializer,
+        LocationRelationFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
@@ -161,14 +165,6 @@ def location_relation_serializers():
                 'content_type_url',
                 'location_relation_url',
             ]
-
-        def get_relation_id (self, obj):
-            """
-            :param obj: Current record object
-            :return: Relation id
-            :rtype: String
-            """
-            return obj.id
 
     class LocationRelationDetailSerializer(
         LocationRelationBaseSerializer, LocationRelationRelationBaseSerializer,

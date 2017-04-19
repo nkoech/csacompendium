@@ -51,6 +51,14 @@ def research_csa_practice_serializers():
         """
         Serialize an object based on a provided field
         """
+        def get_relation_id (self, obj):
+            """
+            :param obj: Current record object
+            :return: Research CSA practice id
+            :rtype: Integer
+            """
+            return obj.id
+
         def get_csa_practice_url(self, obj):
             """
             Get related content type/object url
@@ -144,15 +152,11 @@ def research_csa_practice_serializers():
                 'research_csa_practice_url',
             ]
 
-        def get_relation_id (self, obj):
-            """
-            :param obj: Current record object
-            :return: Research CSA practice id
-            :rtype: Integer
-            """
-            return obj.id
-
-    class ResearchCsaPracticeContentTypeSerializer(ModelSerializer, FieldMethodSerializer):
+    class ResearchCsaPracticeContentTypeSerializer(
+        ModelSerializer,
+        FieldMethodSerializer,
+        ResearchCsaPracticeFieldMethodSerializer
+    ):
         """
         Serialize all records in given fields into an API
         """
@@ -170,14 +174,6 @@ def research_csa_practice_serializers():
                 'content_type_url',
                 'research_csa_practice_url',
             ]
-
-        def get_relation_id (self, obj):
-            """
-            :param obj: Current record object
-            :return: Research CSA practice id
-            :rtype: String
-            """
-            return obj.id
 
     class ResearchCsaPracticeDetailSerializer(
         ResearchCsaPracticeBaseSerializer, ResearchCsaPracticeRelationBaseSerializer,

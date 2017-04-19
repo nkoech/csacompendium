@@ -60,6 +60,14 @@ def research_outcome_indicator_serializers():
         """
         Serialize an object based on a provided field
         """
+        def get_relation_id (self, obj):
+            """
+            :param obj: Current record object
+            :return: Research outcome indicator id
+            :rtype: String
+            """
+            return obj.id
+
         def get_outcome_indicator_url(self, obj):
             """
             Get related content type/object url
@@ -184,14 +192,6 @@ def research_outcome_indicator_serializers():
                 'experiment_outcome_url',
             ]
 
-        def get_relation_id (self, obj):
-            """
-            :param obj: Current record object
-            :return: Research outcome indicator id
-            :rtype: Integer
-            """
-            return obj.id
-
     class ResearchOutcomeIndicatorContentTypeSerializer(
         ModelSerializer,
         FieldMethodSerializer,
@@ -218,14 +218,6 @@ def research_outcome_indicator_serializers():
                 'soil_measurement_url',
                 'experiment_outcome_url',
             ]
-
-        def get_relation_id (self, obj):
-            """
-            :param obj: Current record object
-            :return: Research outcome indicator id
-            :rtype: String
-            """
-            return obj.id
 
     class ResearchOutcomeIndicatorDetailSerializer(
         ResearchOutcomeIndicatorBaseSerializer, ResearchOutcomeIndicatorRelationBaseSerializer,

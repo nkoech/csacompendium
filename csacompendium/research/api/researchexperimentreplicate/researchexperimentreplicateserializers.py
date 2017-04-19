@@ -51,6 +51,14 @@ def research_experiment_replicate_serializers():
         """
         Serialize an object based on a provided field
         """
+        def get_relation_id (self, obj):
+            """
+            :param obj: Current record object
+            :return: Research experiment replicate id
+            :rtype: String
+            """
+            return obj.id
+
         def get_experiment_replicate_url(self, obj):
             """
             Get related content type/object url
@@ -148,14 +156,6 @@ def research_experiment_replicate_serializers():
                 'research_experiment_replicate_url',
             ]
 
-        def get_relation_id (self, obj):
-            """
-            :param obj: Current record object
-            :return: Research experiment replicate id
-            :rtype: Integer
-            """
-            return obj.id
-
     class ResearchExperimentReplicateContentTypeSerializer(
         ModelSerializer,
         FieldMethodSerializer,
@@ -178,14 +178,6 @@ def research_experiment_replicate_serializers():
                 'content_type_url',
                 'research_experiment_replicate_url',
             ]
-
-        def get_relation_id (self, obj):
-            """
-            :param obj: Current record object
-            :return: Research experiment replicate id
-            :rtype: String
-            """
-            return obj.id
 
     class ResearchExperimentReplicateDetailSerializer(
         ResearchExperimentReplicateBaseSerializer, ResearchExperimentReplicateRelationBaseSerializer,
