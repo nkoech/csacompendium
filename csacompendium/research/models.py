@@ -199,6 +199,97 @@ def pre_save_indicator_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance, MeasurementYear, instance.meas_year)
 
 
+class ExperimentReplicate(AuthUserDetail, CreateUpdateTime):
+    """
+    Experiment replicate model
+    """
+    no_replicate = models.PositiveSmallIntegerField(unique=True, verbose_name='Number of replicates')
+
+    def __unicode__(self):
+        str_format = 'Replicates {0} '.format(self.no_replicate)
+        return str(str_format)
+
+    def __str__(self):
+        str_format = 'Replicates {0} '.format(self.no_replicate)
+        return str(str_format)
+
+    def get_api_url(self):
+        """
+        Get experiment replicate URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_api:experiment_replicate_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Experiment Replicates'
+
+    @property
+    def research_experiment_replicate_relation(self):
+        """
+        Get related research experiment replicate object/record
+        :return: Query result from the research experiment replicate model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchExperimentReplicate.objects.filter_by_model_type(instance)
+        return qs
+
+
+class ResearchExperimentReplicateManager(models.Manager):
+    """
+    Research experiment replicate model manager
+    """
+    def filter_by_instance(self, instance):
+        """
+        Query a related research experiment replicate object/record from another model's object
+        :param instance: Object instance
+        :return: Query result from content type/model
+        :rtype: object/record
+        """
+        return model_instance_filter(instance, self, ResearchExperimentReplicateManager)
+
+    def filter_by_model_type(self, instance):
+        """
+        Query related objects/model type
+        :param instance: Object instance
+        :return: Matching object else none
+        :rtype: Object/record
+        """
+        obj_qs = model_foreign_key_qs(instance, self, ResearchExperimentReplicateManager)
+        if obj_qs.exists():
+            return model_type_filter(self, obj_qs, ResearchExperimentReplicateManager)
+
+    def create_by_model_type(self, model_type, pk, **kwargs):
+        """
+        Create object by model type
+        :param model_type: Content/model type
+        :param pk: Primary key
+        :param kwargs: Fields to be created
+        :return: Data object
+        :rtype: Object
+        """
+        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+
+
+class ResearchExperimentReplicate(AuthUserDetail, CreateUpdateTime):
+    """
+    Research experiment replicate entry relationship model.
+    A many to many bridge table between research and other models
+    """
+    limit = models.Q(app_label='research', model='research')
+    experimentreplicate = models.ForeignKey(ExperimentReplicate, on_delete=models.PROTECT)
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    objects = ResearchExperimentReplicateManager()
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Research Experiment Replicates'
+
+
 class Author(AuthUserDetail, CreateUpdateTime):
     """
     Research author model
@@ -675,6 +766,17 @@ class Research(AuthUserDetail, CreateUpdateTime):
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Research'
+
+    @property
+    def research_experiment_replicate(self):
+        """
+        Get related research experiment replicate object/record
+        :return: Query result from the research experiment replicate model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchExperimentReplicate.objects.filter_by_instance(instance)
+        return qs
 
     @property
     def research_author(self):
