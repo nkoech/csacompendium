@@ -3,6 +3,7 @@ from .views import (
     outcome_indicator_views,
     research_outcome_indicator_views,
     soil_measurement_views,
+    experiment_outcome_views,
     indicator_type_views,
     indicator_views,
     subpillar_views,
@@ -100,6 +101,25 @@ urlpatterns += [
         r'^soilmeasurement/(?P<pk>[\w-]+)/$',
         soil_measurement_views['SoilMeasurementDetailAPIView'].as_view(),
         name='soil_measurement_detail'
+    ),
+]
+
+# Experiment outcome URLs
+urlpatterns += [
+    url(
+        r'^experimentoutcome/$',
+        experiment_outcome_views['ExperimentOutcomeListAPIView'].as_view(),
+        name='experiment_outcome_list'
+    ),
+    url(
+        r'^experimentoutcome/create/$',
+        experiment_outcome_views['ExperimentOutcomeCreateAPIView'].as_view(),
+        name='experiment_outcome_create'
+    ),
+    url(
+        r'^experimentoutcome/(?P<pk>[\w-]+)/$',
+        experiment_outcome_views['ExperimentOutcomeDetailAPIView'].as_view(),
+        name='experiment_outcome_detail'
     ),
 ]
 
