@@ -629,15 +629,6 @@ class ResearchExperimentUnit(AuthUserDetail, CreateUpdateTime):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     breed = models.ForeignKey(Breed, on_delete=models.SET_NULL, blank=True, null=True)
-    upper_soil_depth = models.DecimalField(
-        max_digits=5, decimal_places=2, blank=True, null=True, default=Decimal('0.0')
-    )
-    lower_soil_depth = models.DecimalField(
-        max_digits=5, decimal_places=2, blank=True, null=True, default=Decimal('0.0')
-    )
-    incubation_days = models.DecimalField(
-        max_digits=4, decimal_places=2, blank=True, null=True, verbose_name='Incubation Days', default=Decimal('0.0')
-    )
     objects = ResearchExperimentUnitManager()
 
     class Meta:

@@ -13,10 +13,7 @@ class ResearchExperimentUnitListFilter(FilterSet):
         fields = {
             'experimentunit': ['exact'],
             'breed': ['exact'],
-            'upper_soil_depth': ['exact', 'gte', 'lte'],
-            'lower_soil_depth': ['exact', 'gte', 'lte'],
-            'incubation_days': ['exact', 'gte', 'lte'],
             'object_id': ['exact'],
             'content_type': ['exact'],
         }
-        order_by = ['upper_soil_depth']
+        order_by = ['breed']

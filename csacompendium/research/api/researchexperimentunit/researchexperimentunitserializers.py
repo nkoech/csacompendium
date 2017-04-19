@@ -33,9 +33,6 @@ def research_experiment_unit_serializers():
                 'id',
                 'experimentunit',
                 'breed',
-                'upper_soil_depth',
-                'lower_soil_depth',
-                'incubation_days',
             ]
 
     class ResearchExperimentUnitRelationBaseSerializer(ModelSerializer):
@@ -113,17 +110,11 @@ def research_experiment_unit_serializers():
                 """
                 experimentunit = validated_data.get('experimentunit')
                 breed = validated_data.get('breed')
-                upper_soil_depth = validated_data.get('upper_soil_depth')
-                lower_soil_depth = validated_data.get('lower_soil_depth')
-                incubation_days = validated_data.get('incubation_days')
                 experimentunit_relation = ResearchExperimentUnit.objects.create_by_model_type(
                     self.model_type,
                     self.key,
                     experimentunit=experimentunit,
                     breed=breed,
-                    upper_soil_depth=upper_soil_depth,
-                    lower_soil_depth=lower_soil_depth,
-                    incubation_days=incubation_days,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )
