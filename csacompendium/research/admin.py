@@ -4,7 +4,6 @@ from django.contrib import admin
 from .models import (
     ExperimentRep,
     NitrogenApplied,
-    ExperimentDuration,
     MeasurementSeason,
     MeasurementYear,
     Author,
@@ -24,12 +23,12 @@ class ResearchModelAdmin(admin.ModelAdmin):
     """
     list_display = [
         'experiment_design', 'experiment_description', 'experimentrep', 'nitrogenapplied',
-        'experimentduration', 'mean_outcome', 'std_outcome', 'outcome_uom', 'last_update', 'modified_by'
+        'mean_outcome', 'std_outcome', 'outcome_uom', 'last_update', 'modified_by'
     ]
     list_display_links = ['experiment_description']
     list_filter = [
-        'experiment_design', 'experimentrep', 'nitrogenapplied', 'experimentduration',
-        'mean_outcome', 'std_outcome', 'outcome_uom', 'last_update', 'modified_by'
+        'experiment_design', 'experimentrep', 'nitrogenapplied', 'mean_outcome',
+        'std_outcome', 'outcome_uom', 'last_update', 'modified_by'
     ]
 
     class Meta:
@@ -58,19 +57,6 @@ class ExperimentRepModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = ExperimentRep
-
-
-class ExperimentDurationModelAdmin(admin.ModelAdmin):
-    """
-    Experiment details model admin settings
-    """
-    list_display = ['exp_duration', 'last_update', 'modified_by']
-    list_display_links = ['exp_duration']
-    list_filter = ['exp_duration', 'last_update', 'modified_by']
-
-    class Meta:
-        model = ExperimentDuration
-
 
 class MeasurementYearModelAdmin(admin.ModelAdmin):
     """
@@ -176,7 +162,6 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
 admin.site.register(Research, ResearchModelAdmin)
 admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
 admin.site.register(ExperimentRep, ExperimentRepModelAdmin)
-admin.site.register(ExperimentDuration, ExperimentDurationModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Journal, JournalModelAdmin)

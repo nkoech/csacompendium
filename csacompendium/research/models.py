@@ -104,44 +104,6 @@ class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
         return qs
 
 
-class ExperimentDuration(AuthUserDetail, CreateUpdateTime):
-    """
-    Experiment duration model
-    """
-    exp_duration = models.DecimalField(
-        max_digits=4, decimal_places=2, unique=True, default=Decimal('0.0'), verbose_name='Experiment Duration'
-    )
-
-    def __unicode__(self):
-        return str(self.exp_duration)
-
-    def __str__(self):
-        return str(self.exp_duration)
-
-    def get_api_url(self):
-        """
-        Get experiment duration URL as a reverse from model
-        :return: URL
-        :rtype: String
-        """
-        return reverse('research_api:experiment_duration_detail', kwargs={'pk': self.pk})
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Experiment Durations'
-
-    @property
-    def research_relation(self):
-        """
-        Get related research properties
-        :return: Query result from the research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = Research.objects.filter_by_model_type(instance)
-        return qs
-
-
 class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
     """
     Measurement season model
@@ -738,9 +700,6 @@ class Research(AuthUserDetail, CreateUpdateTime):
     experiment_description = models.TextField(blank=True, null=True)
     nitrogenapplied = models.ForeignKey(
         NitrogenApplied, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Nitrogen Applied'
-    )
-    experimentduration = models.ForeignKey(
-        ExperimentDuration, blank=True, null=True, on_delete=models.PROTECT, verbose_name='Experiment Duration'
     )
     measurementyear = models.ForeignKey(
         MeasurementYear, blank=True, null=True, on_delete=models.PROTECT, verbose_name='Measurement Year'

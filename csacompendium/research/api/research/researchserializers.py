@@ -2,7 +2,6 @@ from csacompendium.research.models import (
     Research,
     ExperimentRep,
     NitrogenApplied,
-    ExperimentDuration,
     MeasurementYear,
 )
 from csacompendium.research.api.researchauthor.researchauthorserializer import research_author_serializers
@@ -45,15 +44,13 @@ def research_serializers():
         """
         experiment_replications_url = SerializerMethodField()
         nitrogen_applied_url = SerializerMethodField()
-        experiment_duration_url = SerializerMethodField()
         measurement_year_url = SerializerMethodField()
 
         class Meta:
             model = Research
             fields = [
                 'id', 'experiment_design', 'experiment_description', 'experiment_replications_url',
-                'nitrogen_applied_url', 'experiment_duration_url', 'measurement_year_url', 'mean_outcome',
-                'std_outcome', 'outcome_uom',
+                'nitrogen_applied_url', 'measurement_year_url', 'mean_outcome', 'std_outcome', 'outcome_uom',
             ]
 
     class ResearchRelationBaseSerializer(ModelSerializer):
@@ -99,16 +96,6 @@ def research_serializers():
             """
             if obj.nitrogenapplied:
                 return get_related_content_url(NitrogenApplied, obj.nitrogenapplied.id)
-
-        def get_experiment_duration_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            if obj.experimentduration:
-                return get_related_content_url(ExperimentDuration, obj.experimentduration.id)
 
         def get_measurement_year_url(self, obj):
             """
@@ -194,7 +181,7 @@ def research_serializers():
                 model = Research
                 fields = [
                     'id', 'experiment_design', 'experimentrep', 'experiment_description',
-                    'nitrogenapplied', 'experimentduration', 'measurementyear', 'mean_outcome',
+                    'nitrogenapplied', 'measurementyear', 'mean_outcome',
                     'std_outcome', 'outcome_uom', 'last_update', 'time_created',
                 ]
 
@@ -220,7 +207,6 @@ def research_serializers():
                 experimentrep = validated_data.get('experimentrep')
                 experiment_description = validated_data.get('experiment_description')
                 nitrogenapplied = validated_data.get('nitrogenapplied')
-                experimentduration = validated_data.get('experimentduration')
                 measurementyear = validated_data.get('measurementyear')
                 mean_outcome = validated_data.get('mean_outcome')
                 std_outcome = validated_data.get('std_outcome')
@@ -233,7 +219,6 @@ def research_serializers():
                     experimentrep=experimentrep,
                     experiment_description=experiment_description,
                     nitrogenapplied=nitrogenapplied,
-                    experimentduration=experimentduration,
                     measurementyear=measurementyear,
                     mean_outcome=mean_outcome,
                     std_outcome=std_outcome,
