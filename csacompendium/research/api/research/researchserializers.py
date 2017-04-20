@@ -3,6 +3,8 @@ from csacompendium.research.models import (
     NitrogenApplied,
     MeasurementYear,
 )
+from csacompendium.research.api.researchdiversity.researchdiversityserializers import \
+    research_diversity_serializers
 from csacompendium.research.api.researchexperimentdescription.researchexperimentdescriptionserializers import \
     research_experiment_description_serializers
 from csacompendium.research.api.researchexperimentreplicate.researchexperimentreplicateserializers import \
@@ -28,6 +30,7 @@ from rest_framework.serializers import (
     ValidationError,
 )
 
+research_diversity_serializers = research_diversity_serializers()
 research_experiment_description_serializers = research_experiment_description_serializers()
 research_experiment_replicate_serializers = research_experiment_replicate_serializers()
 research_author_serializers = research_author_serializers()
@@ -65,6 +68,7 @@ def research_serializers():
         experiment_replicate = SerializerMethodField()
         experiment_description = SerializerMethodField()
         csa_practice = SerializerMethodField()
+        diversity = SerializerMethodField()
         experiment_unit = SerializerMethodField()
         outcome_indicator = SerializerMethodField()
 
@@ -76,6 +80,7 @@ def research_serializers():
                 'experiment_replicate',
                 'experiment_description',
                 'csa_practice',
+                'diversity',
                 'experiment_unit',
                 'outcome_indicator',
             ]
@@ -157,6 +162,21 @@ def research_serializers():
             ]
             related_content = get_related_content(
                 obj, ResearchCsaPracticeSerializer, obj.research_csa_practice, request
+            )
+            return related_content
+
+        def get_diversity(self, obj):
+            """
+            :param obj: Current record object
+            :return: Related diversity details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchDiversitySerializer = research_diversity_serializers[
+                'ResearchDiversitySerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchDiversitySerializer, obj.research_diversity, request
             )
             return related_content
 
