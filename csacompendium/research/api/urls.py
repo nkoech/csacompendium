@@ -4,6 +4,7 @@ from .views import (
     measurement_season_views,
     measurement_year_views,
     research_experiment_replicate_views,
+    experiment_replicate_views,
     research_author_views,
     journal_views,
     author_views,
@@ -87,6 +88,25 @@ urlpatterns += [
         r'^researchexperimentreplicate/(?P<pk>[\w-]+)/$',
         research_experiment_replicate_views['ResearchExperimentReplicateDetailAPIView'].as_view(),
         name='research_experiment_replicate_detail'
+    ),
+]
+
+# Experiment replicate URLs
+urlpatterns += [
+    url(
+        r'^experimentreplicate/$',
+        experiment_replicate_views['ExperimentReplicateListAPIView'].as_view(),
+        name='experiment_replicate_list'
+    ),
+    url(
+        r'^experimentreplicate/create/$',
+        experiment_replicate_views['ExperimentReplicateCreateAPIView'].as_view(),
+        name='experiment_replicate_create'
+    ),
+    url(
+        r'^experimentreplicate/(?P<pk>[\w-]+)/$',
+        experiment_replicate_views['ExperimentReplicateDetailAPIView'].as_view(),
+        name='experiment_replicate_detail'
     ),
 ]
 
