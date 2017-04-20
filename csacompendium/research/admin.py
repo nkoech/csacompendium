@@ -5,6 +5,8 @@ from .models import (
     NitrogenApplied,
     MeasurementSeason,
     MeasurementYear,
+    Diversity,
+    ResearchDiversity,
     ExperimentDescription,
     ResearchExperimentDescription,
     ExperimentReplicate,
@@ -70,6 +72,26 @@ class MeasurementSeasonModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = MeasurementSeason
+
+class ResearchDiversityInline(admin.TabularInline):
+    """
+    Easy editing of research diversity entry relations from
+    the diversity entry page
+    """
+    model = ResearchDiversity
+
+
+class DiversityModelAdmin(admin.ModelAdmin):
+    """
+    Diversity model admin settings
+    """
+    list_display = ['diversity', 'last_update', 'modified_by']
+    list_display_links = ['diversity']
+    list_filter = ['diversity', 'last_update', 'modified_by']
+    inlines = [ResearchDiversityInline, ]
+
+    class Meta:
+        model = Diversity
 
 
 class ResearchExperimentDescriptionInline(admin.TabularInline):
@@ -195,6 +217,7 @@ admin.site.register(Research, ResearchModelAdmin)
 admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
+admin.site.register(Diversity, DiversityModelAdmin)
 admin.site.register(ExperimentDescription, ExperimentDescriptionModelAdmin)
 admin.site.register(ExperimentReplicate, ExperimentReplicateModelAdmin)
 admin.site.register(Journal, JournalModelAdmin)

@@ -199,6 +199,111 @@ def pre_save_indicator_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance, MeasurementYear, instance.meas_year)
 
 
+class Diversity(AuthUserDetail, CreateUpdateTime):
+    """
+    Diversity model
+    """
+    slug = models.SlugField(max_length=360, unique=True, blank=True)
+    diversity = models.CharField(max_length=360, unique=True)
+
+    def __unicode__(self):
+        return self.diversity
+
+    def __str__(self):
+        return self.diversity
+
+    def get_api_url(self):
+        """
+        Get diversity URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_api:diversity_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Diversity'
+
+    @property
+    def research_diversity_relation(self):
+        """
+        Get related research diversity object/record
+        :return: Query result from the research diversity model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchDiversity.objects.filter_by_model_type(instance)
+        return qs
+
+
+@receiver(pre_save, sender=Diversity)
+def pre_save_diversity_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, Diversity, instance.diversity)
+
+
+class ResearchDiversityManager(models.Manager):
+    """
+    Research diversity model manager
+    """
+    def filter_by_instance(self, instance):
+        """
+        Query a related research diversity object/record from another model's object
+        :param instance: Object instance
+        :return: Query result from content type/model
+        :rtype: object/record
+        """
+        return model_instance_filter(instance, self, ResearchDiversityManager)
+
+    def filter_by_model_type(self, instance):
+        """
+        Query related objects/model type
+        :param instance: Object instance
+        :return: Matching object else none
+        :rtype: Object/record
+        """
+        obj_qs = model_foreign_key_qs(instance, self, ResearchDiversityManager)
+        if obj_qs.exists():
+            return model_type_filter(self, obj_qs, ResearchDiversityManager)
+
+    def create_by_model_type(self, model_type, pk, **kwargs):
+        """
+        Create object by model type
+        :param model_type: Content/model type
+        :param pk: Primary key
+        :param kwargs: Fields to be created
+        :return: Data object
+        :rtype: Object
+        """
+        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+
+
+class ResearchDiversity(AuthUserDetail, CreateUpdateTime):
+    """
+    Research diversity entry relationship model.
+    A many to many bridge table between research and other models
+    """
+    limit = models.Q(app_label='research', model='research')
+    diversity = models.ForeignKey(Diversity, on_delete=models.PROTECT)
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    objects = ResearchDiversityManager()
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Research Diversity'
+
+
 class ExperimentDescription(AuthUserDetail, CreateUpdateTime):
     """
     Experiment description model
@@ -876,6 +981,17 @@ class Research(AuthUserDetail, CreateUpdateTime):
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Research'
+
+    @property
+    def research_diversity(self):
+        """
+        Get related research diversity object/record
+        :return: Query result from the research diversity model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchDiversity.objects.filter_by_instance(instance)
+        return qs
 
     @property
     def research_experiment_description(self):
