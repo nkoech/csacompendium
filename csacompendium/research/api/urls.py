@@ -3,6 +3,7 @@ from .views import (
     nitrogen_applied_views,
     measurement_season_views,
     measurement_year_views,
+    research_experiment_description_views,
     research_experiment_replicate_views,
     experiment_replicate_views,
     research_author_views,
@@ -69,6 +70,25 @@ urlpatterns += [
         r'^measurementyear/(?P<slug>[\w-]+)/$',
         measurement_year_views['MeasurementYearDetailAPIView'].as_view(),
         name='measurement_year_detail'
+    ),
+]
+
+# Research experiment description URLs
+urlpatterns += [
+    url(
+        r'^researchexperimentdescription/$',
+        research_experiment_description_views['ResearchExperimentDescriptionListAPIView'].as_view(),
+        name='research_experiment_description_list'
+    ),
+    url(
+        r'^researchexperimentdescription/create/$',
+        research_experiment_description_views['ResearchExperimentDescriptionCreateAPIView'].as_view(),
+        name='research_experiment_description_create'
+    ),
+    url(
+        r'^researchexperimentdescription/(?P<pk>[\w-]+)/$',
+        research_experiment_description_views['ResearchExperimentDescriptionDetailAPIView'].as_view(),
+        name='research_experiment_description_detail'
     ),
 ]
 
