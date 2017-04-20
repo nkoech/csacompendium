@@ -3,6 +3,8 @@ from csacompendium.research.models import (
     NitrogenApplied,
     MeasurementYear,
 )
+from csacompendium.research.api.researchexperimentdescription.researchexperimentdescriptionserializers import \
+    research_experiment_description_serializers
 from csacompendium.research.api.researchexperimentreplicate.researchexperimentreplicateserializers import \
     research_experiment_replicate_serializers
 from csacompendium.research.api.researchauthor.researchauthorserializer import research_author_serializers
@@ -26,6 +28,7 @@ from rest_framework.serializers import (
     ValidationError,
 )
 
+research_experiment_description_serializers = research_experiment_description_serializers()
 research_experiment_replicate_serializers = research_experiment_replicate_serializers()
 research_author_serializers = research_author_serializers()
 research_outcome_indicator_serializers = research_outcome_indicator_serializers()
@@ -58,11 +61,12 @@ def research_serializers():
         Base serializer for DRY implementation.
         """
         content_type_url = SerializerMethodField()
-        experiment_replicate = SerializerMethodField()
         authors = SerializerMethodField()
-        outcome_indicator = SerializerMethodField()
+        experiment_replicate = SerializerMethodField()
+        experiment_description = SerializerMethodField()
         csa_practice = SerializerMethodField()
         experiment_unit = SerializerMethodField()
+        outcome_indicator = SerializerMethodField()
 
         class Meta:
             model = Research
@@ -70,6 +74,7 @@ def research_serializers():
                 'content_type_url',
                 'authors',
                 'experiment_replicate',
+                'experiment_description',
                 'csa_practice',
                 'experiment_unit',
                 'outcome_indicator',
@@ -122,6 +127,21 @@ def research_serializers():
             ]
             related_content = get_related_content(
                 obj, ResearchExperimentReplicateSerializer, obj.research_experiment_replicate, request
+            )
+            return related_content
+
+        def get_experiment_description(self, obj):
+            """
+            :param obj: Current record object
+            :return: Related experiment description details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchExperimentDescriptionSerializer = research_experiment_description_serializers[
+                'ResearchExperimentDescriptionSerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchExperimentDescriptionSerializer, obj.research_experiment_description, request
             )
             return related_content
 

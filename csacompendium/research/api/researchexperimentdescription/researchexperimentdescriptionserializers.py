@@ -155,7 +155,7 @@ def research_experiment_description_serializers():
             fields = [
                 'relation_id',
                 'experimentdescription_id',
-                'research_experiment_description_url',
+                'experiment_description_url',
                 'research_experiment_description_url',
             ]
 
