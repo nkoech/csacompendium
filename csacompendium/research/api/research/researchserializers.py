@@ -50,8 +50,7 @@ def research_serializers():
         class Meta:
             model = Research
             fields = [
-                'id', 'experiment_design', 'experiment_description',
-                'nitrogen_applied_url', 'measurement_year_url',
+                'id', 'experiment_design', 'nitrogen_applied_url', 'measurement_year_url',
             ]
 
     class ResearchRelationBaseSerializer(ModelSerializer):
@@ -188,8 +187,8 @@ def research_serializers():
             class Meta:
                 model = Research
                 fields = [
-                    'id', 'experiment_design', 'experiment_description',
-                    'nitrogenapplied', 'measurementyear', 'last_update', 'time_created',
+                    'id', 'experiment_design', 'nitrogenapplied',
+                    'measurementyear', 'last_update', 'time_created',
                 ]
 
             def __init__(self, *args, **kwargs):
@@ -211,7 +210,6 @@ def research_serializers():
                 :rtype: Object
                 """
                 experiment_design = validated_data.get('experiment_design')
-                experiment_description = validated_data.get('experiment_description')
                 nitrogenapplied = validated_data.get('nitrogenapplied')
                 measurementyear = validated_data.get('measurementyear')
 
@@ -219,7 +217,6 @@ def research_serializers():
                     self.model_type,
                     self.key,
                     experiment_design=experiment_design,
-                    experiment_description=experiment_description,
                     nitrogenapplied=nitrogenapplied,
                     measurementyear=measurementyear,
                     user=self.auth_user,

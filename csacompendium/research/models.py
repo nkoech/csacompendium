@@ -742,7 +742,6 @@ class Research(AuthUserDetail, CreateUpdateTime):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     experiment_design = models.CharField(max_length=22, choices=EXPERIMENT_DESIGN)
-    experiment_description = models.TextField(blank=True, null=True)
     nitrogenapplied = models.ForeignKey(
         NitrogenApplied, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Nitrogen Applied'
     )
@@ -752,10 +751,12 @@ class Research(AuthUserDetail, CreateUpdateTime):
     objects = ResearchManager()
 
     def __unicode__(self):
-        return str(self.experiment_description)
+        str_format = '{0} - {1}'.format(self.experiment_design, self.id)
+        return str(str_format)
 
     def __str__(self):
-        return str(self.experiment_description)
+        str_format = '{0} - {1}'.format(self.experiment_design, self.id)
+        return str(str_format)
 
     def get_api_url(self):
         """

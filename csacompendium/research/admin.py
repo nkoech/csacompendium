@@ -23,9 +23,9 @@ class ResearchModelAdmin(admin.ModelAdmin):
     Research model admin settings
     """
     list_display = [
-        'experiment_design', 'experiment_description', 'nitrogenapplied', 'last_update', 'modified_by'
+        'experiment_design', 'nitrogenapplied', 'last_update', 'modified_by'
     ]
-    list_display_links = ['experiment_description']
+    list_display_links = ['experiment_design']
     list_filter = [
         'experiment_design', 'nitrogenapplied', 'last_update', 'modified_by'
     ]
