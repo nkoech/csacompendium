@@ -3,7 +3,7 @@ from rest_framework.serializers import (
     SerializerMethodField
 )
 from csacompendium.research.api.research.researchserializers import research_serializers
-from csacompendium.research.models import MeasurementYear, MeasurementSeason
+from csacompendium.research.models import MeasurementYear
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
 from csacompendium.utils.serializersutils import (
     FieldMethodSerializer,
@@ -30,20 +30,17 @@ def measurement_year_serializers():
             fields = [
                 'id',
                 'meas_year',
-                'measurementseason',
             ]
 
     class MeasurementYearRelationBaseSerializer(ModelSerializer):
         """
         Base serializer for DRY implementation.
         """
-        measurement_season_url = SerializerMethodField()
         research = SerializerMethodField()
 
         class Meta:
             model = MeasurementYear
             fields = [
-                'measurement_season_url',
                 'research',
             ]
 
@@ -51,17 +48,6 @@ def measurement_year_serializers():
         """
         Serialize an object based on a provided field
         """
-
-        def get_measurement_season_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            if obj.measurementseason:
-                return get_related_content_url(MeasurementSeason, obj.measurementseason.id)
-
         def get_research(self, obj):
             """
             :param obj: Current record object

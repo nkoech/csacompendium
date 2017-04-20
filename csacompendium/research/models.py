@@ -68,63 +68,6 @@ class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
         return qs
 
 
-class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
-    """
-    Measurement season model
-    """
-    RAIN_SEASONS = (
-        ('Long Rains', 'Long Rains'),
-        ('Short Rains', 'Short Rains'),
-    )
-
-    slug = models.SlugField(unique=True, blank=True)
-    meas_season = models.CharField(max_length=22, choices=RAIN_SEASONS, unique=True, verbose_name='Measurement season')
-
-    def __unicode__(self):
-        return self.meas_season
-
-    def __str__(self):
-        return self.meas_season
-
-    def get_api_url(self):
-        """
-        Get measurement season URL as a reverse from model
-        :return: URL
-        :rtype: String
-        """
-        return reverse('research_api:measurement_season_detail', kwargs={'slug': self.slug})
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Measurement Seasons'
-
-    @property
-    def measurement_year_relation(self):
-        """
-        Get related measurement year properties
-        :return: Query result from the measurement year model
-        :rtye: object/record
-        """
-        instance = self
-        qs = MeasurementYear.objects.filter_by_model_type(instance)
-        return qs
-
-
-@receiver(pre_save, sender=MeasurementSeason)
-def pre_save_measurement_season_receiver(sender, instance, *args, **kwargs):
-    """
-    Create a slug before save.
-    :param sender: Signal sending object
-    :param instance: Object instance
-    :param args: Any other argument
-    :param kwargs: Keyword arguments
-    :return: None
-    :rtype: None
-    """
-    if not instance.slug:
-        instance.slug = create_slug(instance, MeasurementSeason, instance.meas_season)
-
-
 class MeasurementYearManager(models.Manager):
     """
     Measurement year model manager
@@ -148,9 +91,6 @@ class MeasurementYear(AuthUserDetail, CreateUpdateTime):
     slug = models.SlugField(unique=True, blank=True)
     meas_year = models.SmallIntegerField(
         choices=get_year_choices(), default=get_datetime_now(), verbose_name='Measurement year'
-    )
-    measurementseason = models.ForeignKey(
-        MeasurementSeason, on_delete=models.PROTECT, verbose_name='Measurement season'
     )
     objects = MeasurementYearManager()
 

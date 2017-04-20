@@ -12,6 +12,5 @@ class MeasurementYearListFilter(FilterSet):
         model = MeasurementYear
         fields = {
             'meas_year': ['exact', 'gte', 'lte'],
-            'measurementseason': ['exact'],
         }
         order_by = ['meas_year']

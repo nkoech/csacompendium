@@ -3,7 +3,6 @@ from django.contrib import admin
 # Register your models here.
 from .models import (
     NitrogenApplied,
-    MeasurementSeason,
     MeasurementYear,
     Diversity,
     ResearchDiversity,
@@ -54,24 +53,13 @@ class MeasurementYearModelAdmin(admin.ModelAdmin):
     """
     Measurement year model admin settings
     """
-    list_display = ['meas_year', 'measurementseason', 'last_update', 'modified_by']
+    list_display = ['meas_year', 'last_update', 'modified_by']
     list_display_links = ['meas_year']
-    list_filter = ['measurementseason', 'last_update', 'modified_by', 'meas_year']
+    list_filter = ['meas_year', 'last_update', 'modified_by', 'meas_year']
 
     class Meta:
         model = MeasurementYear
 
-
-class MeasurementSeasonModelAdmin(admin.ModelAdmin):
-    """
-    Measurement season model admin settings
-    """
-    list_display = ['meas_season', 'last_update', 'modified_by']
-    list_display_links = ['meas_season']
-    list_filter = ['meas_season', 'last_update', 'modified_by']
-
-    class Meta:
-        model = MeasurementSeason
 
 class ResearchDiversityInline(admin.TabularInline):
     """
@@ -216,7 +204,6 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
 admin.site.register(Research, ResearchModelAdmin)
 admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
-admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(Diversity, DiversityModelAdmin)
 admin.site.register(ExperimentDescription, ExperimentDescriptionModelAdmin)
 admin.site.register(ExperimentReplicate, ExperimentReplicateModelAdmin)
