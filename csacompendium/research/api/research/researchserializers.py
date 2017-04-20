@@ -3,6 +3,8 @@ from csacompendium.research.models import (
     NitrogenApplied,
     MeasurementYear,
 )
+from csacompendium.research.api.researchexperimentreplicate.researchexperimentreplicateserializers import \
+    research_experiment_replicate_serializers
 from csacompendium.research.api.researchauthor.researchauthorserializer import research_author_serializers
 from csacompendium.indicators.api.researchoutcomeindicator.researchoutcomeindicatorserializers import \
     research_outcome_indicator_serializers
@@ -24,6 +26,7 @@ from rest_framework.serializers import (
     ValidationError,
 )
 
+research_experiment_replicate_serializers = research_experiment_replicate_serializers()
 research_author_serializers = research_author_serializers()
 research_outcome_indicator_serializers = research_outcome_indicator_serializers()
 research_csa_practice_serializers = research_csa_practice_serializers()
@@ -56,6 +59,7 @@ def research_serializers():
         Base serializer for DRY implementation.
         """
         content_type_url = SerializerMethodField()
+        experiment_replicate = SerializerMethodField()
         authors = SerializerMethodField()
         outcome_indicator = SerializerMethodField()
         csa_practice = SerializerMethodField()
@@ -66,6 +70,7 @@ def research_serializers():
             fields = [
                 'content_type_url',
                 'authors',
+                'experiment_replicate',
                 'csa_practice',
                 'experiment_unit',
                 'outcome_indicator',
@@ -104,6 +109,21 @@ def research_serializers():
             request = self.context['request']
             ResearchAuthorSerializer = research_author_serializers['ResearchAuthorSerializer']
             related_content = get_related_content(obj, ResearchAuthorSerializer, obj.research_author, request)
+            return related_content
+
+        def get_experiment_replicate(self, obj):
+            """
+            :param obj: Current record object
+            :return: Related experiment replicate details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchExperimentReplicateSerializer = research_experiment_replicate_serializers[
+                'ResearchExperimentReplicateSerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchExperimentReplicateSerializer, obj.research_experiment_replicate, request
+            )
             return related_content
 
         def get_csa_practice(self, obj):
