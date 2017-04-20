@@ -4,6 +4,7 @@ from .measurementyear.measurementyearserializers import measurement_year_seriali
 from .measurementseason.measurementseasonserializers import measurement_season_serializers
 from .researchexperimentreplicate.researchexperimentreplicateserializers import \
     research_experiment_replicate_serializers
+from .experimentreplicate.experimentreplicateserializers import experiment_replicate_serializers
 from .researchauthor.researchauthorserializer import research_author_serializers
 from .journal.journalserializers import journal_serializers
 from .author.authorserializers import author_serializers
@@ -18,6 +19,7 @@ nitrogen_applied_serializers = nitrogen_applied_serializers()
 measurement_year_serializers = measurement_year_serializers()
 measurement_season_serializers = measurement_season_serializers()
 research_experiment_replicate_serializers = research_experiment_replicate_serializers()
+experiment_replicate_serializers = experiment_replicate_serializers()
 research_author_serializers = research_author_serializers()
 journal_serializers = journal_serializers()
 author_serializers = author_serializers()
