@@ -78,14 +78,13 @@ def experiment_replicate_serializers():
 
     class ExperimentReplicateDetailSerializer(
         ExperimentReplicateBaseSerializer,  ExperimentReplicateRelationBaseSerializer,
-        FieldMethodSerializer,ExperimentReplicateFieldMethodSerializer
+        FieldMethodSerializer, ExperimentReplicateFieldMethodSerializer
     ):
         """
         Serialize single record into an API. This is dependent on fields given.
         """
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        research_relation = SerializerMethodField()
 
         class Meta:
             common_fields = [

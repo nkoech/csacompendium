@@ -83,7 +83,6 @@ def author_serializers():
         """
         user = SerializerMethodField()
         modified_by = SerializerMethodField()
-        research_relation = SerializerMethodField()
 
         class Meta:
             common_fields = [
