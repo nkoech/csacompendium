@@ -1,7 +1,6 @@
 from csacompendium.research.models import (
     Research,
     NitrogenApplied,
-    MeasurementYear,
 )
 from csacompendium.research.api.researchdiversity.researchdiversityserializers import \
     research_diversity_serializers
@@ -51,12 +50,11 @@ def research_serializers():
         Base serializer for DRY implementation.
         """
         nitrogen_applied_url = SerializerMethodField()
-        measurement_year_url = SerializerMethodField()
 
         class Meta:
             model = Research
             fields = [
-                'id', 'experiment_design', 'nitrogen_applied_url', 'measurement_year_url',
+                'id', 'experiment_design', 'nitrogen_applied_url',
             ]
 
     class ResearchRelationBaseSerializer(ModelSerializer):
@@ -98,16 +96,6 @@ def research_serializers():
             """
             if obj.nitrogenapplied:
                 return get_related_content_url(NitrogenApplied, obj.nitrogenapplied.id)
-
-        def get_measurement_year_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            if obj.measurementyear:
-                return get_related_content_url(MeasurementYear, obj.measurementyear.id)
 
         def get_authors(self, obj):
             """
@@ -228,7 +216,7 @@ def research_serializers():
                 model = Research
                 fields = [
                     'id', 'experiment_design', 'nitrogenapplied',
-                    'measurementyear', 'last_update', 'time_created',
+                    'last_update', 'time_created',
                 ]
 
             def __init__(self, *args, **kwargs):
@@ -251,14 +239,12 @@ def research_serializers():
                 """
                 experiment_design = validated_data.get('experiment_design')
                 nitrogenapplied = validated_data.get('nitrogenapplied')
-                measurementyear = validated_data.get('measurementyear')
 
                 research = Research.objects.create_by_model_type(
                     self.model_type,
                     self.key,
                     experiment_design=experiment_design,
                     nitrogenapplied=nitrogenapplied,
-                    measurementyear=measurementyear,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )
