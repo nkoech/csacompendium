@@ -5,6 +5,8 @@ from .models import (
     NitrogenApplied,
     MeasurementSeason,
     MeasurementYear,
+    ExperimentDescription,
+    ResearchExperimentDescription,
     ExperimentReplicate,
     ResearchExperimentReplicate,
     Author,
@@ -68,6 +70,27 @@ class MeasurementSeasonModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = MeasurementSeason
+
+
+class ResearchExperimentDescriptionInline(admin.TabularInline):
+    """
+    Easy editing of research experiment description entry relations from
+    the experiment description entry page
+    """
+    model = ResearchExperimentDescription
+
+
+class ExperimentDescriptionModelAdmin(admin.ModelAdmin):
+    """
+    Experiment description model admin settings
+    """
+    list_display = ['experiment_description', 'last_update', 'modified_by']
+    list_display_links = ['experiment_description']
+    list_filter = ['experiment_description', 'last_update', 'modified_by']
+    inlines = [ResearchExperimentDescriptionInline, ]
+
+    class Meta:
+        model = ExperimentReplicate
 
 
 class ResearchExperimentReplicateInline(admin.TabularInline):
@@ -172,6 +195,7 @@ admin.site.register(Research, ResearchModelAdmin)
 admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
+admin.site.register(ExperimentDescription, ExperimentDescriptionModelAdmin)
 admin.site.register(ExperimentReplicate, ExperimentReplicateModelAdmin)
 admin.site.register(Journal, JournalModelAdmin)
 admin.site.register(Author, AuthorModelAdmin)

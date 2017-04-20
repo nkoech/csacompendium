@@ -199,6 +199,113 @@ def pre_save_indicator_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance, MeasurementYear, instance.meas_year)
 
 
+class ExperimentDescription(AuthUserDetail, CreateUpdateTime):
+    """
+    Experiment description model
+    """
+    slug = models.SlugField(max_length=500, unique=True, blank=True)
+    experiment_description = models.TextField(unique=True)
+
+    def __unicode__(self):
+        return self.experiment_description
+
+    def __str__(self):
+        return self.experiment_description
+
+    def get_api_url(self):
+        """
+        Get experiment description URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_api:experiment_description_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Experiment Descriptions'
+
+    @property
+    def research_experiment_description_relation(self):
+        """
+        Get related research experiment description object/record
+        :return: Query result from the research experiment description model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchExperimentDescription.objects.filter_by_model_type(instance)
+        return qs
+
+
+@receiver(pre_save, sender=ExperimentDescription)
+def pre_save_experiment_description_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, ExperimentDescription, instance.experiment_description)
+
+
+class ResearchExperimentDescriptionManager(models.Manager):
+    """
+    Research experiment description model manager
+    """
+    def filter_by_instance(self, instance):
+        """
+        Query a related research experiment description object/record from another model's object
+        :param instance: Object instance
+        :return: Query result from content type/model
+        :rtype: object/record
+        """
+        return model_instance_filter(instance, self, ResearchExperimentDescriptionManager)
+
+    def filter_by_model_type(self, instance):
+        """
+        Query related objects/model type
+        :param instance: Object instance
+        :return: Matching object else none
+        :rtype: Object/record
+        """
+        obj_qs = model_foreign_key_qs(instance, self, ResearchExperimentDescriptionManager)
+        if obj_qs.exists():
+            return model_type_filter(self, obj_qs, ResearchExperimentDescriptionManager)
+
+    def create_by_model_type(self, model_type, pk, **kwargs):
+        """
+        Create object by model type
+        :param model_type: Content/model type
+        :param pk: Primary key
+        :param kwargs: Fields to be created
+        :return: Data object
+        :rtype: Object
+        """
+        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+
+
+class ResearchExperimentDescription(AuthUserDetail, CreateUpdateTime):
+    """
+    Research experiment description entry relationship model.
+    A many to many bridge table between research and other models
+    """
+    limit = models.Q(app_label='research', model='research')
+    experimentdescription = models.ForeignKey(
+        ExperimentDescription, on_delete=models.PROTECT, verbose_name='Experiment description'
+    )
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    objects = ResearchExperimentDescriptionManager()
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Research Experiment Descriptions'
+
+
 class ExperimentReplicate(AuthUserDetail, CreateUpdateTime):
     """
     Experiment replicate model
@@ -280,7 +387,7 @@ class ResearchExperimentReplicate(AuthUserDetail, CreateUpdateTime):
     """
     limit = models.Q(app_label='research', model='research')
     experimentreplicate = models.ForeignKey(
-        ExperimentReplicate, on_delete=models.PROTECT, verbose_name='Experiment replicates'
+        ExperimentReplicate, on_delete=models.PROTECT, verbose_name='Experiment replicate'
     )
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
@@ -769,6 +876,17 @@ class Research(AuthUserDetail, CreateUpdateTime):
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Research'
+
+    @property
+    def research_experiment_description(self):
+        """
+        Get related research experiment description object/record
+        :return: Query result from the research experiment description model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchExperimentDescription.objects.filter_by_instance(instance)
+        return qs
 
     @property
     def research_experiment_replicate(self):
