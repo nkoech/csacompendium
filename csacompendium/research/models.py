@@ -68,6 +68,111 @@ class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
         return qs
 
 
+class MeasurementYear(AuthUserDetail, CreateUpdateTime):
+    """
+    Measurement year model
+    """
+    slug = models.SlugField(max_length=10, unique=True, blank=True)
+    measurement_year = models.SmallIntegerField(choices=get_year_choices(), unique=True, default=get_datetime_now())
+
+    def __unicode__(self):
+        return str(self.measurement_year)
+
+    def __str__(self):
+        return str(self.measurement_year)
+
+    def get_api_url(self):
+        """
+        Get measurement year URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_api:measurement_year_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Measurement Years'
+
+    @property
+    def research_measurement_year_relation(self):
+        """
+        Get related research measurement year object/record
+        :return: Query result from the research measurement year model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchMeasurementYear.objects.filter_by_model_type(instance)
+        return qs
+
+
+@receiver(pre_save, sender=MeasurementYear)
+def pre_save_measurement_year_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, MeasurementYear, instance.measurement_year)
+
+
+class ResearchMeasurementYearManager(models.Manager):
+    """
+    Research measurement year model manager
+    """
+    def filter_by_instance(self, instance):
+        """
+        Query a related research measurement year object/record from another model's object
+        :param instance: Object instance
+        :return: Query result from content type/model
+        :rtype: object/record
+        """
+        return model_instance_filter(instance, self, ResearchMeasurementYearManager)
+
+    def filter_by_model_type(self, instance):
+        """
+        Query related objects/model type
+        :param instance: Object instance
+        :return: Matching object else none
+        :rtype: Object/record
+        """
+        obj_qs = model_foreign_key_qs(instance, self, ResearchMeasurementYearManager)
+        if obj_qs.exists():
+            return model_type_filter(self, obj_qs, ResearchMeasurementYearManager)
+
+    def create_by_model_type(self, model_type, pk, **kwargs):
+        """
+        Create object by model type
+        :param model_type: Content/model type
+        :param pk: Primary key
+        :param kwargs: Fields to be created
+        :return: Data object
+        :rtype: Object
+        """
+        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+
+
+class ResearchMeasurementYear(AuthUserDetail, CreateUpdateTime):
+    """
+    Research measurement year entry relationship model.
+    A many to many bridge table between research and other models
+    """
+    limit = models.Q(app_label='research', model='research')
+    measurementyear = models.ForeignKey(MeasurementYear, on_delete=models.PROTECT)
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    objects = ResearchMeasurementYearManager()
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Research Measurement Years'
+
+
 class Diversity(AuthUserDetail, CreateUpdateTime):
     """
     Diversity model
@@ -847,6 +952,17 @@ class Research(AuthUserDetail, CreateUpdateTime):
     class Meta:
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Research'
+
+    @property
+    def research_measurement_year(self):
+        """
+        Get related research measurement year object/record
+        :return: Query result from the research measurement year model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchMeasurementYear.objects.filter_by_instance(instance)
+        return qs
 
     @property
     def research_diversity(self):

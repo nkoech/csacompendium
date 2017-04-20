@@ -3,6 +3,8 @@ from django.contrib import admin
 # Register your models here.
 from .models import (
     NitrogenApplied,
+    MeasurementYear,
+    ResearchMeasurementYear,
     Diversity,
     ResearchDiversity,
     ExperimentDescription,
@@ -46,6 +48,27 @@ class NitrogenAppliedModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = NitrogenApplied
+
+
+class ResearchMeasurementYearInline(admin.TabularInline):
+    """
+    Easy editing of research measurement year entry relations from
+    the measurement entry page
+    """
+    model = ResearchMeasurementYear
+
+
+class MeasurementYearModelAdmin(admin.ModelAdmin):
+    """
+    Measurement year model admin settings
+    """
+    list_display = ['measurement_year', 'last_update', 'modified_by']
+    list_display_links = ['measurement_year']
+    list_filter = ['measurement_year', 'last_update', 'modified_by']
+    inlines = [ResearchMeasurementYearInline, ]
+
+    class Meta:
+        model = MeasurementYear
 
 
 class ResearchDiversityInline(admin.TabularInline):
@@ -190,6 +213,7 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Research, ResearchModelAdmin)
 admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
+admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(Diversity, DiversityModelAdmin)
 admin.site.register(ExperimentDescription, ExperimentDescriptionModelAdmin)
 admin.site.register(ExperimentReplicate, ExperimentReplicateModelAdmin)
