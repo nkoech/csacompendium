@@ -4,6 +4,7 @@ from .views import (
     measurement_season_views,
     measurement_year_views,
     research_diversity_views,
+    diversity_views,
     research_experiment_description_views,
     experiment_description_views,
     research_experiment_replicate_views,
@@ -91,6 +92,25 @@ urlpatterns += [
         r'^researchdiversity/(?P<pk>[\w-]+)/$',
         research_diversity_views['ResearchDiversityDetailAPIView'].as_view(),
         name='research_diversity_detail'
+    ),
+]
+
+# Diversity URLs
+urlpatterns += [
+    url(
+        r'^diversity/$',
+        diversity_views['DiversityListAPIView'].as_view(),
+        name='diversity_list'
+    ),
+    url(
+        r'^diversity/create/$',
+        diversity_views['DiversityCreateAPIView'].as_view(),
+        name='diversity_create'
+    ),
+    url(
+        r'^diversity/(?P<slug>[\w-]+)/$',
+        diversity_views['DiversityDetailAPIView'].as_view(),
+        name='diversity_detail'
     ),
 ]
 
