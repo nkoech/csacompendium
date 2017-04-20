@@ -4,6 +4,7 @@ from .views import (
     measurement_season_views,
     measurement_year_views,
     research_experiment_description_views,
+    experiment_description_views,
     research_experiment_replicate_views,
     experiment_replicate_views,
     research_author_views,
@@ -89,6 +90,25 @@ urlpatterns += [
         r'^researchexperimentdescription/(?P<pk>[\w-]+)/$',
         research_experiment_description_views['ResearchExperimentDescriptionDetailAPIView'].as_view(),
         name='research_experiment_description_detail'
+    ),
+]
+
+# Experiment description URLs
+urlpatterns += [
+    url(
+        r'^experimentdescription/$',
+        experiment_description_views['ExperimentDescriptionListAPIView'].as_view(),
+        name='experiment_description_list'
+    ),
+    url(
+        r'^experimentdescription/create/$',
+        experiment_description_views['ExperimentDescriptionCreateAPIView'].as_view(),
+        name='experiment_description_create'
+    ),
+    url(
+        r'^experimentdescription/(?P<slug>[\w-]+)/$',
+        experiment_description_views['ExperimentDescriptionDetailAPIView'].as_view(),
+        name='experiment_description_detail'
     ),
 ]
 
