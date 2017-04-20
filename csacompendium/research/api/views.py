@@ -3,6 +3,7 @@ from .nitrogenapplied.nitrogenappliedviews import nitrogen_applied_views
 from .measurementyear.measurementyearviews import measurement_year_views
 from .measurementseason.measurementseasonviews import measurement_season_views
 from .researchdiversity.researchdiversityviews import research_diversity_views
+from .diversity.diversityviews import diversity_views
 from .researchexperimentdescription.researchexperimentdescriptionviews import research_experiment_description_views
 from .experimentdescription.experimentdescriptionviews import experiment_description_views
 from .researchexperimentreplicate.researchexperimentreplicateviews import research_experiment_replicate_views
@@ -21,6 +22,7 @@ nitrogen_applied_views = nitrogen_applied_views()
 measurement_year_views = measurement_year_views()
 measurement_season_views = measurement_season_views()
 research_diversity_views = research_diversity_views()
+diversity_views = diversity_views()
 research_experiment_description_views = research_experiment_description_views()
 experiment_description_views = experiment_description_views()
 research_experiment_replicate_views = research_experiment_replicate_views()
