@@ -1,4 +1,5 @@
 from .research.researchserializers import research_serializers
+from .researchnitrogenapplied.researchnitrogenappliedserializers import research_nitrogen_applied_serializers
 from .researchmeasurementyear.researchmeasurementyearserializers import research_measurement_year_serializers
 from .measurementduration.measurementdurationserializers import measurement_duration_serializers
 from .measurementseason.measurementseasonserializers import measurement_season_serializers
@@ -21,6 +22,7 @@ from .experimentunitcategory.experimentunitcategoryserializers import experiment
 
 
 research_serializers = research_serializers()
+research_nitrogen_applied_serializers = research_nitrogen_applied_serializers()
 research_measurement_year_serializers = research_measurement_year_serializers()
 measurement_duration_serializers = measurement_duration_serializers()
 measurement_season_serializers = measurement_season_serializers()
