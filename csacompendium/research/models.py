@@ -1104,6 +1104,17 @@ class Research(AuthUserDetail, CreateUpdateTime):
         verbose_name_plural = 'Research'
 
     @property
+    def research_nitrogen_applied(self):
+        """
+        Get related research nitrogen applied object/record
+        :return: Query result from the research nitrogen applied model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchNitrogenApplied.objects.filter_by_instance(instance)
+        return qs
+
+    @property
     def research_measurement_year(self):
         """
         Get related research measurement year object/record

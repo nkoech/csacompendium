@@ -1,6 +1,8 @@
 from csacompendium.research.models import (
     Research,
 )
+from csacompendium.research.api.researchnitrogenapplied.researchnitrogenappliedserializers import \
+    research_nitrogen_applied_serializers
 from csacompendium.research.api.researchmeasurementyear.researchmeasurementyearserializers import \
     research_measurement_year_serializers
 from csacompendium.research.api.researchdiversity.researchdiversityserializers import \
@@ -30,6 +32,7 @@ from rest_framework.serializers import (
     ValidationError,
 )
 
+research_nitrogen_applied_serializers = research_nitrogen_applied_serializers()
 research_measurement_year_serializers = research_measurement_year_serializers()
 research_diversity_serializers = research_diversity_serializers()
 research_experiment_description_serializers = research_experiment_description_serializers()
@@ -64,6 +67,7 @@ def research_serializers():
         experiment_replicate = SerializerMethodField()
         experiment_description = SerializerMethodField()
         csa_practice = SerializerMethodField()
+        nitrogen_applied = SerializerMethodField()
         diversity = SerializerMethodField()
         experiment_unit = SerializerMethodField()
         measurement_year = SerializerMethodField()
@@ -77,6 +81,7 @@ def research_serializers():
                 'experiment_replicate',
                 'experiment_description',
                 'csa_practice',
+                'nitrogen_applied',
                 'diversity',
                 'experiment_unit',
                 'measurement_year',
@@ -140,6 +145,21 @@ def research_serializers():
             ]
             related_content = get_related_content(
                 obj, ResearchCsaPracticeSerializer, obj.research_csa_practice, request
+            )
+            return related_content
+
+        def get_nitrogen_applied(self, obj):
+            """
+            :param obj: Current record object
+            :return: Related nitrogen applied details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchNitrogenAppliedSerializer = research_nitrogen_applied_serializers[
+                'ResearchNitrogenAppliedSerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchNitrogenAppliedSerializer, obj.research_nitrogen_applied, request
             )
             return related_content
 
