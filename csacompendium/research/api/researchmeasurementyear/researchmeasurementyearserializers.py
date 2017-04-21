@@ -1,6 +1,7 @@
 from csacompendium.research.models import (
     MeasurementYear,
     MeasurementDuration,
+    MeasurementSeason,
     ResearchMeasurementYear,
 )
 from csacompendium.utils.hyperlinkedidentity import hyperlinked_identity
@@ -33,6 +34,7 @@ def research_measurement_year_serializers():
                 'id',
                 'measurementyear',
                 'measurementduration',
+                'measurementseason',
             ]
 
     class ResearchMeasurementYearRelationBaseSerializer(ModelSerializer):
@@ -41,6 +43,7 @@ def research_measurement_year_serializers():
         """
         measurement_year_url = SerializerMethodField()
         measurement_duration_url = SerializerMethodField()
+        measurement_season_url = SerializerMethodField()
         content_type_url = SerializerMethodField()
 
         class Meta:
@@ -49,6 +52,7 @@ def research_measurement_year_serializers():
                 'measurement_year_url',
                 'content_type_url',
                 'measurement_duration_url',
+                'measurement_season_url',
             ]
 
     class ResearchMeasurementYearFieldMethodSerializer:
@@ -82,6 +86,16 @@ def research_measurement_year_serializers():
             """
             if obj.measurementduration:
                 return get_related_content_url(MeasurementDuration, obj.measurementduration.id)
+
+        def get_measurement_season_url(self, obj):
+            """
+            Get related content type/object url
+            :param obj: Current record object
+            :return: URL to related object
+            :rtype: String
+            """
+            if obj.measurementseason:
+                return get_related_content_url(MeasurementSeason, obj.measurementseason.id)
 
     def create_research_measurement_year_serializer(model_type=None, pk=None, user=None):
         """
@@ -121,11 +135,13 @@ def research_measurement_year_serializers():
                 """
                 measurementyear = validated_data.get('measurementyear')
                 measurementduration = validated_data.get('measurementduration')
+                measurementseason = validated_data.get('measurementseason')
                 measurement_year_relation = ResearchMeasurementYear.objects.create_by_model_type(
                     self.model_type,
                     self.key,
                     measurementyear=measurementyear,
                     measurementduration=measurementduration,
+                    measurementseason=measurementseason,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )
@@ -166,6 +182,7 @@ def research_measurement_year_serializers():
             'research_api:research_measurement_year_detail', 'pk'
         )
         measurement_duration_url = SerializerMethodField()
+        measurement_season_url = SerializerMethodField()
 
         class Meta:
             model = ResearchMeasurementYear
@@ -175,6 +192,7 @@ def research_measurement_year_serializers():
                 'measurement_year_url',
                 'research_measurement_year_url',
                 'measurement_duration_url',
+                'measurement_season_url',
             ]
 
     class ResearchMeasurementYearContentTypeSerializer(
@@ -191,6 +209,7 @@ def research_measurement_year_serializers():
             'research_api:research_measurement_year_detail', 'pk'
         )
         measurement_duration_url = SerializerMethodField()
+        measurement_season_url = SerializerMethodField()
 
         class Meta:
             model = ResearchMeasurementYear
@@ -200,6 +219,7 @@ def research_measurement_year_serializers():
                 'content_type_url',
                 'research_measurement_year_url',
                 'measurement_duration_url',
+                'measurement_season_url',
             ]
 
     class ResearchMeasurementYearDetailSerializer(

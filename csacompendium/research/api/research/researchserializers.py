@@ -70,8 +70,8 @@ def research_serializers():
         experiment_description = SerializerMethodField()
         csa_practice = SerializerMethodField()
         diversity = SerializerMethodField()
-        measurement_year = SerializerMethodField()
         experiment_unit = SerializerMethodField()
+        measurement_year = SerializerMethodField()
         outcome_indicator = SerializerMethodField()
 
         class Meta:
@@ -81,10 +81,10 @@ def research_serializers():
                 'authors',
                 'experiment_replicate',
                 'experiment_description',
-                'measurement_year',
                 'csa_practice',
                 'diversity',
                 'experiment_unit',
+                'measurement_year',
                 'outcome_indicator',
             ]
 

@@ -3,6 +3,7 @@ from .views import (
     nitrogen_applied_views,
     research_measurement_year_views,
     measurement_duration_views,
+    measurement_season_views,
     measurement_year_views,
     research_diversity_views,
     diversity_views,
@@ -74,6 +75,25 @@ urlpatterns += [
         r'^measurementduration/(?P<pk>[\w-]+)/$',
         measurement_duration_views['MeasurementDurationDetailAPIView'].as_view(),
         name='measurement_duration_detail'
+    ),
+]
+
+# Measurement season URLs
+urlpatterns += [
+    url(
+        r'^measurementseason/$',
+        measurement_season_views['MeasurementSeasonListAPIView'].as_view(),
+        name='measurement_season_list'
+    ),
+    url(
+        r'^measurementseason/create/$',
+        measurement_season_views['MeasurementSeasonCreateAPIView'].as_view(),
+        name='measurement_season_create'
+    ),
+    url(
+        r'^measurementseason/(?P<slug>[\w-]+)/$',
+        measurement_season_views['MeasurementSeasonDetailAPIView'].as_view(),
+        name='measurement_season_detail'
     ),
 ]
 

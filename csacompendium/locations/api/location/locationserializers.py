@@ -44,7 +44,7 @@ def location_serializers():
         Base serializer for DRY implementation.
         """
         content_type_url = SerializerMethodField()
-        relation_details = SerializerMethodField()
+        climate_conditions = SerializerMethodField()
         soils = SerializerMethodField()
         research = SerializerMethodField()
 
@@ -52,7 +52,7 @@ def location_serializers():
             model = Location
             fields = [
                 'content_type_url',
-                'relation_details',
+                'climate_conditions',
                 'soils',
                 'research',
             ]
@@ -61,7 +61,7 @@ def location_serializers():
         """
         Serialize an object based on a provided field
         """
-        def get_relation_details(self, obj):
+        def get_climate_conditions(self, obj):
             """
             Get related object type data
             :param obj: Current record object
