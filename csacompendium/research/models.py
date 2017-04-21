@@ -25,49 +25,6 @@ from django.core.urlresolvers import reverse
 from decimal import Decimal
 
 
-class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
-    """
-    Nitrogen applied model
-    """
-    NITROGEN_SOURCE = (
-        ('Organic', 'Organic'),
-        ('Inorganic', 'Inorganic'),
-    )
-
-    nitrogen_amount = models.DecimalField(max_digits=6, decimal_places=2,  unique=True, default=Decimal('0.0'))
-    amount_uom = models.CharField(max_length=12, verbose_name='Nitrogen UOM', default='kg/ha')
-    nitrogen_source = models.CharField(max_length=30, blank=True, null=True, choices=NITROGEN_SOURCE)
-
-    def __unicode__(self):
-        return str(self.nitrogen_amount)
-
-    def __str__(self):
-        return str(self.nitrogen_amount)
-
-    def get_api_url(self):
-        """
-        Get nitrogen applied URL as a reverse from model
-        :return: URL
-        :rtype: String
-        """
-        return reverse('research_api:nitrogen_applied_detail', kwargs={'pk': self.pk})
-
-    class Meta:
-        ordering = ['-time_created', '-last_update']
-        verbose_name_plural = 'Nitrogen Applied'
-
-    @property
-    def research_relation(self):
-        """
-        Get related research properties
-        :return: Query result from the research model
-        :rtype: object/record
-        """
-        instance = self
-        qs = Research.objects.filter_by_model_type(instance)
-        return qs
-
-
 class MeasurementYear(AuthUserDetail, CreateUpdateTime):
     """
     Measurement year model
@@ -1022,9 +979,6 @@ class Research(AuthUserDetail, CreateUpdateTime):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     experiment_design = models.CharField(max_length=22, choices=EXPERIMENT_DESIGN)
-    nitrogenapplied = models.ForeignKey(
-        NitrogenApplied, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Nitrogen Applied'
-    )
     objects = ResearchManager()
 
     def __unicode__(self):

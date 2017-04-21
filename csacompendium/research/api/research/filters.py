@@ -13,7 +13,6 @@ class ResearchListFilter(FilterSet):
         model = Research
         fields = {
             'experiment_design': ['iexact', 'icontains'],
-            'nitrogenapplied': ['exact'],
             'object_id': ['exact'],
             'content_type': ['exact'],
         }

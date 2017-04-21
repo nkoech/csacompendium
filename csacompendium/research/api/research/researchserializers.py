@@ -1,6 +1,5 @@
 from csacompendium.research.models import (
     Research,
-    NitrogenApplied,
 )
 from csacompendium.research.api.researchmeasurementyear.researchmeasurementyearserializers import \
     research_measurement_year_serializers
@@ -52,13 +51,9 @@ def research_serializers():
         """
         Base serializer for DRY implementation.
         """
-        nitrogen_applied_url = SerializerMethodField()
-
         class Meta:
             model = Research
-            fields = [
-                'id', 'experiment_design', 'nitrogen_applied_url',
-            ]
+            fields = ['id', 'experiment_design', ]
 
     class ResearchRelationBaseSerializer(ModelSerializer):
         """
@@ -92,16 +87,6 @@ def research_serializers():
         """
         Serialize an object based on a provided field
         """
-        def get_nitrogen_applied_url(self, obj):
-            """
-            Get related content type/object url
-            :param obj: Current record object
-            :return: URL to related object
-            :rtype: String
-            """
-            if obj.nitrogenapplied:
-                return get_related_content_url(NitrogenApplied, obj.nitrogenapplied.id)
-
         def get_authors(self, obj):
             """
             :param obj: Current record object
@@ -235,7 +220,7 @@ def research_serializers():
             class Meta:
                 model = Research
                 fields = [
-                    'id', 'experiment_design', 'nitrogenapplied',
+                    'id', 'experiment_design',
                     'last_update', 'time_created',
                 ]
 
@@ -258,13 +243,10 @@ def research_serializers():
                 :rtype: Object
                 """
                 experiment_design = validated_data.get('experiment_design')
-                nitrogenapplied = validated_data.get('nitrogenapplied')
-
                 research = Research.objects.create_by_model_type(
                     self.model_type,
                     self.key,
                     experiment_design=experiment_design,
-                    nitrogenapplied=nitrogenapplied,
                     user=self.auth_user,
                     modified_by=self.auth_user
                 )
