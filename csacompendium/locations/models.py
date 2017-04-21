@@ -136,7 +136,8 @@ def pre_save_location_receiver(sender, instance, *args, **kwargs):
     :rtype: None
     """
     if not instance.slug:
-        instance.slug = create_slug(instance, Location, instance.location_name)
+        instance_fields = [instance.location_name, instance.latitude, instance.longitude]
+        instance.slug = create_slug(instance, Location, instance_fields)
 
 
 class LocationRelationManager(models.Manager):
