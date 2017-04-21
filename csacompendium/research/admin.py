@@ -2,6 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import (
+    NitrogenApplied,
+    ResearchNitrogenApplied,
     MeasurementYear,
     MeasurementDuration,
     MeasurementSeason,
@@ -37,6 +39,27 @@ class ResearchModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Research
+
+
+class ResearchNitrogenAppliedInline(admin.TabularInline):
+    """
+    Easy editing of research nitrogen applied entry relations from
+    the nitrogen applied entry page
+    """
+    model = ResearchNitrogenApplied
+
+
+class NitrogenAppliedModelAdmin(admin.ModelAdmin):
+    """
+    Nitrogen applied model admin settings
+    """
+    list_display = ['nitrogen_amount', 'amount_uom', 'nitrogen_source', 'last_update', 'modified_by']
+    list_display_links = ['nitrogen_amount']
+    list_filter = ['nitrogen_amount', 'amount_uom', 'nitrogen_source', 'last_update', 'modified_by']
+    inlines = [ResearchNitrogenAppliedInline, ]
+
+    class Meta:
+        model = NitrogenApplied
 
 
 class MeasurementDurationModelAdmin(admin.ModelAdmin):
@@ -225,6 +248,7 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
         model = ExperimentUnit
 
 admin.site.register(Research, ResearchModelAdmin)
+admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
 admin.site.register(MeasurementDuration, MeasurementDurationModelAdmin)
 admin.site.register(MeasurementSeason, MeasurementSeasonModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)

@@ -25,6 +25,108 @@ from django.core.urlresolvers import reverse
 from decimal import Decimal
 
 
+class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
+    """
+    Nitrogen applied model
+    """
+    NITROGEN_SOURCE = (
+        ('Organic', 'Organic'),
+        ('Inorganic', 'Inorganic'),
+    )
+    nitrogen_amount = models.DecimalField(max_digits=6, decimal_places=2,  unique=True)
+    amount_uom = models.CharField(max_length=12, verbose_name='Nitrogen UOM', default='kg/ha')
+    nitrogen_source = models.CharField(max_length=30, choices=NITROGEN_SOURCE)
+
+    def __unicode__(self):
+        str_format = 'Amount {0}, UoM {1}, Source {2} '.format(
+            self.nitrogen_amount, self.amount_uom, self.nitrogen_source
+        )
+        return str(str_format)
+
+    def __str__(self):
+        str_format = 'Amount {0}, UoM {1}, Source {2} '.format(
+            self.nitrogen_amount, self.amount_uom, self.nitrogen_source
+        )
+        return str(str_format)
+
+    def get_api_url(self):
+        """
+        Get nitrogen applied URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_api:nitrogen_applied_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        unique_together = ['nitrogen_amount', 'nitrogen_source']
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Nitrogen Applied'
+
+    @property
+    def research_nitrogen_applied_relation(self):
+        """
+        Get related research nitrogen applied object/record
+        :return: Query result from the research nitrogen applied model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchNitrogenApplied.objects.filter_by_model_type(instance)
+        return qs
+
+
+class ResearchNitrogenAppliedManager(models.Manager):
+    """
+    Research nitrogen applied model manager
+    """
+    def filter_by_instance(self, instance):
+        """
+        Query a related research nitrogen applied object/record from another model's object
+        :param instance: Object instance
+        :return: Query result from content type/model
+        :rtype: object/record
+        """
+        return model_instance_filter(instance, self, ResearchNitrogenAppliedManager)
+
+    def filter_by_model_type(self, instance):
+        """
+        Query related objects/model type
+        :param instance: Object instance
+        :return: Matching object else none
+        :rtype: Object/record
+        """
+        obj_qs = model_foreign_key_qs(instance, self, ResearchNitrogenAppliedManager)
+        if obj_qs.exists():
+            return model_type_filter(self, obj_qs, ResearchNitrogenAppliedManager)
+
+    def create_by_model_type(self, model_type, pk, **kwargs):
+        """
+        Create object by model type
+        :param model_type: Content/model type
+        :param pk: Primary key
+        :param kwargs: Fields to be created
+        :return: Data object
+        :rtype: Object
+        """
+        return create_model_type(self, model_type, pk, slugify=False, **kwargs)
+
+
+class ResearchNitrogenApplied(AuthUserDetail, CreateUpdateTime):
+    """
+    Research nitrogen applied entry relationship model.
+    A many to many bridge table between research and other models
+    """
+    limit = models.Q(app_label='research', model='research')
+    nitrogenapplied = models.ForeignKey(NitrogenApplied, on_delete=models.PROTECT)
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    objects = ResearchNitrogenAppliedManager()
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Research Nitrogen Applied'
+
+
 class MeasurementYear(AuthUserDetail, CreateUpdateTime):
     """
     Measurement year model
