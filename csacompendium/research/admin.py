@@ -194,7 +194,7 @@ class AuthorModelAdmin(admin.ModelAdmin):
     Author model admin settings
     """
     list_display = ['author_code', 'first_name', 'middle_name', 'last_name', 'author_bio', 'last_update', 'modified_by']
-    list_display_links = ['first_name']
+    list_display_links = ['author_code', 'first_name']
     list_filter = ['author_code', 'first_name', 'last_name', 'last_update', 'modified_by']
     inlines = [ResearchAuthorInline, ]
 
@@ -240,7 +240,7 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
     list_display = [
         'exp_unit_code', 'experimentunitcategory', 'common_name', 'latin_name', 'last_update', 'modified_by'
     ]
-    list_display_links = ['common_name']
+    list_display_links = ['exp_unit_code', 'common_name']
     list_filter = ['common_name', 'exp_unit_code', 'experimentunitcategory', 'last_update', 'modified_by']
     inlines = [ResearchExperimentUnitInline, ]
 

@@ -324,11 +324,11 @@ class ExperimentOutcome(AuthUserDetail, CreateUpdateTime):
     outcome_uom = models.CharField(max_length=100, default='kg/ha')
 
     def __unicode__(self):
-        str_format = 'Mean Outcome: {0},  STD Outcome: {1}'.format(self.mean_outcome, self.std_outcome)
+        str_format = 'Mean Outcome: {0},  UoM: {1}'.format(self.mean_outcome, self.outcome_uom)
         return str(str_format)
 
     def __str__(self):
-        str_format = 'Mean Outcome: {0},  STD Outcome: {1}'.format(self.mean_outcome, self.std_outcome)
+        str_format = 'Mean Outcome: {0},  UoM: {1}'.format(self.mean_outcome, self.outcome_uom)
         return str(str_format)
 
     def get_api_url(self):
@@ -340,7 +340,7 @@ class ExperimentOutcome(AuthUserDetail, CreateUpdateTime):
         return reverse('indicator_outcome_api:experiment_outcome_detail', kwargs={'pk': self.pk})
 
     class Meta:
-        unique_together = ['mean_outcome', 'std_outcome']
+        unique_together = ['mean_outcome', 'outcome_uom']
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Experiment Outcomes'
 

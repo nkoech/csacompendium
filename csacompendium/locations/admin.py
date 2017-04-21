@@ -21,7 +21,7 @@ class LocationModelAdmin(admin.ModelAdmin):
     Location model admin settings
     """
     list_display = ['location_name', 'latitude', 'longitude', 'elevation', 'site_type', 'last_update', 'modified_by']
-    list_display_links = ['location_name']
+    list_display_links = ['location_name', 'latitude', 'longitude']
     list_filter = ['location_name', 'site_type', 'last_update', 'modified_by']
     inlines = [LocationRelationInline, ]
 
