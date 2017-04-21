@@ -156,6 +156,62 @@ class MeasurementDuration(AuthUserDetail, CreateUpdateTime):
         return qs
 
 
+class MeasurementSeason(AuthUserDetail, CreateUpdateTime):
+    """
+    Measurement season model
+    """
+    SEASONS = (
+        ('First Growing Season', 'First Growing Season'),
+        ('Second Growing Season', 'Second Growing Season'),
+    )
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
+    measurement_season = models.CharField(max_length=42, choices=SEASONS, unique=True, null=True)
+
+    def __unicode__(self):
+        return self.measurement_season
+
+    def __str__(self):
+        return self.measurement_season
+
+    def get_api_url(self):
+        """
+        Get measurement season URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_api:measurement_season_detail', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Measurement Seasons'
+
+    @property
+    def research_measurement_year_relation(self):
+        """
+        Get related research measurement year properties
+        :return: Query result from the research measurement year model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchMeasurementYear.objects.filter_by_model_type(instance)
+        return qs
+
+
+@receiver(pre_save, sender=MeasurementSeason)
+def pre_save_measurement_season_receiver(sender, instance, *args, **kwargs):
+    """
+    Create a slug before save.
+    :param sender: Signal sending object
+    :param instance: Object instance
+    :param args: Any other argument
+    :param kwargs: Keyword arguments
+    :return: None
+    :rtype: None
+    """
+    if not instance.slug:
+        instance.slug = create_slug(instance, MeasurementSeason, instance.measurement_season)
+
+
 class ResearchMeasurementYearManager(models.Manager):
     """
     Research measurement year model manager
@@ -203,6 +259,7 @@ class ResearchMeasurementYear(AuthUserDetail, CreateUpdateTime):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     measurementduration = models.ForeignKey(MeasurementDuration, on_delete=models.SET_NULL, blank=True, null=True)
+    measurementseason = models.ForeignKey(MeasurementSeason, on_delete=models.SET_NULL, blank=True, null=True)
     objects = ResearchMeasurementYearManager()
 
     class Meta:
