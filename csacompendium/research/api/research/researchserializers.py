@@ -2,6 +2,8 @@ from csacompendium.research.models import (
     Research,
     NitrogenApplied,
 )
+from csacompendium.research.api.researchmeasurementyear.researchmeasurementyearserializers import \
+    research_measurement_year_serializers
 from csacompendium.research.api.researchdiversity.researchdiversityserializers import \
     research_diversity_serializers
 from csacompendium.research.api.researchexperimentdescription.researchexperimentdescriptionserializers import \
@@ -29,6 +31,7 @@ from rest_framework.serializers import (
     ValidationError,
 )
 
+research_measurement_year_serializers = research_measurement_year_serializers()
 research_diversity_serializers = research_diversity_serializers()
 research_experiment_description_serializers = research_experiment_description_serializers()
 research_experiment_replicate_serializers = research_experiment_replicate_serializers()
@@ -67,6 +70,7 @@ def research_serializers():
         experiment_description = SerializerMethodField()
         csa_practice = SerializerMethodField()
         diversity = SerializerMethodField()
+        measurement_year = SerializerMethodField()
         experiment_unit = SerializerMethodField()
         outcome_indicator = SerializerMethodField()
 
@@ -77,6 +81,7 @@ def research_serializers():
                 'authors',
                 'experiment_replicate',
                 'experiment_description',
+                'measurement_year',
                 'csa_practice',
                 'diversity',
                 'experiment_unit',
@@ -165,6 +170,21 @@ def research_serializers():
             ]
             related_content = get_related_content(
                 obj, ResearchDiversitySerializer, obj.research_diversity, request
+            )
+            return related_content
+
+        def get_measurement_year(self, obj):
+            """
+            :param obj: Current record object
+            :return: Related measurement year details
+            :rtype: Object/record
+            """
+            request = self.context['request']
+            ResearchMeasurementYearSerializer = research_measurement_year_serializers[
+                'ResearchMeasurementYearSerializer'
+            ]
+            related_content = get_related_content(
+                obj, ResearchMeasurementYearSerializer, obj.research_measurement_year, request
             )
             return related_content
 
