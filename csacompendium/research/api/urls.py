@@ -2,6 +2,7 @@ from django.conf.urls import url
 from .views import (
     nitrogen_applied_views,
     research_measurement_year_views,
+    measurement_duration_views,
     measurement_year_views,
     research_diversity_views,
     diversity_views,
@@ -54,6 +55,25 @@ urlpatterns += [
         r'^researchmeasurementyear/(?P<pk>[\w-]+)/$',
         research_measurement_year_views['ResearchMeasurementYearDetailAPIView'].as_view(),
         name='research_measurement_year_detail'
+    ),
+]
+
+# Measurement duration URLs
+urlpatterns += [
+    url(
+        r'^measurementduration/$',
+        measurement_duration_views['MeasurementDurationListAPIView'].as_view(),
+        name='measurement_duration_list'
+    ),
+    url(
+        r'^measurementduration/create/$',
+        measurement_duration_views['MeasurementDurationCreateAPIView'].as_view(),
+        name='measurement_duration_create'
+    ),
+    url(
+        r'^measurementduration/(?P<pk>[\w-]+)/$',
+        measurement_duration_views['MeasurementDurationDetailAPIView'].as_view(),
+        name='measurement_duration_detail'
     ),
 ]
 
@@ -303,7 +323,6 @@ urlpatterns += [
         breed_views['BreedDetailAPIView'].as_view(),
         name='breed_detail'
     ),
-
 ]
 
 # Experiment unit  URLs
