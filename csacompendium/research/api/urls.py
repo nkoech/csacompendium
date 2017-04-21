@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from .views import (
     research_nitrogen_applied_views,
+    nitrogen_applied_views,
     research_measurement_year_views,
     measurement_duration_views,
     measurement_season_views,
@@ -37,6 +38,25 @@ urlpatterns = [
         r'^researchnitrogenapplied/(?P<pk>[\w-]+)/$',
         research_nitrogen_applied_views['ResearchNitrogenAppliedDetailAPIView'].as_view(),
         name='research_nitrogen_applied_detail'
+    ),
+]
+
+# Nitrogen applied URLs
+urlpatterns += [
+    url(
+        r'^nitrogenapplied/$',
+        nitrogen_applied_views['NitrogenAppliedListAPIView'].as_view(),
+        name='nitrogen_applied_list'
+    ),
+    url(
+        r'^nitrogenapplied/create/$',
+        nitrogen_applied_views['NitrogenAppliedCreateAPIView'].as_view(),
+        name='nitrogen_applied_create'
+    ),
+    url(
+        r'^nitrogenapplied/(?P<pk>[\w-]+)/$',
+        nitrogen_applied_views['NitrogenAppliedDetailAPIView'].as_view(),
+        name='nitrogen_applied_detail'
     ),
 ]
 
