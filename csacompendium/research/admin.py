@@ -4,6 +4,7 @@ from django.contrib import admin
 from .models import (
     NitrogenApplied,
     MeasurementYear,
+    MeasurementDuration,
     ResearchMeasurementYear,
     Diversity,
     ResearchDiversity,
@@ -49,6 +50,17 @@ class NitrogenAppliedModelAdmin(admin.ModelAdmin):
     class Meta:
         model = NitrogenApplied
 
+
+class MeasurementDurationModelAdmin(admin.ModelAdmin):
+    """
+    Measurement duration model admin settings
+    """
+    list_display = ['measurement_duration', 'last_update', 'modified_by']
+    list_display_links = ['measurement_duration']
+    list_filter = ['measurement_duration', 'last_update', 'modified_by']
+
+    class Meta:
+        model = MeasurementDuration
 
 class ResearchMeasurementYearInline(admin.TabularInline):
     """
@@ -213,6 +225,7 @@ class ExperimentUnitModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Research, ResearchModelAdmin)
 admin.site.register(NitrogenApplied, NitrogenAppliedModelAdmin)
+admin.site.register(MeasurementDuration, MeasurementDurationModelAdmin)
 admin.site.register(MeasurementYear, MeasurementYearModelAdmin)
 admin.site.register(Diversity, DiversityModelAdmin)
 admin.site.register(ExperimentDescription, ExperimentDescriptionModelAdmin)

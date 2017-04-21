@@ -120,6 +120,42 @@ def pre_save_measurement_year_receiver(sender, instance, *args, **kwargs):
         instance.slug = create_slug(instance, MeasurementYear, instance.measurement_year)
 
 
+class MeasurementDuration(AuthUserDetail, CreateUpdateTime):
+    """
+    Measurement duration model
+    """
+    measurement_duration = models.DecimalField(max_digits=6, decimal_places=2, unique=True)
+
+    def __unicode__(self):
+        return str(self.measurement_duration)
+
+    def __str__(self):
+        return str(self.measurement_duration)
+
+    def get_api_url(self):
+        """
+        Get measurement duration URL as a reverse from model
+        :return: URL
+        :rtype: String
+        """
+        return reverse('research_api:measurement_duration_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-time_created', '-last_update']
+        verbose_name_plural = 'Measurement Duration'
+
+    @property
+    def research_measurement_year_relation(self):
+        """
+        Get related research measurement year properties
+        :return: Query result from the research measurement year model
+        :rtype: object/record
+        """
+        instance = self
+        qs = ResearchMeasurementYear.objects.filter_by_model_type(instance)
+        return qs
+
+
 class ResearchMeasurementYearManager(models.Manager):
     """
     Research measurement year model manager
@@ -166,6 +202,7 @@ class ResearchMeasurementYear(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+    measurementduration = models.ForeignKey(MeasurementDuration, on_delete=models.SET_NULL, blank=True, null=True)
     objects = ResearchMeasurementYearManager()
 
     class Meta:
