@@ -38,13 +38,13 @@ class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
     nitrogen_source = models.CharField(max_length=30, choices=NITROGEN_SOURCE)
 
     def __unicode__(self):
-        str_format = 'Amount {0}, UoM {1}, Source {2} '.format(
+        str_format = 'Amount: {0}, UoM: {1}, Source: {2} '.format(
             self.nitrogen_amount, self.amount_uom, self.nitrogen_source
         )
         return str(str_format)
 
     def __str__(self):
-        str_format = 'Amount {0}, UoM {1}, Source {2} '.format(
+        str_format = 'Amount: {0}, UoM: {1}, Source: {2} '.format(
             self.nitrogen_amount, self.amount_uom, self.nitrogen_source
         )
         return str(str_format)
@@ -545,11 +545,11 @@ class ExperimentReplicate(AuthUserDetail, CreateUpdateTime):
     no_replicate = models.PositiveSmallIntegerField(unique=True, verbose_name='Number of replicates')
 
     def __unicode__(self):
-        str_format = 'Replicates {0} '.format(self.no_replicate)
+        str_format = 'Replicates: {0} '.format(self.no_replicate)
         return str(str_format)
 
     def __str__(self):
-        str_format = 'Replicates {0} '.format(self.no_replicate)
+        str_format = 'Replicates: {0} '.format(self.no_replicate)
         return str(str_format)
 
     def get_api_url(self):

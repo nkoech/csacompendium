@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from .views import (
+    research_nitrogen_applied_views,
     research_measurement_year_views,
     measurement_duration_views,
     measurement_season_views,
@@ -20,8 +21,27 @@ from .views import (
     research_views,
 )
 
-# Research measurement year URLs
+# Research nitrogen applied URLs
 urlpatterns = [
+    url(
+        r'^researchnitrogenapplied/$',
+        research_nitrogen_applied_views['ResearchNitrogenAppliedListAPIView'].as_view(),
+        name='research_nitrogen_applied_list'
+    ),
+    url(
+        r'^researchnitrogenapplied/create/$',
+        research_nitrogen_applied_views['ResearchNitrogenAppliedCreateAPIView'].as_view(),
+        name='research_nitrogen_applied_create'
+    ),
+    url(
+        r'^researchnitrogenapplied/(?P<pk>[\w-]+)/$',
+        research_nitrogen_applied_views['ResearchNitrogenAppliedDetailAPIView'].as_view(),
+        name='research_nitrogen_applied_detail'
+    ),
+]
+
+# Research measurement year URLs
+urlpatterns += [
     url(
         r'^researchmeasurementyear/$',
         research_measurement_year_views['ResearchMeasurementYearListAPIView'].as_view(),
