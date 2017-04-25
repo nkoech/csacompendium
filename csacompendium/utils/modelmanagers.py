@@ -43,9 +43,12 @@ def model_instance_filter(call_instance, current_instance, model_manager):
     :return: Object due to instantiation of the calling model class
     :rtye: Object/record
     """
+    parent_obj = super(model_manager, current_instance)
     content_type = ContentType.objects.get_for_model(call_instance.__class__)
-    obj_id = call_instance.id
-    qs = super(model_manager, current_instance).filter(content_type=content_type, object_id=obj_id)
+    try:
+        qs = parent_obj.filter(content_type=content_type, object_id=call_instance.id)
+    except parent_obj.DoesNotExist:
+        return None
     return qs
 
 
