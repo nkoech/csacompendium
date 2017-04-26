@@ -7,8 +7,7 @@ from csacompendium.research.models import Research
 # Test for ContentType filter. To be used if need be
 # from csacompendium.csa_practice.models import ResearchCsaPractice
 # from django.contrib.contenttypes.models import ContentType
-
-import django_filters
+# import django_filters
 
 
 class ResearchListFilter(FilterSet):
