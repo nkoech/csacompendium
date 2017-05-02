@@ -86,7 +86,6 @@ class Location(AuthUserDetail, CreateUpdateTime):
         return reverse('location_api:location_detail', kwargs={'slug': self.slug})
 
     class Meta:
-        unique_together = ['latitude', 'longitude']
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Locations'
 
