@@ -143,11 +143,11 @@ class MeasurementYear(AuthUserDetail, CreateUpdateTime):
     )
 
     def __unicode__(self):
-        str_format = 'First Measurement: {0} First Measurement: {1}'.format(self.measurement_year, self.second_year)
+        str_format = 'First Measurement: {0} Second Measurement: {1}'.format(self.measurement_year, self.second_year)
         return str_format
 
     def __str__(self):
-        str_format = 'First Measurement: {0} First Measurement: {1}'.format(self.measurement_year, self.second_year)
+        str_format = 'First Measurement: {0} Second Measurement: {1}'.format(self.measurement_year, self.second_year)
         return str_format
 
     def get_api_url(self):
