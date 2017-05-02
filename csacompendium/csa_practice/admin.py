@@ -21,7 +21,10 @@ class CsaPracticeModelAdmin(admin.ModelAdmin):
     """
     CSA practice model admin settings
     """
-    list_display = ['practice_code', 'csatheme', 'practicelevel', 'sub_practice_level', 'last_update', 'modified_by']
+    list_display = [
+        'practice_code', 'csatheme', 'practicelevel', 'sub_practice_level',
+        'sub_subpractice_level', 'last_update', 'modified_by'
+    ]
     list_display_links = ['practice_code']
     list_filter = ['csatheme', 'practicelevel', 'sub_practice_level', 'last_update', 'modified_by']
     inlines = [ResearchCsaPracticeInline, ]

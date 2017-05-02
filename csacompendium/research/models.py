@@ -33,8 +33,13 @@ class NitrogenApplied(AuthUserDetail, CreateUpdateTime):
         ('Organic', 'Organic'),
         ('Inorganic', 'Inorganic'),
     )
+
+    NITROGEN_UOM = (
+        ('kg/ha', 'kg/ha'),
+        ('kg manure/ha', 'kg manure/ha'),
+    )
     nitrogen_amount = models.DecimalField(max_digits=6, decimal_places=2,  unique=True)
-    amount_uom = models.CharField(max_length=12, verbose_name='Nitrogen UOM', default='kg/ha')
+    amount_uom = models.CharField(max_length=12, choices=NITROGEN_UOM)
     nitrogen_source = models.CharField(max_length=30, choices=NITROGEN_SOURCE)
 
     def __unicode__(self):

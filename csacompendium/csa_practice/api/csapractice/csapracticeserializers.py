@@ -39,6 +39,7 @@ def csa_practice_serializers():
                 'csatheme',
                 'practicelevel',
                 'sub_practice_level',
+                'sub_subpractice_level',
                 'definition',
                 'practicetype',
             ]

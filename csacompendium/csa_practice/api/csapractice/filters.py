@@ -14,6 +14,7 @@ class CsaPracticeListFilter(FilterSet):
                   'csatheme': ['exact'],
                   'practicelevel': ['exact'],
                   'sub_practice_level': ['iexact', 'icontains'],
+                  'sub_subpractice_level': ['iexact', 'icontains'],
                   'definition': ['iexact', 'icontains'],
                   'practicetype': ['exact'],
                   }
