@@ -98,7 +98,7 @@ class MeasurementYearModelAdmin(admin.ModelAdmin):
     """
     Measurement year model admin settings
     """
-    list_display = ['measurement_year', 'last_update', 'modified_by']
+    list_display = ['measurement_year', 'second_year', 'last_update', 'modified_by']
     list_display_links = ['measurement_year']
     list_filter = ['measurement_year', 'last_update', 'modified_by']
     inlines = [ResearchMeasurementYearInline, ]

@@ -137,13 +137,18 @@ class MeasurementYear(AuthUserDetail, CreateUpdateTime):
     Measurement year model
     """
     slug = models.SlugField(max_length=10, unique=True, blank=True)
-    measurement_year = models.SmallIntegerField(choices=get_year_choices(), unique=True, default=get_datetime_now())
+    measurement_year = models.SmallIntegerField(choices=get_year_choices(), default=get_datetime_now())
+    second_year = models.SmallIntegerField(
+        choices=get_year_choices(), blank=True, null=True
+    )
 
     def __unicode__(self):
-        return str(self.measurement_year)
+        str_format = 'First Measurement: {0} First Measurement: {1}'.format(self.measurement_year, self.second_year)
+        return str_format
 
     def __str__(self):
-        return str(self.measurement_year)
+        str_format = 'First Measurement: {0} First Measurement: {1}'.format(self.measurement_year, self.second_year)
+        return str_format
 
     def get_api_url(self):
         """
@@ -154,6 +159,7 @@ class MeasurementYear(AuthUserDetail, CreateUpdateTime):
         return reverse('research_api:measurement_year_detail', kwargs={'slug': self.slug})
 
     class Meta:
+        unique_together = ['measurement_year', 'second_year']
         ordering = ['-time_created', '-last_update']
         verbose_name_plural = 'Measurement Years'
 
@@ -181,7 +187,8 @@ def pre_save_measurement_year_receiver(sender, instance, *args, **kwargs):
     :rtype: None
     """
     if not instance.slug:
-        instance.slug = create_slug(instance, MeasurementYear, instance.measurement_year)
+        instance_fields = [instance.measurement_year, instance.second_year]
+        instance.slug = create_slug(instance, MeasurementYear, instance_fields)
 
 
 class MeasurementDuration(AuthUserDetail, CreateUpdateTime):

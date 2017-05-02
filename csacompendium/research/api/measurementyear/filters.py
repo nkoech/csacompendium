@@ -12,5 +12,6 @@ class MeasurementYearListFilter(FilterSet):
         model = MeasurementYear
         fields = {
             'measurement_year': ['iexact', 'icontains'],
+            'second_year': ['iexact', 'icontains'],
         }
         order_by = ['measurement_year']

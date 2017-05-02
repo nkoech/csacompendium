@@ -26,6 +26,7 @@ def measurement_year_serializers():
             fields = [
                 'id',
                 'measurement_year',
+                'second_year',
             ]
 
     class MeasurementYearRelationBaseSerializer(ModelSerializer):
