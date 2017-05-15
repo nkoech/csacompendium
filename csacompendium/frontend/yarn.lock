@@ -60,6 +60,10 @@ alter@~0.2.0:
   dependencies:
     stable "~0.1.3"
 
+angular-resource@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/angular-resource/-/angular-resource-1.6.4.tgz#bcb83688b0a7d3402fde58dc7f4881383a6c0ebb"
+
 angular-route@^1.6.4:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/angular-route/-/angular-route-1.6.4.tgz#7bb216fcda746a1b8c452054b05900a7074ecc62"
