@@ -73,7 +73,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(APPS_DIR, 'templates')],
+        'DIRS': [os.path.join(APPS_DIR, "csacompendium", 'frontend')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -142,5 +142,14 @@ REST_FRAMEWORK = {
 }
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(APPS_DIR, "csacompendium", 'frontend'),
+    # '/var/www/static/',
+]
+
+STATIC_ROOT = os.path.join(os.path.dirname(APPS_DIR), "frontend_cdn")
+MEDIA_ROOT = os.path.join(os.path.dirname(APPS_DIR), "media_cdn")
+
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
