@@ -5,13 +5,14 @@ var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var BundleTracker = require('webpack-bundle-tracker');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var extractPlugin = new ExtractTextPlugin({
     filename: 'main.css'
 });
 module.exports = {
     entry: {
-        app: './src/js/app.js'
+        app: './src/app/app.module.js'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -33,12 +34,13 @@ module.exports = {
                             presets: ['es2015']
                         }
                     }
-                ]
+                ],
+                exclude: [/node-modules/]
             },
             {
-                test: /\.css$/,
+                test: /\.scss$/,
                 use: extractPlugin.extract({
-                    use: ['css-loader']
+                    use: ['css-loader', 'sass-loader']
                 })
             },
             {
@@ -84,7 +86,13 @@ module.exports = {
             filename: 'index.html',
             template: 'src/index.html'
         }),
+        new BundleTracker({filename: './webpack-stats.json'}),
         new CleanWebpackPlugin(['dist'])
     ],
+    watchOptions: {
+        aggregateTimeout: 300,
+        poll: 1000,
+        ignored: /node_modules/
+    },
     devtool: 'source-map'
 };

@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',  # Django rest framework
     'crispy_forms',  # Cripy forms
     'django_filters',  # Django filter
+    'webpack_loader',  # Webpack loader
 ]
 
 # Apps specific for this project go here.
@@ -73,7 +74,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(APPS_DIR, "csacompendium", 'frontend')],
+        'DIRS': [os.path.join(APPS_DIR, 'csacompendium', 'frontend')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,15 +142,27 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
 
-STATIC_URL = '/static/'
+STATIC_URL = '/frontend/'
 
 STATICFILES_DIRS = [
     os.path.join(APPS_DIR, "csacompendium", 'frontend'),
+    os.path.join(APPS_DIR, "csacompendium", '/frontend/dist/'),
     # '/var/www/static/',
 ]
 
 STATIC_ROOT = os.path.join(os.path.dirname(APPS_DIR), "frontend_cdn")
 MEDIA_ROOT = os.path.join(os.path.dirname(APPS_DIR), "media_cdn")
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'dist/',  # must end with slash
+        'STATS_FILE': os.path.join(APPS_DIR, "csacompendium", 'frontend', 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}
 
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
