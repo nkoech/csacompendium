@@ -1,4 +1,4 @@
-require('angular')
+require('angular');
 import '../assets/css/main.scss';
 import '../users.html';
 import { RandomGenerator } from './random-generator';

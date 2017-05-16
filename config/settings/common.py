@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 DJANGO_APPS = [
@@ -74,7 +73,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(APPS_DIR, 'csacompendium', 'frontend')],
+        'DIRS': [os.path.join(APPS_DIR, 'csacompendium', 'frontend', 'src')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -146,7 +145,7 @@ STATIC_URL = '/frontend/'
 
 STATICFILES_DIRS = [
     os.path.join(APPS_DIR, "csacompendium", 'frontend'),
-    os.path.join(APPS_DIR, "csacompendium", '/frontend/dist/'),
+    # os.path.join(APPS_DIR, "csacompendium", 'frontend', 'dist'),
     # '/var/www/static/',
 ]
 

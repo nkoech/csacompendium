@@ -10,6 +10,7 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
 var extractPlugin = new ExtractTextPlugin({
     filename: 'main.css'
 });
+
 module.exports = {
     entry: {
         app: './src/app/app.module.js'

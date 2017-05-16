@@ -24,7 +24,8 @@
     "sass-loader": "^6.0.5",
     "webpack": "^2.5.1",
     "webpack-bundle-tracker": "^0.2.0",
-    "webpack-dev-server": "^2.4.5"
+    "webpack-dev-server": "^2.4.5",
+    "webpack-livereload-plugin": "^0.11.0"
   },
   "dependencies": {
     "angular": "^1.6.4",
