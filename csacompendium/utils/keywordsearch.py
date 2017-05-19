@@ -1,5 +1,15 @@
-import re
+from django.contrib.contenttypes.models import ContentType
+from django.conf import settings
 from django.db.models import Q
+import re
+
+
+def get_project_models():
+
+    third_party_apps = ([app.rsplit('.')[-1] for app in settings.INSTALLED_APPS if "csacompendium" not in app])
+    for ct in ContentType.objects.all():
+        if ct.app_label not in third_party_apps:
+            yield ct.model_class()
 
 
 def get_query(query_string, obj=None, ):
