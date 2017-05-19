@@ -11,17 +11,13 @@ def get_query(query_string, obj=None, ):
     :rtype: Object
     """
     query = None
-    print(obj)
     terms = _normalize_keyword(query_string)
     if not (isinstance(obj, tuple) or isinstance(obj, list)):
-        print('xxxxx')
         obj = _get_search_fields(obj)
     if obj and terms:
         for term in terms:
             or_query = None  # Query to search for a given term in each field
             for field in obj:
-                print('yyyyyyy')
-                print(field)
                 q = Q(**{"{0}__icontains".format(field): term})
                 or_query = q if or_query is None else or_query | q
             query = or_query if query is None else query & or_query
