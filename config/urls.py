@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', TemplateView.as_view(template_name='index.html')),
-    url(r'^api/search/$', include('csacompendium.search.api.urls', namespace='search')),
+    url(r'^api/search/', include('csacompendium.search.api.urls', namespace='search')),
     url(r'^api/indicatoroutcome/', include('csacompendium.indicators.api.urls', namespace='indicator_outcome_api')),
     url(r'^api/csapractice/', include('csacompendium.csa_practice.api.urls', namespace='csa_practice_api')),
     url(r'^api/research/', include('csacompendium.research.api.urls', namespace='research_api')),
