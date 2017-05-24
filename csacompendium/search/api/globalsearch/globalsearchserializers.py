@@ -20,7 +20,6 @@ def global_search_serializers():
 
         class Meta:
             model = None
-            # model = CsaPractice
 
         # def to_native(self, obj):
         #     if isinstance(obj, obj.__class__):
