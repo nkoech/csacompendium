@@ -1,6 +1,3 @@
-/**
- * Created by nkoech on 5/9/2017.
- */
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -39,9 +36,9 @@ module.exports = {
                 exclude: [/node-modules/]
             },
             {
-                test: /\.scss$/,
+                test: /\.css$/,
                 use: extractPlugin.extract({
-                    use: ['css-loader', 'sass-loader']
+                    use: ['css-loader']
                 })
             },
             {
