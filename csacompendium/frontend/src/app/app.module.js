@@ -10,4 +10,4 @@ angular.module('app', [
     layoutCore.name
 ]);
 
-import './layout/collapse';
+import './layout/collapse-section.ctrl';
