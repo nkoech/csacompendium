@@ -72,6 +72,10 @@ angular-route@^1.6.4:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/angular-route/-/angular-route-1.6.4.tgz#7bb216fcda746a1b8c452054b05900a7074ecc62"
 
+angular-sanitize@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/angular-sanitize/-/angular-sanitize-1.6.4.tgz#60a37ea96fb0d4a322a3ccb64ee4a5cf3b154f0c"
+
 angular-simple-logger@~0.1.4:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/angular-simple-logger/-/angular-simple-logger-0.1.7.tgz#4ae48e5eac0973f577845918e56d4933cf66f041"
