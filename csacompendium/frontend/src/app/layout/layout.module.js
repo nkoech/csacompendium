@@ -1,3 +1,2 @@
-import angular from 'angular';
-
-export default angular.module('app.layout', []);
+angular.module('app.layout', []);
+require('./collapse-section.ctrl');

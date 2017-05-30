@@ -1,4 +1,4 @@
-export default angular
+angular
     .module('app.layout')
     .controller('CollapseSectionController', CollapseSectionController);
 

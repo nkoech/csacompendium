@@ -1,10 +1,9 @@
-import angular from 'angular';
-import ngAnimate from 'angular-animate';
-import ngSanitize from 'angular-sanitize';
-import uiBootstrap from 'angular-ui-bootstrap';
+require('angular-animate');
+require('angular-sanitize');
+require('angular-ui-bootstrap');
 
-export default angular.module('app.core', [
-    ngAnimate,
-    ngSanitize,
-    uiBootstrap
+angular.module('app.core', [
+    'ngAnimate',
+    'ngSanitize',
+    'ui.bootstrap'
 ]);

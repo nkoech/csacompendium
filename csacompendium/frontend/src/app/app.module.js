@@ -1,13 +1,11 @@
-import '../assets/css/main.css';
-import '../test_users.html';
-import '../test_index.html';
-import angular from 'angular';
-import appCore from './core/core.module';
-import layoutCore from './layout/layout.module';
+require('../assets/css/main.css');
+require('../test_users.html');
+require('../test_index.html');
+require('angular');
+require('./core/core.module');
+require('./layout/layout.module');
 
 angular.module('app', [
-    appCore.name,
-    layoutCore.name
+    'app.core',
+    'app.layout'
 ]);
-
-import './layout/collapse-section.ctrl';
