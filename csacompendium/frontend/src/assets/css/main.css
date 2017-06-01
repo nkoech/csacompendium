@@ -13,6 +13,14 @@
   box-sizing: border-box;
 }
 
+/*#appnavbar:after {*/
+  /*content: ".";*/
+  /*display: block;*/
+  /*height: 0;*/
+  /*clear: both;*/
+  /*visibility: hidden;*/
+/*}*/
+
 body, html { height:100%; }
 
 body {
@@ -79,4 +87,51 @@ p {
 }
 .primary:active, .btn:active {
   background: #ffd800;
+}
+
+/* Navigation */
+
+#appnavbar {
+  background: #fff !important;
+  border-top: 5px solid #8faf50;
+  /*height: 68px;*/
+}
+
+#appnavbar .nav {
+  font: normal 300 .75em/100% 'Lato', helvetica, arial, sans-serif;
+}
+
+#appnavbar .nav a {
+  color: #000;
+  border-bottom: 5px solid #fff !important;
+}
+
+/*#appnavbar .nav li a {height: relative;}*/
+
+#appnavbar .nav a:hover, #appnavbar .nav a.active {
+  background: #fbfbfb;
+  border-bottom: 5px solid #8faf50  !important;
+}
+
+.navbar-brand, #appnavbar .nav li a {
+  line-height: 68px;
+  height: 68px;
+  padding-top: 0;
+}
+
+#appnavbar .nav li#login a {
+  color: #bbb;
+}
+
+#appnavbar .nav li#sign-up a {
+  color: #454545;
+}
+
+#appnavbar .nav li#login a, #appnavbar .nav li#sign-up a  {
+  font-weight: 900;
+}
+
+#appnavbar .nav li#login a:hover, #appnavbar .nav li#sign-up a:hover{
+  color: #f9d136;
+  border-bottom: 5px solid #f9d136  !important;
 }
