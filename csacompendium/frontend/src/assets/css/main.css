@@ -6,20 +6,21 @@
 
 /* Base styles */
 *, html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, label, fieldset, input, p, blockquote, th, td { margin:0; padding:0 }
-
+fieldset, img { border:0 }
+a img { border:none } /* Gets rid of IE's blue borders */
 * {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-/*#appnavbar:after {*/
-  /*content: ".";*/
-  /*display: block;*/
-  /*height: 0;*/
-  /*clear: both;*/
-  /*visibility: hidden;*/
-/*}*/
+#appnavbar:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
 
 body, html { height:100%; }
 
@@ -134,4 +135,17 @@ p {
 #appnavbar .nav li#login a:hover, #appnavbar .nav li#sign-up a:hover{
   color: #f9d136;
   border-bottom: 5px solid #f9d136  !important;
+}
+
+#appnavbar .navbar-brand {
+  display: block;
+  float: left;
+  /*margin-top: 7px;*/
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-right: 20px;
+}
+
+#appnavbar .navbar-brand img {
+  height: 100%;
 }
