@@ -1,13 +1,19 @@
 @import 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';
 @import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
-@import 'http://fonts.googleapis.com/css?family=Lato:300,400,900';
-@import 'http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700';
+@import 'http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Roboto%20Mono';
 @import './test_another.css';
 
 /* Base styles */
 *, html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, label, fieldset, input, p, blockquote, th, td { margin:0; padding:0 }
-fieldset, img { border:0 }
-a img { border:none } /* Gets rid of IE's blue borders */
+
+fieldset, img {
+  border:0
+}
+
+a img {
+  border:none
+} /* Gets rid of IE's blue borders */
+
 * {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -22,17 +28,19 @@ a img { border:none } /* Gets rid of IE's blue borders */
   visibility: hidden;
 }
 
-body, html { height:100%; }
+body, html {
+  height: 100%;
+}
 
 body {
-  background:#fafafa;
-  color:#444;
-  font-size:17px;
-  font-family: 'Lato', helvetica, arial, sans-serif;
-  font-weight: 300;
+  background: #fafafa;
+  color: #34495e;
+  font-size: 15px;
+  font-family: "Source Sans Pro", 'Helvetica Neue', Arial, sans-serif;
   overflow-x: hidden;
   text-rendering: optimizelegibility !important;
   -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
 }
 
 ol, ul, li {
@@ -41,41 +49,35 @@ ol, ul, li {
 }
 
 a {
+  color: #34495e;
   text-decoration: none;
   transition: all 500ms ease-in-out;
 }
-a:hover, a:active {
+a:hover, a:active{
+  color: #34495e;
   text-decoration: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color:#000;
-  font-family: "Open Sans Condensed", helvetica, arial,sans-serif;
-  font-weight:900;
+h1, h2, h3, h4, h5, h6, strong {
+  color:#2c3e50;
+  font-weight:600;
 }
 
 p {
-  font-size: 15px;
   line-height: 21px;
 }
 
 .btn {
-  color:#000;
   display: inline-block;
   outline: none;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
-  font: 900 1em/100% 'Lato', helvetica, sans-serif;
   padding: 10px 20px 10px 20px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
   transition: all 300ms ease-in-out;
-}
-
-.btn:hover {
-  color: #000;
 }
 
 .primary {
@@ -95,52 +97,44 @@ p {
 #appnavbar {
   background: #fff !important;
   border-top: 5px solid #8faf50;
-  /*height: 68px;*/
 }
 
-#appnavbar .nav {
-  font: normal 300 .75em/100% 'Lato', helvetica, arial, sans-serif;
-}
-
-#appnavbar .nav a {
-  color: #000;
-  border-bottom: 5px solid #fff !important;
-}
-
-/*#appnavbar .nav li a {height: relative;}*/
-
-#appnavbar .nav a:hover, #appnavbar .nav a.active {
-  background: #fbfbfb;
-  border-bottom: 5px solid #8faf50  !important;
-}
-
-.navbar-brand, #appnavbar .nav li a {
+.navbar-brand, #appnavbar .nav a {
   line-height: 68px;
   height: 68px;
   padding-top: 0;
 }
 
-#appnavbar .nav li#login a {
+#appnavbar .nav a {
+  color: #34495e;
+  border-bottom: 5px solid #fff !important;
+}
+
+#appnavbar .nav a:hover, #appnavbar .nav a.active {
+  color: #34495e;
+  background: #fbfbfb;
+  border-bottom: 5px solid #8faf50  !important;
+}
+
+#appnavbar .nav #login a {
   color: #bbb;
 }
 
-#appnavbar .nav li#sign-up a {
-  color: #454545;
+#appnavbar .nav #sign-up a {
+  color: #2c3e50;
 }
 
-#appnavbar .nav li#login a, #appnavbar .nav li#sign-up a  {
-  font-weight: 900;
+#appnavbar .nav #login a, #appnavbar .nav #sign-up a  {
+  font-weight: 600;
 }
 
-#appnavbar .nav li#login a:hover, #appnavbar .nav li#sign-up a:hover{
-  color: #f9d136;
+#appnavbar .nav #login a:hover, #appnavbar .nav #sign-up a:hover{
+  color: #2c3e50;
   border-bottom: 5px solid #f9d136  !important;
 }
 
 #appnavbar .navbar-brand {
   display: block;
-  float: left;
-  /*margin-top: 7px;*/
   padding-top: 7px;
   padding-bottom: 7px;
   margin-right: 20px;
@@ -148,4 +142,20 @@ p {
 
 #appnavbar .navbar-brand img {
   height: 100%;
+}
+
+/*Mobile menu*/
+
+.navbar-toggle {
+  margin-top: 20px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 0;
+  background: url(../img/menu_btn.png) center center no-repeat;
+  background-size: 24px;
+}
+
+.navbar-toggle:focus, .navbar-toggle:hover {
+  background-color: transparent !important;
 }
