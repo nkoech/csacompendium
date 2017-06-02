@@ -92,45 +92,12 @@ p {
   background: #ffd800;
 }
 
-/* Navigation */
+/* Navbar navigation */
 
 #appnavbar {
   background: #fff !important;
   border-top: 5px solid #8faf50;
-}
-
-.navbar-brand, #appnavbar .nav a {
-  line-height: 68px;
-  height: 68px;
-  padding-top: 0;
-}
-
-#appnavbar .nav a {
-  color: #34495e;
-  border-bottom: 5px solid #fff !important;
-}
-
-#appnavbar .nav a:hover, #appnavbar .nav a.active {
-  color: #34495e;
-  background: #fbfbfb;
-  border-bottom: 5px solid #8faf50  !important;
-}
-
-#appnavbar .nav #login a {
-  color: #bbb;
-}
-
-#appnavbar .nav #sign-up a {
-  color: #2c3e50;
-}
-
-#appnavbar .nav #login a, #appnavbar .nav #sign-up a  {
-  font-weight: 600;
-}
-
-#appnavbar .nav #login a:hover, #appnavbar .nav #sign-up a:hover{
-  color: #2c3e50;
-  border-bottom: 5px solid #f9d136  !important;
+  border-bottom: 0;
 }
 
 #appnavbar .navbar-brand {
@@ -144,10 +111,53 @@ p {
   height: 100%;
 }
 
+#appnavbar .nav {
+  background: #fff;
+  text-align: center;
+}
+
+#appnavbar .nav {
+  display: block;
+}
+
+#appnavbar .nav a {
+  color: #34495e;
+  border-bottom: 5px solid #fff !important;
+}
+
+.navbar-brand, #appnavbar .nav a {
+  line-height: 68px;
+  height: 68px;
+  padding-top: 0;
+}
+
+#appnavbar .nav-link a:hover, #appnavbar .nav-link a.active {
+  background: #fbfbfb;
+  border-bottom: 5px solid #8faf50 !important;
+}
+
+#appnavbar .registration-link {
+  font-weight: 600;
+}
+
+#appnavbar .nav #login a {
+  color: #bbb;
+}
+
+#appnavbar .nav #sign-up a {
+  color: #2c3e50;
+}
+
+#appnavbar .registration-link a:hover, #appnavbar .registration-link a.active {
+  color: #2c3e50 !important;
+  background: #fbfbfb;
+  border-bottom: 5px solid #f9d136 !important;
+}
+
 /*Mobile menu*/
 
 .navbar-toggle {
-  margin-top: 20px;
+  margin-top: 22px;
   width: 24px;
   height: 24px;
   border: none;
@@ -158,4 +168,23 @@ p {
 
 .navbar-toggle:focus, .navbar-toggle:hover {
   background-color: transparent !important;
+}
+
+.navbar-collapse {
+  border: none;
+}
+
+@media (max-width: 765px) {
+  #appnavbar .nav a {
+    line-height: 32px;
+    height: 32px;
+    padding-top: 0;
+    border-bottom: 0 !important;
+  }
+
+  #appnavbar .nav a:hover, #appnavbar .nav a.active {
+    color: #8faf50 !important;
+    background: #fff;
+    border-bottom: 0 !important;
+  }
 }

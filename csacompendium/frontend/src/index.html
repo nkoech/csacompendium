@@ -11,6 +11,8 @@
         <![endif]-->
     </head>
     <body ng-app="app">
+
+        <!-- Navbar navigation -->
         <div id="appnavbar" class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="CollapseSectionController as vm">
             <div class="container">
                 <div class="navbar-header">
@@ -18,12 +20,12 @@
                     <a href="#" class="navbar-brand navbar-left"><img src="./assets/img/ccafs_logo.png" alt="CCAFS Logo"></a>
                 </div>
                 <div class="navbar-collapse collapse" uib-collapse="vm.isNavCollapsed">
-                    <ul class="nav navbar-nav navbar-left">
-                        <li><a class='nav-link active' href="#">Home</a></li>
-                        <li><a class='nav-link' href="#">About</a></li>
-                        <li><a class='nav-link' href="">Case Studies</a></li>
+                    <ul class="nav navbar-nav navbar-left nav-link">
+                        <li><a class='active' href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="">Case Studies</a></li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right registration-link">
                         <li id="login"><a href="#">Login</a></li>
                         <li id="sign-up"><a href="#">Sign Up</a></li>
                     </ul>
