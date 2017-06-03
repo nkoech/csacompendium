@@ -20,7 +20,7 @@ a img {
   box-sizing: border-box;
 }
 
-#appnavbar:after {
+.app-navbar:after {
   content: ".";
   display: block;
   height: 0;
@@ -94,61 +94,61 @@ p {
 
 /* Navbar navigation */
 
-#appnavbar {
+.app-navbar {
   background: #fff !important;
   border-top: 5px solid #8faf50;
   border-bottom: 0;
 }
 
-#appnavbar .navbar-brand {
+.app-navbar .navbar-brand {
   display: block;
   padding-top: 7px;
   padding-bottom: 7px;
   margin-right: 20px;
 }
 
-#appnavbar .navbar-brand img {
+.app-navbar .navbar-brand img {
   height: 100%;
 }
 
-#appnavbar .nav {
+.app-navbar .nav {
   background: #fff;
   text-align: center;
 }
 
-#appnavbar .nav {
+.app-navbar .nav {
   display: block;
 }
 
-#appnavbar .nav a {
+.app-navbar .nav a {
   color: #34495e;
   border-bottom: 5px solid #fff !important;
 }
 
-#appnavbar .navbar-brand, #appnavbar .nav a {
+.app-navbar .navbar-brand, .app-navbar .nav a {
   line-height: 68px;
   height: 68px;
   padding-top: 0;
 }
 
-#appnavbar .nav-link a:hover, #appnavbar .nav-link a.active {
+.app-navbar .nav-link a:hover, .app-navbar .nav-link a.active {
   background: #fbfbfb;
   border-bottom: 5px solid #8faf50 !important;
 }
 
-#appnavbar .registration-link {
+.app-navbar .registration-link {
   font-weight: 600;
 }
 
-#appnavbar .nav #login a {
+.app-navbar .nav #login a {
   color: #bbb;
 }
 
-#appnavbar .nav #sign-up a {
+.app-navbar .nav #sign-up a {
   color: #2c3e50;
 }
 
-#appnavbar .registration-link a:hover, #appnavbar .registration-link a.active {
+.app-navbar .registration-link a:hover, .app-navbar .registration-link a.active {
   color: #2c3e50 !important;
   background: #fbfbfb;
   border-bottom: 5px solid #f9d136 !important;
@@ -156,7 +156,7 @@ p {
 
 /*Mobile menu*/
 
-#appnavbar .navbar-toggle {
+.app-navbar .navbar-toggle {
   margin-top: 22px;
   width: 24px;
   height: 24px;
@@ -166,23 +166,23 @@ p {
   background-size: 24px;
 }
 
-#appnavbar .navbar-toggle:focus, #appnavbar .navbar-toggle:hover {
+.app-navbar .navbar-toggle:focus, .app-navbar .navbar-toggle:hover {
   background-color: transparent !important;
 }
 
-#appnavbar .navbar-collapse {
+.app-navbar .navbar-collapse {
   border: none;
 }
 
 @media (max-width: 765px) {
-  #appnavbar .nav a {
+  .app-navbar .nav a {
     line-height: 32px;
     height: 32px;
     padding-top: 0;
     border-bottom: 0 !important;
   }
 
-  #appnavbar .nav a:hover, #appnavbar .nav a.active {
+  .app-navbar .nav a:hover, .app-navbar .nav a.active {
     color: #8faf50 !important;
     background: #fff;
     border-bottom: 0 !important;
