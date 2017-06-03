@@ -125,7 +125,7 @@ p {
   border-bottom: 5px solid #fff !important;
 }
 
-.navbar-brand, #appnavbar .nav a {
+#appnavbar .navbar-brand, #appnavbar .nav a {
   line-height: 68px;
   height: 68px;
   padding-top: 0;
@@ -156,7 +156,7 @@ p {
 
 /*Mobile menu*/
 
-.navbar-toggle {
+#appnavbar .navbar-toggle {
   margin-top: 22px;
   width: 24px;
   height: 24px;
@@ -166,11 +166,11 @@ p {
   background-size: 24px;
 }
 
-.navbar-toggle:focus, .navbar-toggle:hover {
+#appnavbar .navbar-toggle:focus, #appnavbar .navbar-toggle:hover {
   background-color: transparent !important;
 }
 
-.navbar-collapse {
+#appnavbar .navbar-collapse {
   border: none;
 }
 
