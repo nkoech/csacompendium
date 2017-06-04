@@ -42,7 +42,7 @@ module.exports = {
                 })
             },
             {
-                test: /\.html$/,
+                test: /index.html$/,
                 use: ['html-loader']
             },
             {
@@ -63,7 +63,8 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            name: '[name].[ext]'
+                            name: '[name].[ext]',
+                            outputPath: 'templates/'
                         }
                     }
                 ],
