@@ -4,5 +4,4 @@ angular
 
 function HomeController() {
     var vm = this;
-    vm.title = "Hello World";
 }

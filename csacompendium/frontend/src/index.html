@@ -9,6 +9,7 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <base href="/">
     </head>
     <body ng-app="app">
 
@@ -21,9 +22,9 @@
                 </div>
                 <div class="navbar-collapse collapse" uib-collapse="vm.isNavCollapsed">
                     <ul class="nav navbar-nav navbar-left nav-link">
-                        <li><a class='active' href="#/">Home</a></li>
-                        <li><a href="#/about">About</a></li>
-                        <li><a href="#/case-studies">Case Studies</a></li>
+                        <li><a class='active' href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/case-studies">Case Studies</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right registration-link">
                         <li id="login"><a href="#/login">Login</a></li>
@@ -33,7 +34,7 @@
             </div>
         </div>
 
-        <!-- Main application section -->
+        <!-- Main application section loaded using ng-view -->
         <div class="main-container" ng-view ></div>
 
     </body>

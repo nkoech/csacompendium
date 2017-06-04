@@ -1,14 +1,14 @@
 angular
-    .module('app.home')
+    .module('app.about')
     .config(routes);
 
 function routes($routeProvider, $locationProvider) {
     $routeProvider.
-        when('/', {
-            title: 'home',
-            controller: 'HomeController',
+        when('/about', {
+            title: 'about',
+            controller: 'AboutController',
             controllerAs: 'vm',
-            templateUrl: require("./home.tpl.html")
+            templateUrl: require("./about.tpl.html")
         });
     $locationProvider.html5Mode(true);
 }
