@@ -9,3 +9,5 @@ angular.module('app.core', [
     'ngSanitize',
     'ui.bootstrap'
 ]);
+
+require('./research.fct');
