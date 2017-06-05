@@ -7,6 +7,7 @@ require('./about/about.module');
 require('./case-studies/case-studies.module');
 require('./login/login.module');
 require('./sign-up/sign-up.module');
+require('./research/research.module');
 
 
 angular.module('app', [
@@ -16,5 +17,6 @@ angular.module('app', [
     'app.about',
     'app.case-studies',
     'app.login',
-    'app.sign-up'
+    'app.sign-up',
+    'app.research'
 ]);
