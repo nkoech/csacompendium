@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = [
     'crispy_forms',  # Cripy forms
     'django_filters',  # Django filter
     'webpack_loader',  # Webpack loader
+    'corsheaders',  # cors-headers
 ]
 
 # Apps specific for this project go here.
@@ -59,13 +60,14 @@ LOCAL_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -162,6 +164,10 @@ WEBPACK_LOADER = {
         'IGNORE': ['.+\.hot-update.js', '.+\.map']
     }
 }
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8080'
+)
 
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
