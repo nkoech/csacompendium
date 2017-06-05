@@ -2,6 +2,8 @@ angular
     .module('app.about')
     .config(routes);
 
+routes.$inject = ["$routeProvider", "$locationProvider"];
+
 function routes($routeProvider, $locationProvider) {
     $routeProvider.
         when('/about', {

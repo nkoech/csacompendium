@@ -2,6 +2,8 @@ angular
     .module('app.home')
     .config(routes);
 
+routes.$inject = ["$routeProvider", "$locationProvider"];
+
 function routes($routeProvider, $locationProvider) {
     $routeProvider.
         when('/', {

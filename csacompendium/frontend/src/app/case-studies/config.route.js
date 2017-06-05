@@ -2,6 +2,8 @@ angular
     .module('app.case-studies')
     .config(routes);
 
+routes.$inject = ["$routeProvider", "$locationProvider"];
+
 function routes($routeProvider, $locationProvider) {
     $routeProvider.
         when('/case-studies', {
