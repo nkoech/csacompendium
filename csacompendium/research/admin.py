@@ -30,11 +30,11 @@ class ResearchModelAdmin(admin.ModelAdmin):
     Research model admin settings
     """
     list_display = [
-        'experiment_design', 'last_update', 'modified_by'
+        'research_code', 'experiment_design', 'last_update', 'modified_by'
     ]
-    list_display_links = ['experiment_design']
+    list_display_links = ['research_code', 'experiment_design']
     list_filter = [
-        'experiment_design', 'last_update', 'modified_by'
+        'research_code', 'experiment_design', 'last_update', 'modified_by'
     ]
 
     class Meta:

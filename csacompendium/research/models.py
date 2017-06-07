@@ -1092,15 +1092,16 @@ class Research(AuthUserDetail, CreateUpdateTime):
     content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT, limit_choices_to=limit)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+    research_code = models.CharField(max_length=6, blank=True, null=True)
     experiment_design = models.CharField(max_length=22, choices=EXPERIMENT_DESIGN)
     objects = ResearchManager()
 
     def __unicode__(self):
-        str_format = '{0} - {1}'.format(self.experiment_design, self.id)
+        str_format = '{0} - {1}'.format(self.research_code, self.experiment_design)
         return str(str_format)
 
     def __str__(self):
-        str_format = '{0} - {1}'.format(self.experiment_design, self.id)
+        str_format = '{0} - {1}'.format(self.research_code, self.experiment_design, self.id)
         return str(str_format)
 
     def get_api_url(self):

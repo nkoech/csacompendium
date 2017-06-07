@@ -56,7 +56,7 @@ def research_serializers():
         """
         class Meta:
             model = Research
-            fields = ['id', 'experiment_design', ]
+            fields = ['id', 'research_code', 'experiment_design', ]
 
     class ResearchRelationBaseSerializer(ModelSerializer):
         """
@@ -240,7 +240,7 @@ def research_serializers():
             class Meta:
                 model = Research
                 fields = [
-                    'id', 'experiment_design',
+                    'id', 'research_code', 'experiment_design',
                     'last_update', 'time_created',
                 ]
 
@@ -262,10 +262,12 @@ def research_serializers():
                 :return: Research object
                 :rtype: Object
                 """
+                research_code = validated_data.get('research_code')
                 experiment_design = validated_data.get('experiment_design')
                 research = Research.objects.create_by_model_type(
                     self.model_type,
                     self.key,
+                    research_code=research_code,
                     experiment_design=experiment_design,
                     user=self.auth_user,
                     modified_by=self.auth_user

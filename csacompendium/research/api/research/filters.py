@@ -34,8 +34,10 @@ class ResearchListFilter(FilterSet):
     class Meta:
         model = Research
         fields = {
+            'id': ['exact'],
+            'research_code': ['iexact', 'icontains'],
             'experiment_design': ['iexact', 'icontains'],
             'object_id': ['exact'],
             'content_type': ['exact'],
         }
-        order_by = ['experiment_design']
+        order_by = ['id', 'research_code']
