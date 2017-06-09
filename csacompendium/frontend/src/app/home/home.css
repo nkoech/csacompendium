@@ -104,29 +104,6 @@
     border-color: transparent;
 }
 
-/*.search .search-field {*/
-    /*padding: 10px 16px;*/
-    /*line-height: 1.3333333;*/
-/*}*/
-
-/*.search .search-field:hover {*/
-    /*background-color: #fff;*/
-/*}*/
-
-/*.search .search-field:enabled {*/
-    /*outline: none;*/
-    /*box-shadow: none;*/
-/*}*/
-
-/*.search .search-field:active {*/
-    /*box-shadow: none;*/
-/*}*/
-
-/*.search .search-field:focus {*/
-    /*border-color: #8faf50;*/
-/*}*/
-
-
 @media (max-width: 992px) {
     .home-page .search {
         height: 492px;
