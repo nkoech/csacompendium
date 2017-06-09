@@ -170,21 +170,21 @@ p {
   margin-top: 68px;
 }
 
-.search-field {
+.input-component {
   padding: 10px 16px;
   line-height: 1.3333333;
 }
 
-.search-field:hover {
+.input-component:hover {
   background-color: #fff;
 }
 
-.search-field:enabled {
+.input-component:enabled {
   outline: none !important;
   box-shadow: none;
 }
 
-.search-field:focus {
+.input-component:focus {
   border-color: #8faf50;
   background-color: #fff !important;
 }

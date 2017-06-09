@@ -73,7 +73,7 @@
     position: relative;
 }
 
-.search-filters .search-field {
+.search-filters .input-component {
     font-size: 15px;
     width: 100%;
     height: 40px;
@@ -99,15 +99,20 @@
 }
 
 .search-filters .btn:enabled {
-    outline: none;
-    box-shadow: none;
+    /*outline: none;*/
+    /*box-shadow: none;*/
     border-color: transparent;
+}
+
+.search-filters .btn:focus {
+    background-color: #8faf50 !important;
 }
 
 @media (max-width: 992px) {
     .home-page .search {
         height: 492px;
     }
+
     .search-filters {
         padding: 0 15px 0 15px;
     }
