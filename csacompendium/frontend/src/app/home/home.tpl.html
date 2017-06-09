@@ -1,3 +1,45 @@
-<section class="home-page">
-    <h1>My Home page</h1>
-</section>
+<div class="home-page" id="home-page">
+    <section class="map-view" id="map-view">
+        <div id="map">
+            <!--<h1>My Home page</h1>-->
+        </div>
+    </section>
+    <section class="search">
+        <div class="container">
+            <div class="row top">
+                <div class="global-search col-md-12">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default search-field input-lg" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </div>
+                        <input type="text" class="form-control search-field input-lg" placeholder="Search keyword" name="search-keyword" id="search-keyword">
+                    </div>
+                </div>
+            </div>
+            <div class="row bottom">
+                <p>Search based on criteria: </p>
+                <form class="form-inline search-filters">
+                    <div class="filter-field col-lg-3 col-md-3">
+                        <label class="sr-only" for="country">Name</label>
+                        <input type="text" class="form-control search-field" id="country" placeholder="Country Name">
+                    </div>
+                    <div class="filter-field col-lg-3 col-md-3">
+                        <label class="sr-only" for="scale">Name</label>
+                        <input type="text" class="form-control search-field" id="scale" placeholder="Scale of Practice">
+                    </div>
+                    <div class="filter-field col-lg-3 col-md-3">
+                        <label class="sr-only" for="practice">Name</label>
+                        <input type="text" class="form-control search-field" id="practice" placeholder="CSA Practice">
+                    </div>
+                    <div class="filter-field col-lg-3 col-md-3">
+                        <label class="sr-only" for="outcome">Name</label>
+                        <input type="text" class="form-control search-field" id="outcome" placeholder="Outcome/Indicator">
+                    </div>
+                    <div class="bottom-btn">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
