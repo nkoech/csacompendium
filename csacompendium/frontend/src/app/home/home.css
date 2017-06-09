@@ -27,7 +27,7 @@
 }
 
 .search .top {
-    padding: 0 0 28px;
+    padding: 0 0 15px;
 }
 
 .search .global-search {
@@ -99,8 +99,6 @@
 }
 
 .search-filters .btn:enabled {
-    /*outline: none;*/
-    /*box-shadow: none;*/
     border-color: transparent;
 }
 
