@@ -3,7 +3,8 @@
     position: relative;
     min-height: 586px;
     max-height: 756px;
-    border-bottom: 1px solid #e7e7e7;
+    /*border-bottom: 1px solid rgba(0,0,0,0.10);*/
+    /*border-bottom: 1px solid #e7e7e7;*/
 }
 
 .home-page .map-view #map {
@@ -20,14 +21,13 @@
 
 .home-page .search {
     position: relative;
-    height: 302px;
-    /*background-color: #dedede;*/
+    height: 235px;
     background-color: #f1f1f1;
-    padding: 40px 0 40px 0;
+    padding: 28px 0 40px;
 }
 
 .search .top {
-    padding: 0 0 15px;
+    padding: 0 0 28px;
 }
 
 .search .global-search {
@@ -59,15 +59,9 @@
     max-width: 100%;
 }
 
-.search .bottom {
-    padding: 0 0 20px;
-}
-
-.search .bottom p {
-    opacity: 0.6;
-    font-size: 16px;
-    margin: 0 0 15px 15px;
-}
+/*.search .bottom {*/
+    /*padding: 0 0 1px;*/
+/*}*/
 
 .search .search-filters {
     position: relative;
@@ -76,14 +70,16 @@
 .search-filters .input-component {
     font-size: 15px;
     width: 100%;
-    height: 40px;
+    height: 36px;
     border-radius: 5px;
 }
 
 .search-filters .btn {
-    width: 250px;
+    width: 165px;
     height: 40px;
-    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    padding: 0 0 2px;
     border-radius: 23px;
     border-color: transparent;
     background-color: #8faf50;
@@ -91,11 +87,12 @@
 
 .search-filters .bottom-btn {
     text-align: center;
-    padding: 70px 0 0 0;
+    padding: 64px 0 0 0;
 }
 
 .search-filters .btn:hover {
     background-color: #8faf50;
+    opacity: 0.7;
 }
 
 .search-filters .btn:enabled {
@@ -104,6 +101,10 @@
 
 .search-filters .btn:focus {
     background-color: #8faf50 !important;
+}
+
+.home-page .main-content {
+    padding: 30px 0 0;
 }
 
 @media (max-width: 992px) {
