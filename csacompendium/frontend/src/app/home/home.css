@@ -22,7 +22,8 @@
 .home-page .search {
     position: relative;
     height: 235px;
-    background-color: #f1f1f1;
+    /*background-color: #f1f1f1;*/
+    background-color: #eceee8;
     padding: 28px 0 40px;
 }
 
@@ -82,7 +83,7 @@
     padding: 0 0 2px;
     border-radius: 23px;
     border-color: transparent;
-    background-color: #8faf50;
+    background-color: #97be32;
 }
 
 .search-filters .bottom-btn {
@@ -92,7 +93,7 @@
 
 .search-filters .btn:hover {
     background-color: #8faf50;
-    opacity: 0.7;
+    /*opacity: 0.7;*/
 }
 
 .search-filters .btn:enabled {
@@ -100,16 +101,89 @@
 }
 
 .search-filters .btn:focus {
-    background-color: #8faf50 !important;
+    background-color: #97be32 !important;
 }
 
 .home-page .main-content {
     padding: 30px 0 0;
+    min-height: 800px;
+}
+
+.main-content .layout-sidebar {
+    position: relative;
+}
+
+.layout-sidebar .aller {
+    display: block;
+    padding: 4px 10px;
+    background-color: #eceee8;
+    border-radius: 23px;
+}
+
+.layout-sidebar .aller-container {
+    width: 100%;
+}
+
+.aller .badge {
+    margin-left: 20px;
+    background-color: #97be32;
+}
+
+.sidebar-title {
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.sidebar-highlights {
+    padding: 20px;
+    background-color: #97be32;
+    /*background-color: #c2da9f;*/
+}
+
+.sidebar-highlights span {
+    font-size: 48px;
+    font-weight: 300;
+    color: #fff;
+    /*margin-bottom: 5px;*/
+}
+
+.sidebar-highlights .sidebar-title {
+    color: #fff;
+}
+
+.sidebar-highlights .highlights-countries {
+    padding: 0 0 10px;
+}
+
+.sidebar-list-title {
+    margin-bottom: 20px;
+}
+
+.sidebar-practices{
+    padding: 0 0 30px;
+}
+
+.sidebar-filter-list {
+    display: block;
+}
+
+.sidebar-filter-list li {
+    margin-bottom: 3px;
+    line-height: 1.2;
+    padding-bottom: 8px;
+}
+
+.sidebar-indicators{
+    padding-bottom: 30px
+}
+
+.sidebar-countries{
+    padding-bottom: 30px
 }
 
 @media (max-width: 992px) {
     .home-page .search {
-        height: 492px;
+        height: 415px;
     }
 
     .search-filters {

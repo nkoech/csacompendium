@@ -74,7 +74,7 @@ p {
 }
 
 .input-component:focus {
-  border-color: #8faf50;
+  border-color: #97be32;
   background-color: #fff !important;
 }
 
@@ -85,7 +85,7 @@ p {
   border-bottom: 0;
   margin-bottom: 0;
   background: #fff !important;
-  border-top: 5px solid #8faf50;
+  border-top: 5px solid #97be32;
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
 
@@ -130,7 +130,7 @@ p {
 
 .app-navbar .nav-link a:hover, .app-navbar .nav-link a.active {
   background: #fbfbfb;
-  border-bottom: 5px solid #8faf50 !important;
+  border-bottom: 5px solid #97be32 !important;
 }
 
 .app-navbar .registration-link {
@@ -185,7 +185,7 @@ p {
   }
 
   .app-navbar .nav a:hover, .app-navbar .nav a.active {
-    color: #8faf50 !important;
+    color: #97be32 !important;
     background: #fff;
     border-bottom: 0 !important;
   }
