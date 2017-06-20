@@ -19,4 +19,5 @@ function HomeController(researchService, $timeout) {
 
         });
     };
+    vm.query("csapractice", {"sub_practice_level__iexact":"Silvopasture"});
 }
