@@ -106,7 +106,7 @@
 
 .home-page .main-content {
     padding: 30px 0 0;
-    min-height: 800px;
+    min-height: 2000px;
 }
 
 .main-content .layout-sidebar {
@@ -231,11 +231,39 @@
     color: #99CC00;
 }
 
-/*.case-study label {*/
-    /*font-size: 15px;*/
-    /*font-weight: 600;*/
-    /*padding-bottom: 0;*/
-/*}*/
+.content-pagination {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.content-pagination .pagination {
+    margin: 0;
+}
+
+.content-pagination .pagination .page-link {
+    color: #34495e;
+    border: 0;
+    background-color: transparent;
+}
+
+.pagination .active .page-link {
+    color: #fff;
+    background-color: #97be32;
+}
+
+.pagination .page-link:hover {
+    background-color: #eceee8 !important;
+}
+
+.pagination li:first-child .page-link, .pagination li:first-child span {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.pagination li:last-child .page-link, .pagination li:last-child span {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
 
 @media (max-width: 992px) {
     .home-page .search {
