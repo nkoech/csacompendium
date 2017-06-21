@@ -59,21 +59,30 @@ p {
   line-height: 21px;
 }
 
-.input-component {
-  padding: 10px 16px;
-  line-height: 1.3333333;
+.btn {
+  text-align: center;
+  border: none;
 }
 
-.input-component:hover {
-  background-color: #fff;
-}
-
-.input-component:enabled {
+.btn:focus,.btn:active, .btn:enabled {
   outline: none !important;
   box-shadow: none;
 }
 
-.input-component:focus {
+.form-control {
+  line-height: 1.3333333;
+}
+
+.form-control:hover {
+  background-color: #fff;
+}
+
+.form-control:enabled {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.form-control:focus {
   border-color: #97be32;
   background-color: #fff !important;
 }
