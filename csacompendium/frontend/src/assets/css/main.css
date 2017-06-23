@@ -185,7 +185,37 @@ p {
   margin-top: 68px;
 }
 
-@media (max-width: 765px) {
+.footer {
+  padding: 48px 0 48px;
+  background-color: #fff;
+}
+
+.footer p a:hover {
+  color: #99CC00;
+}
+
+.footer h4 {
+  padding-bottom: 9px;
+  opacity: 0.5;
+  color: #1f3349;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.footer p {
+  padding-top: 4px;
+}
+
+.footer p i {
+  color: #97be32;
+}
+
+.footer-contact .address {
+  padding-left: 16px;
+}
+
+@media (max-width: 992px) {
   .app-navbar .nav a {
     line-height: 32px;
     height: 32px;
@@ -197,5 +227,9 @@ p {
     color: #97be32 !important;
     background: #fff;
     border-bottom: 0 !important;
+  }
+
+  .footer h4 {
+    padding-top: 20px;
   }
 }
