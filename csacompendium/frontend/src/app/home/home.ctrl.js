@@ -7,13 +7,13 @@ HomeController.$inject = ['researchService', '$timeout'];
 function HomeController(researchService, $timeout) {
     var vm = this;
     vm.results = false;
-    vm.search = false;
+    vm.searching = false;
     vm.query = function(apiNode, query){
-        vm.search = true;
+        vm.searching = true;
         researchService.search(apiNode, query).then(function (response) {
             vm.results = response;
             $timeout(function(){
-                vm.search = false;
+                vm.searching = false;
             }, 500);
         }).catch(function (error) {
 
