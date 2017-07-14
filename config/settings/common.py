@@ -166,7 +166,8 @@ WEBPACK_LOADER = {
 }
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:8080'
+    'localhost:8080',
+    'localhost:8000'
 )
 
 
