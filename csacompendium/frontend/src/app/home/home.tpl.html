@@ -13,22 +13,22 @@
                         <input type="text" class="form-control input-lg" placeholder="Search keyword" name="search-keyword">
                     </div>
                 </div>
-                <form class="form-inline search-filters">
+                <form class="form-inline search-filters" ng-submit="vm.setSearchObj(val);">
                     <div class="filter-field">
                         <label class="sr-only" for="country">Name</label>
-                        <input type="text" class="form-control input-lg" id="country" placeholder="Country Name">
+                        <input type="text" name="search_country" class="form-control input-lg" id="country" placeholder="Country Name" ng-model="val.country">
                     </div>
                     <div class="filter-field">
                         <label class="sr-only" for="scale">Name</label>
-                        <input type="text" class="form-control input-lg" id="scale" placeholder="Scale of Practice">
+                        <input type="text" name="search_scale" class="form-control input-lg" id="scale" placeholder="Scale of Practice" ng-model="val.scale">
                     </div>
                     <div class="filter-field">
                         <label class="sr-only" for="practice">Name</label>
-                        <input type="text" class="form-control input-lg" id="practice" placeholder="CSA Practice">
+                        <input type="text" name="search_practice" class="form-control input-lg" id="practice" placeholder="CSA Practice" ng-model="val.practice">
                     </div>
                     <div class="filter-field">
                         <label class="sr-only" for="outcome">Name</label>
-                        <input type="text" class="form-control input-lg" id="outcome" placeholder="Outcome/Indicator">
+                        <input type="text" name="search_outcome" class="form-control input-lg" id="outcome" placeholder="Outcome/Indicator" ng-model="val.outcome">
                     </div>
                     <div class="bottom-btn">
                         <button type="submit" class="btn btn-primary input-lg">Search</button>

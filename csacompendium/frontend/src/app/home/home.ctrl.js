@@ -8,6 +8,9 @@ function HomeController(researchService, $timeout) {
     var vm = this;
     vm.results = false;
     vm.searching = false;
+
+    vm.searchObj = {};
+
     vm.query = function(apiNode, query){
         vm.searching = true;
         researchService.search(apiNode, query).then(function (response) {
@@ -20,4 +23,11 @@ function HomeController(researchService, $timeout) {
         });
     };
     // vm.query("csapractice", {"sub_practice_level__iexact":"Silvopasture"});
+    
+    vm.setSearchObj = function(obj) {
+        if (typeof obj !== 'undefined') {
+            angular.extend(vm.searchObj, obj);
+            console.log(obj);
+        }
+    };
 }
