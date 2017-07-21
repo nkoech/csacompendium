@@ -3,7 +3,7 @@ from .views import (
     global_search_views,
 )
 
-# Outcome indicator URLs
+# Global search URLs
 urlpatterns = [
     url(
         r'^$',

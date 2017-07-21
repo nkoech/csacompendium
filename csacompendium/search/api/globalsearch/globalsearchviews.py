@@ -31,7 +31,7 @@ def global_search_views():
             global_results = []
             model_count = 0
             if query_param:
-                for model in get_project_models():
+                for model in get_project_models('csacompendium'):
                     entry_query = get_query(query_param, model)
                     if entry_query:
                         query_result = model.objects.filter(entry_query).distinct()
